@@ -1,0 +1,56 @@
+[
+  {
+    "id": "animals",
+    "name": "Animals",
+    "nameVietnamese": "Động vật",
+    "description": "Learn vocabulary about common animals and wildlife",
+    "icon": "🦁",
+    "wordCount": 20,
+    "difficulty": "beginner"
+  },
+  {
+    "id": "food-drinks",
+    "name": "Food & Drinks",
+    "nameVietnamese": "Đồ ăn & Thức uống",
+    "description": "Essential vocabulary for food, drinks, and dining",
+    "icon": "🍕",
+    "wordCount": 20,
+    "difficulty": "beginner"
+  },
+  {
+    "id": "travel",
+    "name": "Travel",
+    "nameVietnamese": "Du lịch",
+    "description": "Words and phrases for traveling and tourism",
+    "icon": "✈️",
+    "wordCount": 20,
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "family",
+    "name": "Family",
+    "nameVietnamese": "Gia đình",
+    "description": "Vocabulary about family members and relationships",
+    "icon": "👨‍👩‍👧‍👦",
+    "wordCount": 20,
+    "difficulty": "beginner"
+  },
+  {
+    "id": "weather",
+    "name": "Weather",
+    "nameVietnamese": "Thời tiết",
+    "description": "Words to describe weather and climate conditions",
+    "icon": "🌤️",
+    "wordCount": 20,
+    "difficulty": "beginner"
+  },
+  {
+    "id": "colors",
+    "name": "Colors",
+    "nameVietnamese": "Màu sắc",
+    "description": "Learn different colors and shades in English",
+    "icon": "🎨",
+    "wordCount": 20,
+    "difficulty": "beginner"
+  }
+]
