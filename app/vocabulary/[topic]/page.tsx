@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTopicData, getTopicById, getTopics } from '@/lib/vocabulary/data';
-import { FlashcardContainer } from '@/components/vocabulary/FlashcardContainer';
+import { TopicPageContent } from '@/components/vocabulary/TopicPageContent';
+import { ChevronLeft } from 'lucide-react';
 
 interface TopicPageProps {
   params: Promise<{ topic: string }>;
@@ -42,31 +43,15 @@ export default async function TopicPage({ params }: TopicPageProps) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <Link
-            href="/vocabulary"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-4"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-4 h-4 mr-1"
-            >
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-            </svg>
-            Back to Topics
-          </Link>
-          <div className="flex items-center gap-3">
-            <span className="text-4xl">{topic.icon}</span>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold">{topic.name}</h1>
-              <p className="text-gray-500 dark:text-gray-400">{topic.nameVietnamese}</p>
-            </div>
-          </div>
-        </div>
+        <Link
+          href="/vocabulary"
+          className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-4 cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back to Topics
+        </Link>
 
-        <FlashcardContainer items={topicData.items} />
+        <TopicPageContent topic={topic} items={topicData.items} />
       </div>
     </div>
   );

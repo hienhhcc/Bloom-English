@@ -18,7 +18,7 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
         />
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto">
+      <div className="flex-1 space-y-4">
         <div>
           <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Examples</h3>
           <div className="space-y-2">

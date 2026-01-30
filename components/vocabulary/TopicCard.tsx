@@ -1,8 +1,13 @@
 import Link from 'next/link';
 import type { VocabularyTopic } from '@/lib/vocabulary/types';
+import type { TopicProgress } from '@/lib/vocabulary/progress';
+import { getTopicStatus } from '@/lib/vocabulary/progress';
+import { TopicProgressBadge } from './TopicProgressBadge';
+import { ArrowRight } from 'lucide-react';
 
 interface TopicCardProps {
   topic: VocabularyTopic;
+  progress?: TopicProgress | null;
 }
 
 function getDifficultyColor(difficulty: string): string {
@@ -18,17 +23,26 @@ function getDifficultyColor(difficulty: string): string {
   }
 }
 
-export function TopicCard({ topic }: TopicCardProps) {
+export function TopicCard({ topic, progress }: TopicCardProps) {
+  const status = getTopicStatus(progress ?? null);
+
   return (
     <Link
       href={`/vocabulary/${topic.id}`}
-      className="block p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-100 dark:border-gray-800"
+      className={`block p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-shadow border cursor-pointer ${
+        status === 'review-due'
+          ? 'border-amber-300 dark:border-amber-700'
+          : 'border-gray-100 dark:border-gray-800'
+      }`}
     >
       <div className="flex items-start justify-between mb-4">
         <span className="text-4xl">{topic.icon}</span>
-        <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(topic.difficulty)}`}>
-          {topic.difficulty}
-        </span>
+        <div className="flex items-center gap-2">
+          <TopicProgressBadge status={status} bestScore={progress?.bestScore} />
+          <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(topic.difficulty)}`}>
+            {topic.difficulty}
+          </span>
+        </div>
       </div>
 
       <h3 className="text-xl font-semibold mb-1">{topic.name}</h3>
@@ -37,7 +51,18 @@ export function TopicCard({ topic }: TopicCardProps) {
 
       <div className="flex items-center justify-between text-sm">
         <span className="text-gray-500 dark:text-gray-400">{topic.wordCount} words</span>
-        <span className="text-blue-500 font-medium">Start Learning →</span>
+        <span
+          className={`font-medium inline-flex items-center gap-1 ${
+            status === 'review-due'
+              ? 'text-amber-600 dark:text-amber-400'
+              : 'text-blue-500'
+          }`}
+        >
+          {status === 'not-started' && 'Start Learning'}
+          {status === 'completed' && 'Practice More'}
+          {status === 'review-due' && 'Review Now'}
+          <ArrowRight className="w-4 h-4" />
+        </span>
       </div>
     </Link>
   );

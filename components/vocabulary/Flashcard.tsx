@@ -17,7 +17,7 @@ export function Flashcard({ item, isFlipped, onFlip }: FlashcardProps) {
       onClick={onFlip}
     >
       <div
-        className={`relative w-full h-[500px] md:h-[550px] preserve-3d transition-transform duration-500 ${
+        className={`relative w-full h-[700px] md:h-[750px] preserve-3d transition-transform duration-500 ${
           isFlipped ? 'rotate-y-180' : ''
         }`}
       >

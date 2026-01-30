@@ -1,6 +1,7 @@
 import { getTopics } from '@/lib/vocabulary/data';
-import { TopicCard } from '@/components/vocabulary/TopicCard';
+import { VocabularyPageContent } from '@/components/vocabulary/VocabularyPageContent';
 import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
 
 export const metadata = {
   title: 'Vocabulary - Bloom English',
@@ -16,16 +17,9 @@ export default function VocabularyPage() {
         <div className="mb-8">
           <Link
             href="/"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-4"
+            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-4 cursor-pointer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-4 h-4 mr-1"
-            >
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-            </svg>
+            <ChevronLeft className="w-4 h-4 mr-1" />
             Back to Home
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Vocabulary</h1>
@@ -34,11 +28,7 @@ export default function VocabularyPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topics.map((topic) => (
-            <TopicCard key={topic.id} topic={topic} />
-          ))}
-        </div>
+        <VocabularyPageContent topics={topics} />
       </div>
     </div>
   );

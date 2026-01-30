@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 
 interface UseTextToSpeechReturn {
   speak: (text: string, slow?: boolean) => void;
@@ -15,6 +15,12 @@ function checkSupport(): boolean {
 
 export function useTextToSpeech(): UseTextToSpeechReturn {
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isSupported, setIsSupported] = useState(false);
+
+  // Check support after mount to avoid hydration mismatch
+  useEffect(() => {
+    setIsSupported(checkSupport());
+  }, []);
 
   const speak = useCallback((text: string, slow: boolean = false) => {
     if (!checkSupport()) return;
@@ -46,8 +52,6 @@ export function useTextToSpeech(): UseTextToSpeechReturn {
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
   }, []);
-
-  const isSupported = checkSupport();
 
   return { speak, cancel, isSpeaking, isSupported };
 }
