@@ -1,6 +1,6 @@
 // Progress tracking types and utilities
 
-export const STORAGE_KEY = 'bloom-english-progress';
+export const STORAGE_KEY = "bloom-english-progress";
 export const CURRENT_VERSION = 1;
 export const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 export const ONE_WEEK_MS = 7 * ONE_DAY_MS;
@@ -31,7 +31,7 @@ export interface LearningProgress {
   lastUpdated: number;
 }
 
-export type TopicStatus = 'not-started' | 'completed' | 'review-due';
+export type TopicStatus = "not-started" | "completed" | "review-due";
 
 export function createInitialProgress(): LearningProgress {
   return {
@@ -69,36 +69,41 @@ export function isReviewDue(schedule: ReviewSchedule | null): {
 
   const now = Date.now();
   const oneDayDue = !schedule.oneDay.completed && now >= schedule.oneDay.date;
-  const oneWeekDue = !schedule.oneWeek.completed && now >= schedule.oneWeek.date;
+  const oneWeekDue =
+    !schedule.oneWeek.completed && now >= schedule.oneWeek.date;
 
   return {
     oneDay: oneDayDue,
+    // oneDay: true,
     oneWeek: oneWeekDue,
+    // oneWeek: true,
     anyDue: oneDayDue || oneWeekDue,
   };
 }
 
 export function getTopicStatus(progress: TopicProgress | null): TopicStatus {
   if (!progress || progress.quizAttempts.length === 0) {
-    return 'not-started';
+    return "not-started";
   }
 
   const reviewStatus = isReviewDue(progress.reviewSchedule);
   if (reviewStatus.anyDue) {
-    return 'review-due';
+    return "review-due";
   }
 
-  return 'completed';
+  return "completed";
 }
 
-export function getNextReviewType(schedule: ReviewSchedule | null): 'oneDay' | 'oneWeek' | null {
+export function getNextReviewType(
+  schedule: ReviewSchedule | null,
+): "oneDay" | "oneWeek" | null {
   if (!schedule) return null;
 
   const reviewStatus = isReviewDue(schedule);
 
   // Return the earliest due review
-  if (reviewStatus.oneDay) return 'oneDay';
-  if (reviewStatus.oneWeek) return 'oneWeek';
+  if (reviewStatus.oneDay) return "oneDay";
+  if (reviewStatus.oneWeek) return "oneWeek";
 
   return null;
 }
@@ -108,18 +113,18 @@ export function formatReviewDate(timestamp: number): string {
   const diff = timestamp - now;
 
   if (diff < 0) {
-    return 'overdue';
+    return "overdue";
   }
 
   const hours = Math.floor(diff / (60 * 60 * 1000));
   const days = Math.floor(diff / ONE_DAY_MS);
 
   if (hours < 24) {
-    return hours <= 1 ? 'in 1 hour' : `in ${hours} hours`;
+    return hours <= 1 ? "in 1 hour" : `in ${hours} hours`;
   }
 
   if (days === 1) {
-    return 'tomorrow';
+    return "tomorrow";
   }
 
   return `in ${days} days`;

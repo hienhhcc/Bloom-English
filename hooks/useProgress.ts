@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
 import {
   STORAGE_KEY,
   createInitialProgress,
   createInitialTopicProgress,
   createReviewSchedule,
-  isReviewDue,
   getTopicStatus,
+  isReviewDue,
   type LearningProgress,
   type TopicProgress,
   type TopicStatus,
-} from '@/lib/vocabulary/progress';
+} from "@/lib/vocabulary/progress";
+import { useCallback, useEffect, useState } from "react";
 
 interface DueReview {
   topicId: string;
-  reviewType: 'oneDay' | 'oneWeek';
+  reviewType: "oneDay" | "oneWeek";
 }
 
 interface UseProgressReturn {
@@ -25,22 +25,27 @@ interface UseProgressReturn {
   getTopicStatusById: (topicId: string) => TopicStatus;
   recordQuizAttempt: (
     topicId: string,
-    score: { correct: number; total: number }
+    score: { correct: number; total: number },
   ) => void;
-  markReviewCompleted: (topicId: string, reviewType: 'oneDay' | 'oneWeek') => void;
+  markReviewCompleted: (
+    topicId: string,
+    reviewType: "oneDay" | "oneWeek",
+  ) => void;
   getDueReviews: () => DueReview[];
 }
 
 export function useProgress(): UseProgressReturn {
+  // Initialize as null - localStorage is read in useEffect to avoid hydration mismatch
   const [progress, setProgress] = useState<LearningProgress | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount (legitimate initialization pattern)
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored) as LearningProgress;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setProgress(parsed);
       } else {
         setProgress(createInitialProgress());
@@ -59,7 +64,7 @@ export function useProgress(): UseProgressReturn {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
       } catch {
         // localStorage might be full or unavailable
-        console.error('Failed to save progress to localStorage');
+        console.error("Failed to save progress to localStorage");
       }
     }
   }, [progress, isLoaded]);
@@ -69,7 +74,7 @@ export function useProgress(): UseProgressReturn {
       if (!progress) return null;
       return progress.topics[topicId] || null;
     },
-    [progress]
+    [progress],
   );
 
   const getTopicStatusById = useCallback(
@@ -77,7 +82,7 @@ export function useProgress(): UseProgressReturn {
       const topicProgress = getTopicProgress(topicId);
       return getTopicStatus(topicProgress);
     },
-    [getTopicProgress]
+    [getTopicProgress],
   );
 
   const recordQuizAttempt = useCallback(
@@ -123,11 +128,11 @@ export function useProgress(): UseProgressReturn {
         };
       });
     },
-    []
+    [],
   );
 
   const markReviewCompleted = useCallback(
-    (topicId: string, reviewType: 'oneDay' | 'oneWeek') => {
+    (topicId: string, reviewType: "oneDay" | "oneWeek") => {
       setProgress((prev) => {
         if (!prev) return prev;
 
@@ -155,7 +160,7 @@ export function useProgress(): UseProgressReturn {
         };
       });
     },
-    []
+    [],
   );
 
   const getDueReviews = useCallback((): DueReview[] => {
@@ -169,13 +174,13 @@ export function useProgress(): UseProgressReturn {
       if (reviewStatus.oneDay) {
         dueReviews.push({
           topicId: topicProgress.topicId,
-          reviewType: 'oneDay',
+          reviewType: "oneDay",
         });
       } else if (reviewStatus.oneWeek) {
         // Only show week review if day review is already completed
         dueReviews.push({
           topicId: topicProgress.topicId,
-          reviewType: 'oneWeek',
+          reviewType: "oneWeek",
         });
       }
     });

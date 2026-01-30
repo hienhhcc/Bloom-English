@@ -14,6 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a Next.js 16 project using the App Router pattern with TypeScript and Tailwind CSS 4.
 
 **Key structure:**
+
 - `app/` - App Router pages and layouts (React Server Components by default)
 - `app/layout.tsx` - Root layout with metadata and Geist font
 - `app/page.tsx` - Home page
@@ -21,3 +22,7 @@ This is a Next.js 16 project using the App Router pattern with TypeScript and Ta
 - `public/` - Static assets
 
 **Path alias:** `@/*` maps to the project root for imports.
+
+## Project rules
+
+Don't run lint and build automatically, only run when I tell you to do

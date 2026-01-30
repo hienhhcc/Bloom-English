@@ -1,9 +1,9 @@
 'use client';
 
-import type { VocabularyTopic } from '@/lib/vocabulary/types';
 import { useProgress } from '@/hooks/useProgress';
-import { TopicCard } from './TopicCard';
+import type { VocabularyTopic } from '@/lib/vocabulary/types';
 import { ReviewReminders } from './ReviewReminders';
+import { TopicCard } from './TopicCard';
 
 interface VocabularyPageContentProps {
   topics: VocabularyTopic[];
@@ -28,6 +28,9 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
       };
     })
     .filter((r): r is NonNullable<typeof r> => r !== null);
+
+  console.log(dueReviews);
+  console.log(reviewsWithTopicInfo);
 
   return (
     <>

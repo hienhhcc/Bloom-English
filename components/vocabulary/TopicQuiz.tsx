@@ -8,7 +8,6 @@ import { QuizResults } from './QuizResults';
 import { ProgressIndicator } from './ProgressIndicator';
 
 interface TopicQuizProps {
-  topicId: string;
   items: VocabularyItem[];
   onExit: () => void;
   onQuizComplete?: (score: { correct: number; total: number }) => void;
@@ -16,7 +15,6 @@ interface TopicQuizProps {
 }
 
 export function TopicQuiz({
-  topicId,
   items,
   onExit,
   onQuizComplete,

@@ -19,6 +19,7 @@ export function useTextToSpeech(): UseTextToSpeechReturn {
 
   // Check support after mount to avoid hydration mismatch
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSupported(checkSupport());
   }, []);
 

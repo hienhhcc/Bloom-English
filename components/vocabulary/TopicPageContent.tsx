@@ -72,7 +72,6 @@ export function TopicPageContent({ topic, items }: TopicPageContentProps) {
         <FlashcardContainer items={items} />
       ) : (
         <TopicQuiz
-          topicId={topic.id}
           items={items}
           onExit={() => setPageMode('learning')}
           onQuizComplete={handleQuizComplete}
