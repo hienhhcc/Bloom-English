@@ -18,6 +18,10 @@
         {
           "english": "My siblings and I are very close.",
           "vietnamese": "Anh chị em tôi và tôi rất thân thiết."
+        },
+        {
+          "english": "Siblings often share similar interests and hobbies.",
+          "vietnamese": "Anh chị em ruột thường có sở thích và thú vui giống nhau."
         }
       ],
       "collocations": ["older sibling", "younger sibling", "sibling rivalry"],
@@ -42,6 +46,10 @@
         {
           "english": "I'm taking my nephew to the zoo this weekend.",
           "vietnamese": "Cuối tuần này tôi sẽ đưa cháu trai đi sở thú."
+        },
+        {
+          "english": "My nephew wants to be an astronaut when he grows up.",
+          "vietnamese": "Cháu trai tôi muốn trở thành phi hành gia khi lớn lên."
         }
       ],
       "collocations": ["favorite nephew", "young nephew"],
@@ -66,6 +74,10 @@
         {
           "english": "I bought a birthday gift for my niece.",
           "vietnamese": "Tôi mua quà sinh nhật cho cháu gái."
+        },
+        {
+          "english": "My niece loves reading fairy tales before bedtime.",
+          "vietnamese": "Cháu gái tôi thích đọc truyện cổ tích trước khi đi ngủ."
         }
       ],
       "collocations": ["favorite niece", "young niece"],
@@ -90,6 +102,10 @@
         {
           "english": "We honor our ancestors during the festival.",
           "vietnamese": "Chúng tôi tôn vinh tổ tiên trong lễ hội."
+        },
+        {
+          "english": "Scientists discovered that our ancestors lived in caves thousands of years ago.",
+          "vietnamese": "Các nhà khoa học phát hiện rằng tổ tiên chúng ta sống trong hang động hàng nghìn năm trước."
         }
       ],
       "collocations": ["distant ancestor", "common ancestor", "honor ancestors"],
@@ -117,6 +133,10 @@
         {
           "english": "The descendants of the original settlers still live here.",
           "vietnamese": "Hậu duệ của những người định cư ban đầu vẫn sống ở đây."
+        },
+        {
+          "english": "Many descendants gathered to celebrate their family history.",
+          "vietnamese": "Nhiều hậu duệ tập trung để kỷ niệm lịch sử gia đình họ."
         }
       ],
       "collocations": ["direct descendant", "living descendant"],
@@ -143,6 +163,10 @@
         {
           "english": "Each generation has different values.",
           "vietnamese": "Mỗi thế hệ có những giá trị khác nhau."
+        },
+        {
+          "english": "This recipe has been passed down through generations.",
+          "vietnamese": "Công thức này đã được truyền qua nhiều thế hệ."
         }
       ],
       "collocations": ["younger generation", "older generation", "future generation"],
@@ -169,6 +193,10 @@
         {
           "english": "Most of my relatives live in the countryside.",
           "vietnamese": "Hầu hết họ hàng tôi sống ở nông thôn."
+        },
+        {
+          "english": "We invited all our relatives to the wedding ceremony.",
+          "vietnamese": "Chúng tôi mời tất cả họ hàng đến lễ cưới."
         }
       ],
       "collocations": ["close relative", "distant relative", "blood relative"],
@@ -195,6 +223,10 @@
         {
           "english": "My spouse and I have been married for 10 years.",
           "vietnamese": "Vợ/chồng tôi và tôi đã kết hôn được 10 năm."
+        },
+        {
+          "english": "A supportive spouse can help you achieve your goals.",
+          "vietnamese": "Một người bạn đời ủng hộ có thể giúp bạn đạt được mục tiêu."
         }
       ],
       "collocations": ["loving spouse", "former spouse"],
@@ -221,6 +253,10 @@
         {
           "english": "She became my stepmother when I was five.",
           "vietnamese": "Bà ấy trở thành mẹ kế của tôi khi tôi năm tuổi."
+        },
+        {
+          "english": "My stepmother taught me how to cook traditional dishes.",
+          "vietnamese": "Mẹ kế dạy tôi cách nấu các món ăn truyền thống."
         }
       ],
       "collocations": ["loving stepmother", "wicked stepmother"],
@@ -247,6 +283,10 @@
         {
           "english": "My mother-in-law is visiting next week.",
           "vietnamese": "Mẹ chồng/mẹ vợ tôi sẽ đến thăm tuần sau."
+        },
+        {
+          "english": "We spend holidays with both our families and in-laws.",
+          "vietnamese": "Chúng tôi đón lễ với cả gia đình và họ hàng bên vợ/chồng."
         }
       ],
       "collocations": ["mother-in-law", "father-in-law", "sister-in-law"],
@@ -271,6 +311,10 @@
         {
           "english": "She was orphaned at a young age.",
           "vietnamese": "Cô ấy mồ côi từ nhỏ."
+        },
+        {
+          "english": "The orphan was raised by his grandparents with great love.",
+          "vietnamese": "Đứa trẻ mồ côi được ông bà nuôi dưỡng với tình yêu thương lớn lao."
         }
       ],
       "collocations": ["war orphan", "orphan child", "orphanage"],
@@ -297,6 +341,10 @@
         {
           "english": "Parents or guardians must sign the form.",
           "vietnamese": "Cha mẹ hoặc người giám hộ phải ký vào mẫu đơn."
+        },
+        {
+          "english": "The guardian made sure the children received a good education.",
+          "vietnamese": "Người giám hộ đảm bảo rằng các em nhận được nền giáo dục tốt."
         }
       ],
       "collocations": ["legal guardian", "appointed guardian"],
@@ -323,6 +371,10 @@
         {
           "english": "My parents adopted me when I was a baby.",
           "vietnamese": "Bố mẹ tôi nhận nuôi tôi khi tôi còn bé."
+        },
+        {
+          "english": "The couple hopes to adopt a second child next year.",
+          "vietnamese": "Cặp vợ chồng hy vọng sẽ nhận nuôi đứa con thứ hai vào năm tới."
         }
       ],
       "collocations": ["adopt a child", "adopt internationally", "adoption process"],
@@ -351,6 +403,10 @@
         {
           "english": "I inherited my mother's blue eyes.",
           "vietnamese": "Tôi thừa hưởng đôi mắt xanh của mẹ."
+        },
+        {
+          "english": "He inherited his father's passion for music.",
+          "vietnamese": "Anh ấy thừa hưởng niềm đam mê âm nhạc của bố."
         }
       ],
       "collocations": ["inherit property", "inherit money", "inherit traits"],
@@ -378,6 +434,10 @@
         {
           "english": "The reunion brought together relatives from all over the country.",
           "vietnamese": "Buổi họp mặt tập hợp họ hàng từ khắp cả nước."
+        },
+        {
+          "english": "At the reunion, we shared old photos and memories.",
+          "vietnamese": "Tại buổi họp mặt, chúng tôi chia sẻ những bức ảnh cũ và kỷ niệm."
         }
       ],
       "collocations": ["family reunion", "annual reunion", "class reunion"],
@@ -404,6 +464,10 @@
         {
           "english": "His upbringing shaped who he is today.",
           "vietnamese": "Sự nuôi dạy của anh ấy đã định hình con người anh ấy ngày nay."
+        },
+        {
+          "english": "A loving upbringing helps children develop confidence.",
+          "vietnamese": "Sự nuôi dạy yêu thương giúp trẻ em phát triển sự tự tin."
         }
       ],
       "collocations": ["strict upbringing", "religious upbringing", "happy upbringing"],
@@ -430,6 +494,10 @@
         {
           "english": "We share a special bond with our siblings.",
           "vietnamese": "Chúng tôi có mối liên kết đặc biệt với anh chị em."
+        },
+        {
+          "english": "Traveling together helped strengthen our family bond.",
+          "vietnamese": "Đi du lịch cùng nhau giúp củng cố mối liên kết gia đình."
         }
       ],
       "collocations": ["strong bond", "family bond", "emotional bond"],
@@ -456,6 +524,10 @@
         {
           "english": "She nurtured his talent for music.",
           "vietnamese": "Cô ấy nuôi dưỡng tài năng âm nhạc của anh ấy."
+        },
+        {
+          "english": "A good teacher nurtures students' curiosity and creativity.",
+          "vietnamese": "Một giáo viên giỏi nuôi dưỡng sự tò mò và sáng tạo của học sinh."
         }
       ],
       "collocations": ["nurture talent", "nurture growth", "nurture relationships"],
@@ -482,6 +554,10 @@
         {
           "english": "The twins resemble each other perfectly.",
           "vietnamese": "Cặp song sinh giống nhau hoàn hảo."
+        },
+        {
+          "english": "People say I resemble my grandfather when he was young.",
+          "vietnamese": "Mọi người nói tôi giống ông nội khi ông còn trẻ."
         }
       ],
       "collocations": ["closely resemble", "strongly resemble", "resemble someone"],
@@ -508,6 +584,10 @@
         {
           "english": "Household chores should be shared equally.",
           "vietnamese": "Công việc nhà nên được chia đều."
+        },
+        {
+          "english": "Every household in the neighborhood received a welcome package.",
+          "vietnamese": "Mỗi hộ gia đình trong khu phố đều nhận được gói chào mừng."
         }
       ],
       "collocations": ["household chores", "household income", "household member"],

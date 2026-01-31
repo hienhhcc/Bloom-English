@@ -18,6 +18,10 @@
         {
           "english": "The temperature drops significantly at night.",
           "vietnamese": "Nhiệt độ giảm đáng kể vào ban đêm."
+        },
+        {
+          "english": "Please keep the medicine at room temperature.",
+          "vietnamese": "Vui lòng giữ thuốc ở nhiệt độ phòng."
         }
       ],
       "collocations": ["high temperature", "low temperature", "room temperature"],
@@ -42,6 +46,10 @@
         {
           "english": "Check the forecast before going out.",
           "vietnamese": "Kiểm tra dự báo trước khi ra ngoài."
+        },
+        {
+          "english": "The five-day forecast shows sunny weather ahead.",
+          "vietnamese": "Dự báo năm ngày cho thấy thời tiết nắng sắp tới."
         }
       ],
       "collocations": ["weather forecast", "accurate forecast", "five-day forecast"],
@@ -68,6 +76,10 @@
         {
           "english": "High humidity makes the heat feel worse.",
           "vietnamese": "Độ ẩm cao làm cho cái nóng cảm thấy tệ hơn."
+        },
+        {
+          "english": "The relative humidity in the rainforest is often above 80 percent.",
+          "vietnamese": "Độ ẩm tương đối trong rừng nhiệt đới thường trên 80 phần trăm."
         }
       ],
       "collocations": ["high humidity", "low humidity", "relative humidity"],
@@ -94,6 +106,10 @@
         {
           "english": "The gentle breeze rustled the leaves.",
           "vietnamese": "Làn gió nhẹ làm xào xạc lá cây."
+        },
+        {
+          "english": "We opened the windows to let in the morning breeze.",
+          "vietnamese": "Chúng tôi mở cửa sổ để đón gió sáng."
         }
       ],
       "collocations": ["cool breeze", "gentle breeze", "sea breeze"],
@@ -120,6 +136,10 @@
         {
           "english": "The drought destroyed many crops.",
           "vietnamese": "Hạn hán đã phá hủy nhiều mùa màng."
+        },
+        {
+          "english": "Farmers are worried about the prolonged drought affecting their harvest.",
+          "vietnamese": "Nông dân lo lắng về hạn hán kéo dài ảnh hưởng đến mùa màng của họ."
         }
       ],
       "collocations": ["severe drought", "prolonged drought", "drought conditions"],
@@ -144,6 +164,10 @@
         {
           "english": "We stayed inside during the thunderstorm.",
           "vietnamese": "Chúng tôi ở trong nhà trong suốt cơn dông."
+        },
+        {
+          "english": "The dog hid under the bed because it was scared of the thunderstorm.",
+          "vietnamese": "Con chó trốn dưới gầm giường vì nó sợ cơn dông."
         }
       ],
       "collocations": ["severe thunderstorm", "thunderstorm warning", "heavy thunderstorm"],
@@ -170,6 +194,10 @@
         {
           "english": "It's overcast but it might not rain.",
           "vietnamese": "Trời âm u nhưng có thể không mưa."
+        },
+        {
+          "english": "The overcast weather is perfect for taking photos without harsh shadows.",
+          "vietnamese": "Thời tiết âm u hoàn hảo để chụp ảnh mà không có bóng đổ gắt."
         }
       ],
       "collocations": ["overcast sky", "overcast weather", "become overcast"],
@@ -194,6 +222,10 @@
         {
           "english": "We're expecting a mild winter this year.",
           "vietnamese": "Năm nay chúng tôi dự kiến một mùa đông ôn hòa."
+        },
+        {
+          "english": "The mild climate makes this city a popular destination for tourists.",
+          "vietnamese": "Khí hậu ôn hòa khiến thành phố này trở thành điểm đến phổ biến cho du khách."
         }
       ],
       "collocations": ["mild weather", "mild climate", "mild temperature"],
@@ -220,6 +252,10 @@
         {
           "english": "The drizzle continued throughout the day.",
           "vietnamese": "Mưa phùn kéo dài suốt cả ngày."
+        },
+        {
+          "english": "You don't need an umbrella for this drizzle, just a hood will do.",
+          "vietnamese": "Bạn không cần ô cho mưa phùn này, chỉ cần mũ trùm đầu là đủ."
         }
       ],
       "collocations": ["light drizzle", "steady drizzle", "fine drizzle"],
@@ -247,6 +283,10 @@
         {
           "english": "The scorching heat made it hard to go outside.",
           "vietnamese": "Cái nóng như thiêu khiến khó ra ngoài."
+        },
+        {
+          "english": "We stayed in the shade to escape the scorching sun.",
+          "vietnamese": "Chúng tôi ở trong bóng râm để tránh nắng nóng như thiêu."
         }
       ],
       "collocations": ["scorching heat", "scorching hot", "scorching sun"],
@@ -273,6 +313,10 @@
         {
           "english": "The freezing temperatures caused the pipes to burst.",
           "vietnamese": "Nhiệt độ lạnh cóng làm vỡ ống nước."
+        },
+        {
+          "english": "I forgot my gloves and my hands are freezing.",
+          "vietnamese": "Tôi quên găng tay và tay tôi đang lạnh cóng."
         }
       ],
       "collocations": ["freezing cold", "freezing point", "freezing temperatures"],
@@ -299,6 +343,10 @@
         {
           "english": "It was too foggy to see the mountains.",
           "vietnamese": "Sương mù quá dày để nhìn thấy núi."
+        },
+        {
+          "english": "Drivers should slow down and turn on their headlights in foggy conditions.",
+          "vietnamese": "Người lái xe nên giảm tốc độ và bật đèn pha trong điều kiện sương mù."
         }
       ],
       "collocations": ["foggy weather", "foggy morning", "thick foggy"],
@@ -325,6 +373,10 @@
         {
           "english": "Many people got sick during the heatwave.",
           "vietnamese": "Nhiều người bị ốm trong đợt nắng nóng."
+        },
+        {
+          "english": "During the heatwave, the city opened cooling centers for residents.",
+          "vietnamese": "Trong đợt nắng nóng, thành phố mở các trung tâm làm mát cho cư dân."
         }
       ],
       "collocations": ["severe heatwave", "summer heatwave", "heatwave warning"],
@@ -349,6 +401,10 @@
         {
           "english": "Take a jacket, it might be chilly later.",
           "vietnamese": "Mang theo áo khoác, có thể se lạnh sau đó."
+        },
+        {
+          "english": "The autumn mornings are getting a bit chilly lately.",
+          "vietnamese": "Những buổi sáng mùa thu gần đây hơi se lạnh."
         }
       ],
       "collocations": ["chilly weather", "chilly morning", "a bit chilly"],
@@ -375,6 +431,10 @@
         {
           "english": "The downpour flooded the streets.",
           "vietnamese": "Cơn mưa như trút làm ngập đường phố."
+        },
+        {
+          "english": "We had to wait in the cafe until the downpour stopped.",
+          "vietnamese": "Chúng tôi phải đợi trong quán cà phê cho đến khi cơn mưa như trút dừng lại."
         }
       ],
       "collocations": ["heavy downpour", "sudden downpour", "torrential downpour"],
@@ -399,6 +459,10 @@
         {
           "english": "It was a cold, gloomy day.",
           "vietnamese": "Đó là một ngày lạnh lẽo, ảm đạm."
+        },
+        {
+          "english": "The gloomy sky matched my sad mood perfectly.",
+          "vietnamese": "Bầu trời ảm đạm phù hợp hoàn hảo với tâm trạng buồn của tôi."
         }
       ],
       "collocations": ["gloomy weather", "gloomy sky", "gloomy day"],
@@ -425,6 +489,10 @@
         {
           "english": "We heard hail hitting the roof.",
           "vietnamese": "Chúng tôi nghe tiếng mưa đá đập vào mái nhà."
+        },
+        {
+          "english": "The farmers covered their crops to protect them from the hail.",
+          "vietnamese": "Nông dân che phủ hoa màu để bảo vệ chúng khỏi mưa đá."
         }
       ],
       "collocations": ["heavy hail", "hailstorm", "hail stones"],
@@ -451,6 +519,10 @@
         {
           "english": "The forecast predicts plenty of sunshine this weekend.",
           "vietnamese": "Dự báo dự đoán nhiều nắng cuối tuần này."
+        },
+        {
+          "english": "The cat loves to sleep in the sunshine by the window.",
+          "vietnamese": "Con mèo thích ngủ trong ánh nắng bên cửa sổ."
         }
       ],
       "collocations": ["bright sunshine", "warm sunshine", "hours of sunshine"],
@@ -477,6 +549,10 @@
         {
           "english": "We were trapped at home during the blizzard.",
           "vietnamese": "Chúng tôi bị kẹt ở nhà trong suốt trận bão tuyết."
+        },
+        {
+          "english": "Schools were closed for three days because of the blizzard.",
+          "vietnamese": "Trường học đóng cửa ba ngày vì trận bão tuyết."
         }
       ],
       "collocations": ["severe blizzard", "winter blizzard", "blizzard conditions"],
@@ -501,6 +577,10 @@
         {
           "english": "The children were excited to see the rainbow.",
           "vietnamese": "Trẻ em hào hứng khi nhìn thấy cầu vồng."
+        },
+        {
+          "english": "We saw a double rainbow stretching across the entire sky.",
+          "vietnamese": "Chúng tôi nhìn thấy cầu vồng đôi trải dài khắp bầu trời."
         }
       ],
       "collocations": ["beautiful rainbow", "double rainbow", "rainbow colors"],

@@ -163,7 +163,7 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
           </div>
           {isCorrect && (
             <span className="text-sm opacity-75">
-              Moving to next word in {countdown}s...
+              Continuing in {countdown}s...
             </span>
           )}
         </div>

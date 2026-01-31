@@ -12,10 +12,11 @@ type PageMode = 'learning' | 'quiz';
 interface TopicPageContentProps {
   topic: VocabularyTopic;
   items: VocabularyItem[];
+  initialMode?: PageMode;
 }
 
-export function TopicPageContent({ topic, items }: TopicPageContentProps) {
-  const [pageMode, setPageMode] = useState<PageMode>('learning');
+export function TopicPageContent({ topic, items, initialMode = 'learning' }: TopicPageContentProps) {
+  const [pageMode, setPageMode] = useState<PageMode>(initialMode);
   const { recordQuizAttempt, getTopicProgress, markReviewCompleted } = useProgress();
 
   const topicProgress = getTopicProgress(topic.id);

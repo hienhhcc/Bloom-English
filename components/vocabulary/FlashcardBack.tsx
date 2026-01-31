@@ -22,7 +22,7 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
         <div>
           <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Examples</h3>
           <div className="space-y-2">
-            {item.examples.map((example, index) => (
+            {item.examples.slice(0, -1).map((example, index) => (
               <div key={index} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <p className="text-gray-800 dark:text-gray-200 mb-1">{example.english}</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">{example.vietnamese}</p>

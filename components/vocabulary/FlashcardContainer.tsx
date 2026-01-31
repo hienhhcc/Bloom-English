@@ -4,7 +4,7 @@ import type { VocabularyItem } from '@/lib/vocabulary/types';
 import { useFlashcard } from '@/hooks/useFlashcard';
 import { Flashcard } from './Flashcard';
 import { ProgressIndicator } from './ProgressIndicator';
-import { SpellingQuiz } from './SpellingQuiz';
+import { CombinedQuiz } from './CombinedQuiz';
 import { BookCheck, GraduationCap } from 'lucide-react';
 
 interface FlashcardContainerProps {
@@ -39,7 +39,7 @@ export function FlashcardContainer({ items }: FlashcardContainerProps) {
     <div className="flex flex-col gap-6">
       <ProgressIndicator current={currentIndex} total={items.length} />
 
-      {viewMode === 'flashcard' ? (
+      {viewMode === 'flashcard' && (
         <>
           <Flashcard
             item={currentItem}
@@ -64,8 +64,10 @@ export function FlashcardContainer({ items }: FlashcardContainerProps) {
             </button>
           </div>
         </>
-      ) : (
-        <SpellingQuiz
+      )}
+
+      {viewMode === 'quiz' && (
+        <CombinedQuiz
           item={currentItem}
           onComplete={handleQuizComplete}
         />

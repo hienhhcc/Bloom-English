@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import type { VocabularyItem } from '@/lib/vocabulary/types';
 import { useTopicQuiz } from '@/hooks/useTopicQuiz';
-import { SpellingQuiz } from './SpellingQuiz';
+import { CombinedQuiz } from './CombinedQuiz';
 import { QuizResults } from './QuizResults';
 import { ProgressIndicator } from './ProgressIndicator';
 
@@ -78,7 +78,7 @@ export function TopicQuiz({
     <div className="flex flex-col gap-6">
       <ProgressIndicator current={currentIndex} total={shuffledItems.length} />
 
-      <SpellingQuiz
+      <CombinedQuiz
         key={currentItem.id}
         item={currentItem}
         onComplete={handleQuizComplete}

@@ -18,6 +18,10 @@
         {
           "english": "The restaurant serves delicious Italian food.",
           "vietnamese": "Nhà hàng phục vụ đồ ăn Ý ngon."
+        },
+        {
+          "english": "My grandmother makes the most delicious soup I've ever tasted.",
+          "vietnamese": "Bà tôi nấu món súp ngon nhất mà tôi từng nếm."
         }
       ],
       "collocations": ["absolutely delicious", "look delicious", "taste delicious"],
@@ -44,6 +48,10 @@
         {
           "english": "Swimming always gives me a big appetite.",
           "vietnamese": "Bơi lội luôn làm tôi thèm ăn."
+        },
+        {
+          "english": "The children came home from school with huge appetites.",
+          "vietnamese": "Bọn trẻ đi học về với cơn đói lớn."
         }
       ],
       "collocations": ["have an appetite", "lose appetite", "work up an appetite"],
@@ -70,6 +78,10 @@
         {
           "english": "Alcoholic beverages are not allowed in the park.",
           "vietnamese": "Đồ uống có cồn không được phép trong công viên."
+        },
+        {
+          "english": "The flight attendant offered passengers a choice of beverages.",
+          "vietnamese": "Tiếp viên hàng không mời hành khách chọn đồ uống."
         }
       ],
       "collocations": ["hot beverage", "cold beverage", "alcoholic beverage"],
@@ -94,6 +106,10 @@
         {
           "english": "What are the main ingredients in this soup?",
           "vietnamese": "Nguyên liệu chính trong súp này là gì?"
+        },
+        {
+          "english": "I need to buy some ingredients for tonight's dinner.",
+          "vietnamese": "Tôi cần mua một số nguyên liệu cho bữa tối nay."
         }
       ],
       "collocations": ["main ingredient", "fresh ingredient", "secret ingredient"],
@@ -118,6 +134,10 @@
         {
           "english": "A nutritious breakfast is important for children.",
           "vietnamese": "Bữa sáng bổ dưỡng rất quan trọng cho trẻ em."
+        },
+        {
+          "english": "Nuts and seeds are highly nutritious snacks.",
+          "vietnamese": "Các loại hạt là đồ ăn vặt rất bổ dưỡng."
         }
       ],
       "collocations": ["nutritious food", "nutritious meal", "highly nutritious"],
@@ -145,6 +165,10 @@
         {
           "english": "Do you have any vegetarian options on the menu?",
           "vietnamese": "Quý vị có món chay nào trong thực đơn không?"
+        },
+        {
+          "english": "More people are becoming vegetarian for health reasons.",
+          "vietnamese": "Ngày càng nhiều người ăn chay vì lý do sức khỏe."
         }
       ],
       "collocations": ["vegetarian diet", "vegetarian restaurant", "strict vegetarian"],
@@ -171,6 +195,10 @@
         {
           "english": "I found this recipe online.",
           "vietnamese": "Tôi tìm thấy công thức này trên mạng."
+        },
+        {
+          "english": "This recipe has been passed down in our family for generations.",
+          "vietnamese": "Công thức này đã được truyền lại trong gia đình qua nhiều thế hệ."
         }
       ],
       "collocations": ["family recipe", "follow a recipe", "traditional recipe"],
@@ -195,6 +223,10 @@
         {
           "english": "Vietnamese cuisine uses a lot of fresh herbs.",
           "vietnamese": "Ẩm thực Việt Nam sử dụng nhiều rau thơm tươi."
+        },
+        {
+          "english": "The city has restaurants serving cuisine from all over the world.",
+          "vietnamese": "Thành phố có các nhà hàng phục vụ ẩm thực từ khắp nơi trên thế giới."
         }
       ],
       "collocations": ["local cuisine", "traditional cuisine", "fusion cuisine"],
@@ -219,6 +251,10 @@
         {
           "english": "Would you like a smaller portion?",
           "vietnamese": "Bạn có muốn khẩu phần nhỏ hơn không?"
+        },
+        {
+          "english": "Controlling your portion sizes can help with weight management.",
+          "vietnamese": "Kiểm soát khẩu phần ăn có thể giúp quản lý cân nặng."
         }
       ],
       "collocations": ["large portion", "small portion", "portion size"],
@@ -243,6 +279,10 @@
         {
           "english": "I can't eat anything too spicy.",
           "vietnamese": "Tôi không thể ăn đồ quá cay."
+        },
+        {
+          "english": "Would you like your curry mild or spicy?",
+          "vietnamese": "Bạn muốn cà ri nhẹ hay cay?"
         }
       ],
       "collocations": ["spicy food", "mildly spicy", "extremely spicy"],
@@ -270,6 +310,10 @@
         {
           "english": "The watermelon juice was cool and refreshing.",
           "vietnamese": "Nước ép dưa hấu mát và sảng khoái."
+        },
+        {
+          "english": "After the long hike, a cold shower felt incredibly refreshing.",
+          "vietnamese": "Sau chuyến đi bộ dài, một vòi sen lạnh thật sảng khoái."
         }
       ],
       "collocations": ["refreshing drink", "refreshing taste", "cool and refreshing"],
@@ -297,6 +341,10 @@
         {
           "english": "The restaurant offers both sweet and savory crepes.",
           "vietnamese": "Nhà hàng có cả bánh crepe ngọt và mặn."
+        },
+        {
+          "english": "For breakfast, I enjoy a savory omelette with vegetables.",
+          "vietnamese": "Bữa sáng, tôi thích trứng ốp la mặn với rau củ."
         }
       ],
       "collocations": ["savory dish", "savory flavor", "savory snack"],
@@ -321,6 +369,10 @@
         {
           "english": "Roast the vegetables at 200 degrees for 30 minutes.",
           "vietnamese": "Nướng rau ở 200 độ trong 30 phút."
+        },
+        {
+          "english": "My family always roasts a turkey for Thanksgiving.",
+          "vietnamese": "Gia đình tôi luôn quay gà tây vào lễ Tạ ơn."
         }
       ],
       "collocations": ["roast chicken", "roast beef", "roast vegetables"],
@@ -347,6 +399,10 @@
         {
           "english": "The milk has gone sour.",
           "vietnamese": "Sữa đã bị chua."
+        },
+        {
+          "english": "I like to add a squeeze of lemon for a sour flavor.",
+          "vietnamese": "Tôi thích thêm một chút chanh để có vị chua."
         }
       ],
       "collocations": ["sour taste", "sour cream", "go sour"],
@@ -373,6 +429,10 @@
         {
           "english": "Dark chocolate has a slightly bitter taste.",
           "vietnamese": "Sô cô la đen có vị hơi đắng."
+        },
+        {
+          "english": "Some people enjoy the bitter flavor of black coffee.",
+          "vietnamese": "Một số người thích vị đắng của cà phê đen."
         }
       ],
       "collocations": ["bitter taste", "bitter chocolate", "bitter medicine"],
@@ -399,6 +459,10 @@
         {
           "english": "I love stir-fried noodles with beef.",
           "vietnamese": "Tôi thích mì xào với thịt bò."
+        },
+        {
+          "english": "Stir-frying is a quick and healthy way to cook vegetables.",
+          "vietnamese": "Xào là cách nấu rau nhanh và lành mạnh."
         }
       ],
       "collocations": ["stir-fry vegetables", "stir-fried rice", "quick stir-fry"],
@@ -423,6 +487,10 @@
         {
           "english": "Simmer the sauce until it thickens.",
           "vietnamese": "Ninh nước sốt cho đến khi đặc lại."
+        },
+        {
+          "english": "The stew needs to simmer on low heat for several hours.",
+          "vietnamese": "Món hầm cần được ninh ở lửa nhỏ trong vài giờ."
         }
       ],
       "collocations": ["simmer gently", "let simmer", "simmer for"],
@@ -447,6 +515,10 @@
         {
           "english": "Grilled fish is healthier than fried fish.",
           "vietnamese": "Cá nướng tốt cho sức khỏe hơn cá chiên."
+        },
+        {
+          "english": "We love to grill steaks during summer barbecues.",
+          "vietnamese": "Chúng tôi thích nướng bít tết trong các bữa tiệc nướng mùa hè."
         }
       ],
       "collocations": ["grill meat", "grilled vegetables", "barbecue grill"],
@@ -473,6 +545,10 @@
         {
           "english": "The rice was a bit bland without any seasoning.",
           "vietnamese": "Cơm hơi nhạt khi không có gia vị."
+        },
+        {
+          "english": "Add some herbs to make the dish less bland.",
+          "vietnamese": "Thêm một chút rau thơm để món ăn bớt nhạt."
         }
       ],
       "collocations": ["bland food", "bland diet", "bland taste"],
@@ -499,6 +575,10 @@
         {
           "english": "She prepared a scrumptious feast for the guests.",
           "vietnamese": "Cô ấy chuẩn bị một bữa tiệc ngon tuyệt cho khách."
+        },
+        {
+          "english": "The bakery sells scrumptious pastries every morning.",
+          "vietnamese": "Tiệm bánh bán những chiếc bánh ngọt ngon tuyệt mỗi sáng."
         }
       ],
       "collocations": ["scrumptious meal", "absolutely scrumptious", "scrumptious dessert"],

@@ -29,9 +29,6 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
     })
     .filter((r): r is NonNullable<typeof r> => r !== null);
 
-  console.log(dueReviews);
-  console.log(reviewsWithTopicInfo);
-
   return (
     <>
       {isLoaded && reviewsWithTopicInfo.length > 0 && (

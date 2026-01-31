@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 interface UseTextToSpeechReturn {
   speak: (text: string, slow?: boolean) => void;
@@ -10,7 +10,7 @@ interface UseTextToSpeechReturn {
 }
 
 function checkSupport(): boolean {
-  return typeof window !== 'undefined' && 'speechSynthesis' in window;
+  return typeof window !== "undefined" && "speechSynthesis" in window;
 }
 
 export function useTextToSpeech(): UseTextToSpeechReturn {
@@ -30,12 +30,13 @@ export function useTextToSpeech(): UseTextToSpeechReturn {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = slow ? 0.5 : 1;
-    utterance.lang = 'en-US';
+    utterance.lang = "en-US";
 
     const voices = window.speechSynthesis.getVoices();
-    const englishVoice = voices.find(
-      (voice) => voice.lang.startsWith('en') && voice.name.includes('English')
-    ) || voices.find((voice) => voice.lang.startsWith('en'));
+    const englishVoice =
+      voices.find(
+        (voice) => voice.lang.startsWith("en") && voice.name.includes("English")
+      ) || voices.find((voice) => voice.lang.startsWith("en"));
 
     if (englishVoice) {
       utterance.voice = englishVoice;

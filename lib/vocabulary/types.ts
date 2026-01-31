@@ -31,7 +31,7 @@ export interface VocabularyItem {
   definitionVietnamese: string;
   difficulty: DifficultyLevel;
   imageUrl: string;
-  examples: [ExampleSentence, ExampleSentence];
+  examples: [ExampleSentence, ExampleSentence, ExampleSentence];
   collocations: string[];
   synonyms: string[];
   antonyms: string[];

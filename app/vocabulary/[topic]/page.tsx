@@ -6,6 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 
 interface TopicPageProps {
   params: Promise<{ topic: string }>;
+  searchParams: Promise<{ mode?: string }>;
 }
 
 export async function generateStaticParams() {
@@ -31,14 +32,17 @@ export async function generateMetadata({ params }: TopicPageProps) {
   };
 }
 
-export default async function TopicPage({ params }: TopicPageProps) {
+export default async function TopicPage({ params, searchParams }: TopicPageProps) {
   const { topic: topicId } = await params;
+  const { mode } = await searchParams;
   const topic = getTopicById(topicId);
   const topicData = await getTopicData(topicId);
 
   if (!topic || !topicData) {
     notFound();
   }
+
+  const initialMode = mode === 'quiz' ? 'quiz' : 'learning';
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -51,7 +55,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
           Back to Topics
         </Link>
 
-        <TopicPageContent topic={topic} items={topicData.items} />
+        <TopicPageContent topic={topic} items={topicData.items} initialMode={initialMode} />
       </div>
     </div>
   );

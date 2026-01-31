@@ -18,6 +18,10 @@
         {
           "english": "What's your dream travel destination?",
           "vietnamese": "Điểm đến du lịch mơ ước của bạn là gì?"
+        },
+        {
+          "english": "This beach resort is a popular destination for honeymooners.",
+          "vietnamese": "Khu nghỉ dưỡng bãi biển này là điểm đến phổ biến cho các cặp đôi hưởng tuần trăng mật."
         }
       ],
       "collocations": ["travel destination", "final destination", "popular destination"],
@@ -42,6 +46,10 @@
         {
           "english": "Our itinerary includes visits to three cities.",
           "vietnamese": "Lịch trình của chúng tôi bao gồm thăm ba thành phố."
+        },
+        {
+          "english": "The travel agent sent us the complete itinerary by email.",
+          "vietnamese": "Đại lý du lịch đã gửi cho chúng tôi lịch trình đầy đủ qua email."
         }
       ],
       "collocations": ["travel itinerary", "detailed itinerary", "follow the itinerary"],
@@ -66,6 +74,10 @@
         {
           "english": "The price includes accommodation and breakfast.",
           "vietnamese": "Giá bao gồm chỗ ở và bữa sáng."
+        },
+        {
+          "english": "Finding affordable accommodation in the city center can be challenging.",
+          "vietnamese": "Tìm chỗ ở giá phải chăng ở trung tâm thành phố có thể khá khó khăn."
         }
       ],
       "collocations": ["book accommodation", "hotel accommodation", "budget accommodation"],
@@ -92,6 +104,10 @@
         {
           "english": "Check the departure board for your flight.",
           "vietnamese": "Kiểm tra bảng khởi hành cho chuyến bay của bạn."
+        },
+        {
+          "english": "Please arrive at the airport two hours before departure.",
+          "vietnamese": "Vui lòng đến sân bay hai tiếng trước giờ khởi hành."
         }
       ],
       "collocations": ["departure time", "departure gate", "departure lounge"],
@@ -118,6 +134,10 @@
         {
           "english": "My luggage was lost during the flight.",
           "vietnamese": "Hành lý của tôi bị thất lạc trong chuyến bay."
+        },
+        {
+          "english": "Each passenger is allowed two pieces of luggage.",
+          "vietnamese": "Mỗi hành khách được phép mang hai kiện hành lý."
         }
       ],
       "collocations": ["carry-on luggage", "checked luggage", "luggage claim"],
@@ -142,6 +162,10 @@
         {
           "english": "I need to renew my passport before the trip.",
           "vietnamese": "Tôi cần gia hạn hộ chiếu trước chuyến đi."
+        },
+        {
+          "english": "Keep your passport in a safe place while traveling.",
+          "vietnamese": "Hãy giữ hộ chiếu ở nơi an toàn khi đi du lịch."
         }
       ],
       "collocations": ["valid passport", "passport control", "passport photo"],
@@ -166,6 +190,10 @@
         {
           "english": "Please have your boarding pass ready.",
           "vietnamese": "Xin hãy chuẩn bị thẻ lên máy bay."
+        },
+        {
+          "english": "Priority boarding is available for business class passengers.",
+          "vietnamese": "Ưu tiên lên máy bay dành cho hành khách hạng thương gia."
         }
       ],
       "collocations": ["boarding pass", "boarding gate", "boarding time"],
@@ -192,6 +220,10 @@
         {
           "english": "Do you have a reservation under the name Smith?",
           "vietnamese": "Quý vị có đặt chỗ dưới tên Smith không?"
+        },
+        {
+          "english": "I recommend making a reservation at least a week in advance.",
+          "vietnamese": "Tôi khuyên bạn nên đặt chỗ trước ít nhất một tuần."
         }
       ],
       "collocations": ["make a reservation", "cancel reservation", "hotel reservation"],
@@ -218,6 +250,10 @@
         {
           "english": "You can exchange currency at the airport.",
           "vietnamese": "Bạn có thể đổi tiền tại sân bay."
+        },
+        {
+          "english": "Always check the currency exchange rate before your trip.",
+          "vietnamese": "Luôn kiểm tra tỷ giá hối đoái trước chuyến đi."
         }
       ],
       "collocations": ["local currency", "foreign currency", "currency exchange"],
@@ -242,6 +278,10 @@
         {
           "english": "The bus tour is great for sightseeing.",
           "vietnamese": "Tour xe buýt rất tuyệt để tham quan."
+        },
+        {
+          "english": "After a morning of sightseeing, we stopped for lunch at a local cafe.",
+          "vietnamese": "Sau một buổi sáng tham quan, chúng tôi dừng lại ăn trưa tại một quán cafe địa phương."
         }
       ],
       "collocations": ["go sightseeing", "sightseeing tour", "sightseeing bus"],
@@ -266,6 +306,10 @@
         {
           "english": "This keychain is a souvenir from Paris.",
           "vietnamese": "Móc khóa này là quà lưu niệm từ Paris."
+        },
+        {
+          "english": "The souvenir shop sells traditional handicrafts from the region.",
+          "vietnamese": "Cửa hàng quà lưu niệm bán các đồ thủ công truyền thống của vùng."
         }
       ],
       "collocations": ["buy souvenirs", "souvenir shop", "souvenir photo"],
@@ -290,6 +334,10 @@
         {
           "english": "The hotel offers various day excursions.",
           "vietnamese": "Khách sạn cung cấp nhiều chuyến tham quan trong ngày."
+        },
+        {
+          "english": "The guided excursion to the ancient ruins was very informative.",
+          "vietnamese": "Chuyến tham quan có hướng dẫn đến các di tích cổ rất bổ ích."
         }
       ],
       "collocations": ["day excursion", "boat excursion", "go on an excursion"],
@@ -314,6 +362,10 @@
         {
           "english": "Do you have anything to declare at customs?",
           "vietnamese": "Bạn có gì để khai báo ở hải quan không?"
+        },
+        {
+          "english": "The customs officer checked my bags thoroughly.",
+          "vietnamese": "Nhân viên hải quan kiểm tra túi xách của tôi kỹ lưỡng."
         }
       ],
       "collocations": ["go through customs", "customs declaration", "customs officer"],
@@ -338,6 +390,10 @@
         {
           "english": "It took me three days to recover from jet lag.",
           "vietnamese": "Tôi mất ba ngày để hồi phục sau jet lag."
+        },
+        {
+          "english": "Drinking plenty of water can help reduce jet lag symptoms.",
+          "vietnamese": "Uống nhiều nước có thể giúp giảm triệu chứng mệt do lệch múi giờ."
         }
       ],
       "collocations": ["suffer from jet lag", "overcome jet lag", "severe jet lag"],
@@ -362,6 +418,10 @@
         {
           "english": "The long layover gave us time to explore the airport.",
           "vietnamese": "Thời gian quá cảnh dài cho chúng tôi thời gian khám phá sân bay."
+        },
+        {
+          "english": "I prefer direct flights to avoid layovers when possible.",
+          "vietnamese": "Tôi thích chuyến bay thẳng để tránh quá cảnh khi có thể."
         }
       ],
       "collocations": ["long layover", "short layover", "overnight layover"],
@@ -386,6 +446,10 @@
         {
           "english": "The train ride offers scenic views of the coast.",
           "vietnamese": "Chuyến tàu mang đến tầm nhìn phong cảnh đẹp của bờ biển."
+        },
+        {
+          "english": "This scenic village attracts photographers from around the world.",
+          "vietnamese": "Ngôi làng có phong cảnh đẹp này thu hút nhiếp ảnh gia từ khắp nơi trên thế giới."
         }
       ],
       "collocations": ["scenic route", "scenic view", "scenic drive"],
@@ -412,6 +476,10 @@
         {
           "english": "We're about to embark on an exciting adventure.",
           "vietnamese": "Chúng tôi sắp bắt đầu một cuộc phiêu lưu thú vị."
+        },
+        {
+          "english": "All passengers must show their tickets before embarking.",
+          "vietnamese": "Tất cả hành khách phải xuất trình vé trước khi lên tàu."
         }
       ],
       "collocations": ["embark on a journey", "embark on an adventure", "ready to embark"],
@@ -438,6 +506,10 @@
         {
           "english": "I love to wander around local markets.",
           "vietnamese": "Tôi thích lang thang quanh các chợ địa phương."
+        },
+        {
+          "english": "Don't wander too far from the hotel at night.",
+          "vietnamese": "Đừng lang thang quá xa khỏi khách sạn vào ban đêm."
         }
       ],
       "collocations": ["wander around", "wander through", "wander aimlessly"],
@@ -464,6 +536,10 @@
         {
           "english": "The flight was postponed until tomorrow.",
           "vietnamese": "Chuyến bay bị hoãn đến ngày mai."
+        },
+        {
+          "english": "They decided to postpone the wedding until next spring.",
+          "vietnamese": "Họ quyết định hoãn đám cưới đến mùa xuân năm sau."
         }
       ],
       "collocations": ["postpone a trip", "postpone indefinitely", "postpone until"],
@@ -490,6 +566,10 @@
         {
           "english": "She studied abroad for two years.",
           "vietnamese": "Cô ấy học ở nước ngoài hai năm."
+        },
+        {
+          "english": "Working abroad can be a great way to experience different cultures.",
+          "vietnamese": "Làm việc ở nước ngoài có thể là cách tuyệt vời để trải nghiệm các nền văn hóa khác nhau."
         }
       ],
       "collocations": ["travel abroad", "study abroad", "go abroad"],
