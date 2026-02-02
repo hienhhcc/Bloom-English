@@ -17,12 +17,32 @@ export interface ReviewSchedule {
   oneWeek: { date: number; completed: boolean };
 }
 
+export interface ActiveReviewPosition {
+  reviewType: 'oneDay' | 'oneWeek';
+  currentIndex: number;
+  shuffledItemIds: string[];
+  results: Array<{
+    itemId: string;
+    userAnswer: string;
+    isCorrect: boolean;
+  }>;
+  startedAt: number;
+}
+
+export interface MistakeRecord {
+  itemId: string;
+  lastWrongDate: number;
+  timesWrong: number;
+}
+
 export interface TopicProgress {
   topicId: string;
   quizAttempts: QuizAttempt[];
   bestScore: number | null;
   completedAt: number | null;
   reviewSchedule: ReviewSchedule | null;
+  activeReview: ActiveReviewPosition | null;
+  mistakes: MistakeRecord[];
 }
 
 export interface LearningProgress {
@@ -48,6 +68,8 @@ export function createInitialTopicProgress(topicId: string): TopicProgress {
     bestScore: null,
     completedAt: null,
     reviewSchedule: null,
+    activeReview: null,
+    mistakes: [],
   };
 }
 

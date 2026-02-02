@@ -1,56 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-
-// TypeScript declarations for Web Speech API
-interface SpeechRecognitionEvent extends Event {
-  results: SpeechRecognitionResultList;
-  resultIndex: number;
-}
-
-interface SpeechRecognitionResultList {
-  length: number;
-  item(index: number): SpeechRecognitionResult;
-  [index: number]: SpeechRecognitionResult;
-}
-
-interface SpeechRecognitionResult {
-  length: number;
-  item(index: number): SpeechRecognitionAlternative;
-  [index: number]: SpeechRecognitionAlternative;
-  isFinal: boolean;
-}
-
-interface SpeechRecognitionAlternative {
-  transcript: string;
-  confidence: number;
-}
-
-interface SpeechRecognitionErrorEvent extends Event {
-  error: string;
-  message: string;
-}
-
-interface SpeechRecognitionInstance extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  maxAlternatives: number;
-  onresult: ((event: SpeechRecognitionEvent) => void) | null;
-  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
-  onend: (() => void) | null;
-  onstart: (() => void) | null;
-  start: () => void;
-  stop: () => void;
-  abort: () => void;
-}
-
-declare global {
-  interface Window {
-    SpeechRecognition: new () => SpeechRecognitionInstance;
-    webkitSpeechRecognition: new () => SpeechRecognitionInstance;
-  }
-}
+import { useCallback, useRef, useState } from "react";
 
 export type SpeechRecognitionError =
   | "not-allowed"
@@ -58,188 +8,217 @@ export type SpeechRecognitionError =
   | "audio-capture"
   | "network"
   | "not-supported"
-  | "aborted"
+  | "transcription-failed"
   | "unknown";
 
 interface ListeningOptions {
-  continuous?: boolean;
-  interimResults?: boolean;
-  language?: string;
-  maxDuration?: number;
+  maxDuration?: number; // Max recording time in ms (default: 30000)
 }
 
 export interface UseSpeechRecognitionReturn {
   isListening: boolean;
-  isSupported: boolean;
+  isProcessing: boolean; // Transcription in progress
+  isSupported: boolean; // Always true (MediaRecorder widely supported)
   transcript: string;
-  interimTranscript: string;
-  confidence: number;
   error: SpeechRecognitionError | null;
   startListening: (options?: ListeningOptions) => void;
   stopListening: () => void;
   resetTranscript: () => void;
 }
 
-function getSpeechRecognition(): (new () => SpeechRecognitionInstance) | null {
-  if (typeof window === "undefined") return null;
-  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+// Define Puter type for dynamic import
+interface PuterAI {
+  speech2txt: (
+    audio: Blob,
+    options?: { model?: string; language?: string }
+  ) => Promise<string | { text?: string }>;
 }
 
-function checkSupport(): boolean {
-  return getSpeechRecognition() !== null;
-}
-
-function mapErrorToType(error: string): SpeechRecognitionError {
-  switch (error) {
-    case "not-allowed":
-    case "service-not-allowed":
-      return "not-allowed";
-    case "no-speech":
-      return "no-speech";
-    case "audio-capture":
-      return "audio-capture";
-    case "network":
-      return "network";
-    case "aborted":
-      return "aborted";
-    default:
-      return "unknown";
-  }
+interface Puter {
+  ai: PuterAI;
 }
 
 export function useSpeechRecognition(): UseSpeechRecognitionReturn {
   const [isListening, setIsListening] = useState(false);
-  const [isSupported, setIsSupported] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [interimTranscript, setInterimTranscript] = useState("");
-  const [confidence, setConfidence] = useState(0);
   const [error, setError] = useState<SpeechRecognitionError | null>(null);
 
-  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
+  const maxDurationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const puterRef = useRef<Puter | null>(null);
+  const isStartingRef = useRef(false);
+  const pendingStopRef = useRef(false);
 
-  // Check support after mount to avoid hydration mismatch
-  useEffect(() => {
-    setIsSupported(checkSupport());
-  }, []);
+  // Load Puter.js on first use
+  const loadPuter = async (): Promise<Puter> => {
+    if (!puterRef.current) {
+      const module = await import("@heyputer/puter.js");
+      puterRef.current = module.default as Puter;
+    }
+    return puterRef.current;
+  };
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.abort();
-      }
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+  // Process audio and transcribe - called when recording stops
+  const processAudio = useCallback(async (mimeType: string) => {
+    setIsListening(false);
+    setIsProcessing(true);
+    isStartingRef.current = false;
+    pendingStopRef.current = false;
 
-  const startListening = useCallback((options: ListeningOptions = {}) => {
-    const SpeechRecognitionClass = getSpeechRecognition();
-    if (!SpeechRecognitionClass) {
-      setError("not-supported");
+    // Stop all tracks
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+
+    // Create audio blob
+    const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
+    audioChunksRef.current = [];
+
+    if (audioBlob.size === 0) {
+      setError("no-speech");
+      setIsProcessing(false);
       return;
     }
 
-    // Reset state
-    setError(null);
-    setTranscript("");
-    setInterimTranscript("");
-    setConfidence(0);
-
-    // Create new recognition instance
-    const recognition = new SpeechRecognitionClass();
-    recognitionRef.current = recognition;
-
-    // Configure recognition
-    recognition.continuous = options.continuous ?? false;
-    recognition.interimResults = options.interimResults ?? true;
-    recognition.lang = options.language ?? "en-US";
-    recognition.maxAlternatives = 1;
-
-    // Handle results
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let finalTranscript = "";
-      let interim = "";
-
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const result = event.results[i];
-        if (result.isFinal) {
-          finalTranscript += result[0].transcript;
-          setConfidence(result[0].confidence);
-        } else {
-          interim += result[0].transcript;
-        }
-      }
-
-      if (finalTranscript) {
-        setTranscript((prev) => prev + finalTranscript);
-      }
-      setInterimTranscript(interim);
-    };
-
-    // Handle errors
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      setError(mapErrorToType(event.error));
-      setIsListening(false);
-    };
-
-    // Handle end
-    recognition.onend = () => {
-      setIsListening(false);
-      setInterimTranscript("");
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-    };
-
-    // Handle start
-    recognition.onstart = () => {
-      setIsListening(true);
-    };
-
-    // Start recognition
     try {
-      recognition.start();
-
-      // Set auto-stop timeout
-      if (options.maxDuration) {
-        timeoutRef.current = setTimeout(() => {
-          if (recognitionRef.current) {
-            recognitionRef.current.stop();
-          }
-        }, options.maxDuration);
-      }
-    } catch {
-      setError("unknown");
+      // Transcribe with Puter.js - force English language
+      const puter = await loadPuter();
+      const result = await puter.ai.speech2txt(audioBlob, {
+        language: "en", // Force English transcription only
+      });
+      const text = typeof result === "string" ? result : result.text || "";
+      setTranscript(text.trim());
+    } catch (err) {
+      console.error("Transcription error:", err);
+      setError("transcription-failed");
+    } finally {
+      setIsProcessing(false);
     }
   }, []);
 
   const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop();
+    // Mark that we want to stop
+    pendingStopRef.current = true;
+
+    // Clear max duration timeout
+    if (maxDurationTimeoutRef.current) {
+      clearTimeout(maxDurationTimeoutRef.current);
+      maxDurationTimeoutRef.current = null;
     }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
+
+    // Stop the media recorder if it's recording
+    if (mediaRecorderRef.current?.state === "recording") {
+      mediaRecorderRef.current.stop();
     }
   }, []);
 
+  const startListening = useCallback(
+    async (options: ListeningOptions = {}) => {
+      // Prevent starting if already starting, listening, or processing
+      if (isStartingRef.current || isListening || isProcessing) {
+        return;
+      }
+
+      isStartingRef.current = true;
+      pendingStopRef.current = false;
+      setError(null);
+      setTranscript("");
+      audioChunksRef.current = [];
+
+      try {
+        // Request microphone access
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+
+        // Check if user requested stop while we were waiting for microphone
+        if (pendingStopRef.current) {
+          stream.getTracks().forEach((track) => track.stop());
+          isStartingRef.current = false;
+          pendingStopRef.current = false;
+          return;
+        }
+
+        streamRef.current = stream;
+
+        // Create MediaRecorder with best supported format
+        const mimeType = MediaRecorder.isTypeSupported("audio/webm")
+          ? "audio/webm"
+          : MediaRecorder.isTypeSupported("audio/mp4")
+          ? "audio/mp4"
+          : "audio/wav";
+
+        const mediaRecorder = new MediaRecorder(stream, { mimeType });
+        mediaRecorderRef.current = mediaRecorder;
+
+        // Set up data handler
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunksRef.current.push(event.data);
+          }
+        };
+
+        // Set up stop handler - this is called regardless of how recording stops
+        mediaRecorder.onstop = () => {
+          // Clear timeout if it exists
+          if (maxDurationTimeoutRef.current) {
+            clearTimeout(maxDurationTimeoutRef.current);
+            maxDurationTimeoutRef.current = null;
+          }
+          mediaRecorderRef.current = null;
+          // Process the audio
+          processAudio(mimeType);
+        };
+
+        // Start recording - collect data every 100ms
+        mediaRecorder.start(100);
+        setIsListening(true);
+        isStartingRef.current = false;
+
+        // Check again if user requested stop while we were setting up
+        if (pendingStopRef.current) {
+          mediaRecorder.stop();
+          return;
+        }
+
+        // Auto-stop after maxDuration (default 30 seconds)
+        const maxDuration = options.maxDuration ?? 30000;
+        maxDurationTimeoutRef.current = setTimeout(() => {
+          if (mediaRecorderRef.current?.state === "recording") {
+            mediaRecorderRef.current.stop();
+          }
+        }, maxDuration);
+      } catch (err) {
+        isStartingRef.current = false;
+        pendingStopRef.current = false;
+        if (err instanceof DOMException) {
+          if (err.name === "NotAllowedError") {
+            setError("not-allowed");
+          } else if (err.name === "NotFoundError") {
+            setError("audio-capture");
+          } else {
+            setError("unknown");
+          }
+        } else {
+          setError("unknown");
+        }
+      }
+    },
+    [isListening, isProcessing, processAudio]
+  );
+
   const resetTranscript = useCallback(() => {
     setTranscript("");
-    setInterimTranscript("");
-    setConfidence(0);
     setError(null);
   }, []);
 
   return {
     isListening,
-    isSupported,
+    isProcessing,
+    isSupported: true, // MediaRecorder is widely supported
     transcript,
-    interimTranscript,
-    confidence,
     error,
     startListening,
     stopListening,

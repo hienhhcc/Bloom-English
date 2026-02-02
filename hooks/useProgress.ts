@@ -7,7 +7,9 @@ import {
   createReviewSchedule,
   getTopicStatus,
   isReviewDue,
+  type ActiveReviewPosition,
   type LearningProgress,
+  type MistakeRecord,
   type TopicProgress,
   type TopicStatus,
 } from "@/lib/vocabulary/progress";
@@ -32,6 +34,15 @@ interface UseProgressReturn {
     reviewType: "oneDay" | "oneWeek",
   ) => void;
   getDueReviews: () => DueReview[];
+  saveReviewPosition: (topicId: string, position: ActiveReviewPosition) => void;
+  getReviewPosition: (
+    topicId: string,
+    reviewType: "oneDay" | "oneWeek",
+  ) => ActiveReviewPosition | null;
+  clearReviewPosition: (topicId: string) => void;
+  recordMistakes: (topicId: string, wrongItemIds: string[]) => void;
+  clearMistake: (topicId: string, itemId: string) => void;
+  getAllMistakes: () => Array<{ topicId: string; mistakes: MistakeRecord[] }>;
 }
 
 export function useProgress(): UseProgressReturn {
@@ -188,6 +199,158 @@ export function useProgress(): UseProgressReturn {
     return dueReviews;
   }, [progress]);
 
+  const saveReviewPosition = useCallback(
+    (topicId: string, position: ActiveReviewPosition) => {
+      setProgress((prev) => {
+        if (!prev) return prev;
+
+        const existingTopicProgress =
+          prev.topics[topicId] || createInitialTopicProgress(topicId);
+
+        return {
+          ...prev,
+          topics: {
+            ...prev.topics,
+            [topicId]: {
+              ...existingTopicProgress,
+              activeReview: position,
+            },
+          },
+          lastUpdated: Date.now(),
+        };
+      });
+    },
+    [],
+  );
+
+  const getReviewPosition = useCallback(
+    (
+      topicId: string,
+      reviewType: "oneDay" | "oneWeek",
+    ): ActiveReviewPosition | null => {
+      if (!progress) return null;
+
+      const topicProgress = progress.topics[topicId];
+      if (!topicProgress?.activeReview) return null;
+
+      // Only return position if reviewType matches
+      if (topicProgress.activeReview.reviewType !== reviewType) {
+        return null;
+      }
+
+      return topicProgress.activeReview;
+    },
+    [progress],
+  );
+
+  const clearReviewPosition = useCallback((topicId: string) => {
+    setProgress((prev) => {
+      if (!prev) return prev;
+
+      const existingTopicProgress = prev.topics[topicId];
+      if (!existingTopicProgress) return prev;
+
+      return {
+        ...prev,
+        topics: {
+          ...prev.topics,
+          [topicId]: {
+            ...existingTopicProgress,
+            activeReview: null,
+          },
+        },
+        lastUpdated: Date.now(),
+      };
+    });
+  }, []);
+
+  const recordMistakes = useCallback(
+    (topicId: string, wrongItemIds: string[]) => {
+      if (wrongItemIds.length === 0) return;
+
+      setProgress((prev) => {
+        if (!prev) return prev;
+
+        const existingTopicProgress =
+          prev.topics[topicId] || createInitialTopicProgress(topicId);
+        const now = Date.now();
+
+        // Update or add mistake records
+        const updatedMistakes = [...(existingTopicProgress.mistakes || [])];
+        for (const itemId of wrongItemIds) {
+          const existingIndex = updatedMistakes.findIndex(
+            (m) => m.itemId === itemId
+          );
+          if (existingIndex !== -1) {
+            updatedMistakes[existingIndex] = {
+              ...updatedMistakes[existingIndex],
+              timesWrong: updatedMistakes[existingIndex].timesWrong + 1,
+              lastWrongDate: now,
+            };
+          } else {
+            updatedMistakes.push({
+              itemId,
+              lastWrongDate: now,
+              timesWrong: 1,
+            });
+          }
+        }
+
+        return {
+          ...prev,
+          topics: {
+            ...prev.topics,
+            [topicId]: {
+              ...existingTopicProgress,
+              mistakes: updatedMistakes,
+            },
+          },
+          lastUpdated: now,
+        };
+      });
+    },
+    []
+  );
+
+  const clearMistake = useCallback((topicId: string, itemId: string) => {
+    setProgress((prev) => {
+      if (!prev) return prev;
+
+      const existingTopicProgress = prev.topics[topicId];
+      if (!existingTopicProgress) return prev;
+
+      const updatedMistakes = (existingTopicProgress.mistakes || []).filter(
+        (m) => m.itemId !== itemId
+      );
+
+      return {
+        ...prev,
+        topics: {
+          ...prev.topics,
+          [topicId]: {
+            ...existingTopicProgress,
+            mistakes: updatedMistakes,
+          },
+        },
+        lastUpdated: Date.now(),
+      };
+    });
+  }, []);
+
+  const getAllMistakes = useCallback((): Array<{
+    topicId: string;
+    mistakes: MistakeRecord[];
+  }> => {
+    if (!progress) return [];
+
+    return Object.values(progress.topics)
+      .filter((topic) => topic.mistakes && topic.mistakes.length > 0)
+      .map((topic) => ({
+        topicId: topic.topicId,
+        mistakes: topic.mistakes,
+      }));
+  }, [progress]);
+
   return {
     progress,
     isLoaded,
@@ -196,5 +359,11 @@ export function useProgress(): UseProgressReturn {
     recordQuizAttempt,
     markReviewCompleted,
     getDueReviews,
+    saveReviewPosition,
+    getReviewPosition,
+    clearReviewPosition,
+    recordMistakes,
+    clearMistake,
+    getAllMistakes,
   };
 }

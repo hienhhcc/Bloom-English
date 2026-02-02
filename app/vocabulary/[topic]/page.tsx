@@ -6,7 +6,7 @@ import { ChevronLeft } from 'lucide-react';
 
 interface TopicPageProps {
   params: Promise<{ topic: string }>;
-  searchParams: Promise<{ mode?: string }>;
+  searchParams: Promise<{ mode?: string; review?: string }>;
 }
 
 export async function generateStaticParams() {
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: TopicPageProps) {
 
 export default async function TopicPage({ params, searchParams }: TopicPageProps) {
   const { topic: topicId } = await params;
-  const { mode } = await searchParams;
+  const { mode, review } = await searchParams;
   const topic = getTopicById(topicId);
   const topicData = await getTopicData(topicId);
 
@@ -43,6 +43,7 @@ export default async function TopicPage({ params, searchParams }: TopicPageProps
   }
 
   const initialMode = mode === 'quiz' ? 'quiz' : 'learning';
+  const reviewType = review === 'oneDay' || review === 'oneWeek' ? review : undefined;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -55,7 +56,7 @@ export default async function TopicPage({ params, searchParams }: TopicPageProps
           Back to Topics
         </Link>
 
-        <TopicPageContent topic={topic} items={topicData.items} initialMode={initialMode} />
+        <TopicPageContent topic={topic} items={topicData.items} initialMode={initialMode} reviewType={reviewType} />
       </div>
     </div>
   );

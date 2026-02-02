@@ -36,7 +36,7 @@ export function ReviewReminders({ reviews }: ReviewRemindersProps) {
         {reviews.map((review) => (
           <Link
             key={`${review.topicId}-${review.reviewType}`}
-            href={`/vocabulary/${review.topicId}?mode=quiz`}
+            href={`/vocabulary/${review.topicId}?mode=quiz&review=${review.reviewType}`}
             className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors group"
           >
             <div className="flex items-center gap-3">

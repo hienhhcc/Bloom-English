@@ -272,9 +272,40 @@ export function evaluatePronunciation(
 }
 
 /**
+ * Find the best matching alternative from speech recognition results
+ * Returns the alternative with the highest evaluation score
+ */
+export function findBestAlternative(
+  alternatives: string[],
+  expected: string
+): { bestMatch: string; score: number } {
+  if (alternatives.length === 0) {
+    return { bestMatch: "", score: 0 };
+  }
+
+  let bestMatch = alternatives[0];
+  let bestScore = 0;
+
+  for (const alt of alternatives) {
+    const result = evaluatePronunciation(alt, expected);
+    if (result.overallScore > bestScore) {
+      bestScore = result.overallScore;
+      bestMatch = alt;
+    }
+  }
+
+  return { bestMatch, score: bestScore };
+}
+
+/**
  * Get feedback message based on pronunciation result
  */
 export function getPronunciationFeedback(result: PronunciationResult): string {
+  // Handle no speech detected
+  if (result.recognizedWords.length === 0) {
+    return "No speech detected. Please try again and speak clearly.";
+  }
+
   if (result.isExactMatch) {
     return "Perfect pronunciation!";
   }

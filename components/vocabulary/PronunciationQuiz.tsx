@@ -1,17 +1,16 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
-import type { VocabularyItem } from '@/lib/vocabulary/types';
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
 import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import { playErrorSound, playSuccessSound } from '@/lib/audio';
 import { evaluatePronunciation, getPronunciationFeedback, type PronunciationResult } from '@/lib/pronunciationEvaluator';
-import { playSuccessSound, playErrorSound } from '@/lib/audio';
-import { RecordingButton } from './RecordingButton';
+import type { VocabularyItem } from '@/lib/vocabulary/types';
+import { ArrowRight, Check, Mic, RotateCcw, Snail, Volume2, X } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MicrophonePermission } from './MicrophonePermission';
-import { PronunciationUnsupported } from './PronunciationUnsupported';
-import { Check, X, Volume2, Snail, ArrowRight, Mic, RotateCcw } from 'lucide-react';
+import { RecordingButton } from './RecordingButton';
 
-type QuizState = 'ready' | 'recording' | 'result';
+type QuizState = 'ready' | 'recording' | 'processing' | 'result';
 type PronunciationPhase = 'word' | 'sentence';
 
 interface PronunciationQuizProps {
@@ -25,12 +24,16 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
   const [wordResult, setWordResult] = useState<PronunciationResult | null>(null);
   const [sentenceResult, setSentenceResult] = useState<PronunciationResult | null>(null);
   const [showPermissionUI, setShowPermissionUI] = useState(false);
+  const [evaluatedText, setEvaluatedText] = useState<string>('');
+
+  // Track previous isProcessing state to detect when transcription completes
+  const prevIsProcessingRef = useRef(false);
 
   const {
     isListening,
+    isProcessing,
     isSupported,
     transcript,
-    interimTranscript,
     error,
     startListening,
     stopListening,
@@ -47,12 +50,15 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
     return phase === 'word' ? item.word : exampleSentence.english;
   }, [phase, item.word, exampleSentence.english]);
 
-  // Handle recording stop and evaluate
-  useEffect(() => {
-    if (quizState === 'recording' && !isListening && transcript) {
-      // Recording stopped with transcript
-      const expected = getExpectedText();
-      const result = evaluatePronunciation(transcript, expected);
+  // Process recording result when transcription completes
+  const processRecordingResult = useCallback((currentTranscript: string) => {
+    const expected = getExpectedText();
+
+    if (currentTranscript) {
+      // Store the text that was actually evaluated
+      setEvaluatedText(currentTranscript);
+
+      const result = evaluatePronunciation(currentTranscript, expected);
 
       if (phase === 'word') {
         setWordResult(result);
@@ -65,26 +71,78 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
       } else {
         playErrorSound();
       }
+    } else {
+      // No speech detected - create a failing result
+      const expectedWords = expected.toLowerCase().split(' ').filter(w => w.length > 0);
+      const noSpeechResult: PronunciationResult = {
+        isExactMatch: false,
+        wordMatchScore: 0,
+        phoneticScore: 0,
+        editDistanceScore: 0,
+        overallScore: 0,
+        isPassing: false,
+        recognizedWords: [],
+        expectedWords: expectedWords,
+        matchedWords: 0,
+      };
 
-      setQuizState('result');
+      setEvaluatedText('');
+
+      if (phase === 'word') {
+        setWordResult(noSpeechResult);
+      } else {
+        setSentenceResult(noSpeechResult);
+      }
+
+      playErrorSound();
     }
-  }, [isListening, transcript, quizState, phase, getExpectedText]);
+
+    setQuizState('result');
+  }, [phase, getExpectedText]);
+
+  // Handle permission errors
+  const handlePermissionError = useCallback(() => {
+    setShowPermissionUI(true);
+    setQuizState('ready');
+  }, []);
+
+  // Update quiz state based on recording/processing states
+  useEffect(() => {
+    if (isListening) {
+      setQuizState('recording');
+    } else if (isProcessing) {
+      setQuizState('processing');
+    } else if (quizState === 'recording') {
+      // Recording was cancelled before it started (e.g., user tapped stop immediately)
+      // Reset to ready state
+      setQuizState('ready');
+    }
+  }, [isListening, isProcessing, quizState]);
+
+  // Handle transcription completion - when isProcessing goes from true to false
+  useEffect(() => {
+    if (prevIsProcessingRef.current && !isProcessing && quizState === 'processing') {
+      // Transcription just completed
+      queueMicrotask(() => processRecordingResult(transcript));
+    }
+    prevIsProcessingRef.current = isProcessing;
+  }, [isProcessing, transcript, quizState, processRecordingResult]);
 
   // Handle errors
   useEffect(() => {
     if (error === 'not-allowed' || error === 'audio-capture') {
-      setShowPermissionUI(true);
-      setQuizState('ready');
+      queueMicrotask(() => handlePermissionError());
+    } else if (error === 'transcription-failed' || error === 'no-speech') {
+      // Handle transcription errors
+      queueMicrotask(() => processRecordingResult(''));
     }
-  }, [error]);
+  }, [error, handlePermissionError, processRecordingResult]);
 
   const handleStartRecording = useCallback(() => {
     resetTranscript();
-    setQuizState('recording');
+    // Don't set quizState here - let the effect handle it when isListening becomes true
     startListening({
-      continuous: false,
-      interimResults: true,
-      maxDuration: 10000, // 10 seconds max
+      maxDuration: 30000, // 30 seconds max
     });
   }, [resetTranscript, startListening]);
 
@@ -94,6 +152,7 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
 
   const handleRetryRecording = useCallback(() => {
     resetTranscript();
+    setEvaluatedText('');
     if (phase === 'word') {
       setWordResult(null);
     } else {
@@ -106,6 +165,7 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
     if (phase === 'word') {
       // Move to sentence phase
       resetTranscript();
+      setEvaluatedText('');
       setPhase('sentence');
       setQuizState('ready');
     } else {
@@ -122,10 +182,6 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
     onComplete(false);
   }, [onComplete]);
 
-  const handleSelfAssess = useCallback((passed: boolean) => {
-    onComplete(passed);
-  }, [onComplete]);
-
   const handleRetryPermission = useCallback(() => {
     setShowPermissionUI(false);
     handleStartRecording();
@@ -136,15 +192,23 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
     speak(text, slow);
   }, [speak, getExpectedText]);
 
-  // Show unsupported browser message
+  // isSupported is always true now (MediaRecorder is widely supported)
+  // But keep the check for edge cases
   if (!isSupported) {
     return (
       <div className="w-full max-w-2xl mx-auto">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
-          <PronunciationUnsupported
-            onSkip={handleSkip}
-            onSelfAssess={handleSelfAssess}
-          />
+          <div className="text-center p-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Audio recording is not supported in your browser.
+            </p>
+            <button
+              onClick={handleSkip}
+              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
+            >
+              Skip Pronunciation Quiz
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -187,12 +251,10 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
 
         {/* Phase indicator */}
         <div className="flex gap-2 mb-6">
-          <div className={`flex-1 h-1 rounded-full ${
-            phase === 'word' ? 'bg-emerald-500' : 'bg-emerald-500'
-          }`} />
-          <div className={`flex-1 h-1 rounded-full ${
-            phase === 'sentence' ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-gray-700'
-          }`} />
+          <div className={`flex-1 h-1 rounded-full ${phase === 'word' ? 'bg-emerald-500' : 'bg-emerald-500'
+            }`} />
+          <div className={`flex-1 h-1 rounded-full ${phase === 'sentence' ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-gray-700'
+            }`} />
         </div>
 
         {/* Text to pronounce */}
@@ -244,29 +306,33 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
         {/* Recording state */}
         {quizState === 'recording' && (
           <div className="flex flex-col items-center py-6">
-            <RecordingButton
-              isRecording={true}
-              isDisabled={false}
-              onStartRecording={handleStartRecording}
-              onStopRecording={handleStopRecording}
-              size="lg"
-            />
-            <p className="mt-4 text-sm text-red-500 dark:text-red-400 animate-pulse">
+            {/* Recording indicator ring */}
+            <div className="relative">
+              <div className="absolute inset-0 -m-2 rounded-full bg-red-400/30 animate-ping pointer-events-none" />
+              <div className="absolute inset-0 -m-1 rounded-full bg-red-400/50 animate-pulse pointer-events-none" />
+              <RecordingButton
+                isRecording={true}
+                isDisabled={false}
+                onStartRecording={handleStartRecording}
+                onStopRecording={handleStopRecording}
+                size="lg"
+              />
+            </div>
+            <p className="mt-4 text-sm text-red-500 dark:text-red-400 font-medium">
               Recording... Tap to stop
             </p>
+          </div>
+        )}
 
-            {/* Live transcript */}
-            {(transcript || interimTranscript) && (
-              <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-700/50 rounded-lg w-full">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">You said:</p>
-                <p className="text-gray-900 dark:text-white">
-                  {transcript}
-                  <span className="text-gray-400 dark:text-gray-500 italic">
-                    {interimTranscript}
-                  </span>
-                </p>
-              </div>
-            )}
+        {/* Processing state */}
+        {quizState === 'processing' && (
+          <div className="flex flex-col items-center py-6">
+            <div className="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+              <div className="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+            <p className="mt-4 text-sm text-amber-600 dark:text-amber-400 font-medium">
+              Processing your pronunciation...
+            </p>
           </div>
         )}
 
@@ -276,15 +342,14 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
             {/* What was recognized */}
             <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">You said:</p>
-              <p className="text-gray-900 dark:text-white">{transcript || '(No speech detected)'}</p>
+              <p className="text-gray-900 dark:text-white">{evaluatedText || '(No speech detected)'}</p>
             </div>
 
             {/* Result indicator */}
-            <div className={`flex items-center gap-3 p-3 rounded-xl ${
-              currentResult.isPassing
+            <div className={`flex items-center gap-3 p-3 rounded-xl ${currentResult.isPassing
                 ? 'bg-green-50 dark:bg-green-900/20'
                 : 'bg-red-50 dark:bg-red-900/20'
-            }`}>
+              }`}>
               {currentResult.isPassing ? (
                 <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
               ) : (
@@ -298,11 +363,10 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
                   {getPronunciationFeedback(currentResult)}
                 </span>
               </div>
-              <span className={`text-lg font-bold ${
-                currentResult.isPassing
+              <span className={`text-lg font-bold ${currentResult.isPassing
                   ? 'text-green-600 dark:text-green-400'
                   : 'text-red-600 dark:text-red-400'
-              }`}>
+                }`}>
                 {currentResult.overallScore}%
               </span>
             </div>

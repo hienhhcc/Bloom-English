@@ -29,18 +29,20 @@ const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o";
 // Shared prompt for translation evaluation
 function getEvaluationPrompt(
   vietnameseSentence: string,
-  userTranslation: string
+  userTranslation: string,
+  vocabularyWord: string
 ): string {
   return `Evaluate this English translation of a Vietnamese sentence.
 
 Vietnamese: "${vietnameseSentence}"
 English translation to evaluate: "${userTranslation}"
+Required vocabulary word: "${vocabularyWord}"
 
-Task: Provide a natural reference translation and score the user's attempt.
+Task: Provide a natural reference translation that uses the required vocabulary word "${vocabularyWord}", and score the user's attempt.
 
 Output valid JSON only:
 {
-  "referenceTranslation": "your natural English translation of the Vietnamese",
+  "referenceTranslation": "your natural English translation using the word '${vocabularyWord}'",
   "grammarCorrect": true or false,
   "grammarErrors": [{"message": "error description", "context": "problematic text", "suggestion": "fix"}],
   "isCorrect": true or false,
@@ -56,10 +58,11 @@ Scoring guide:
 - Below 70: Wrong meaning or major errors
 
 Important:
+- The reference translation MUST include the vocabulary word "${vocabularyWord}" (not synonyms)
 - Translate the Vietnamese accurately - pay attention to specific terms
 - If user's translation matches your reference, score 95-100 and leave suggestions empty
 - Only list grammar errors if there are actual mistakes
-- Synonyms are acceptable`;
+- Synonyms are acceptable for other words, but the vocabulary word should be used`;
 }
 
 // ============ OLLAMA PROVIDER ============
@@ -72,9 +75,10 @@ interface OllamaResponse {
 
 async function checkWithOllama(
   vietnameseSentence: string,
-  userTranslation: string
+  userTranslation: string,
+  vocabularyWord: string
 ): Promise<TranslationCheckResult> {
-  const prompt = getEvaluationPrompt(vietnameseSentence, userTranslation);
+  const prompt = getEvaluationPrompt(vietnameseSentence, userTranslation, vocabularyWord);
 
   const response = await fetch(`${OLLAMA_BASE_URL}/api/generate`, {
     method: "POST",
@@ -128,7 +132,8 @@ interface OpenAIResponse {
 
 async function checkWithOpenAI(
   vietnameseSentence: string,
-  userTranslation: string
+  userTranslation: string,
+  vocabularyWord: string
 ): Promise<TranslationCheckResult> {
   if (!OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is required when using OpenAI provider");
@@ -140,9 +145,10 @@ Always provide accurate translations - for example:
 - "Cá voi lưng gù" = "Humpback whale" (NOT dolphin)
 - "Cá heo" = "Dolphin"
 - "Voi" = "Elephant"
-Be precise with animal names, technical terms, and cultural references.`;
+Be precise with animal names, technical terms, and cultural references.
+When a vocabulary word is specified, your reference translation MUST use that exact word.`;
 
-  const userPrompt = getEvaluationPrompt(vietnameseSentence, userTranslation);
+  const userPrompt = getEvaluationPrompt(vietnameseSentence, userTranslation, vocabularyWord);
 
   const messages: OpenAIMessage[] = [
     { role: "system", content: systemPrompt },
@@ -268,41 +274,138 @@ function calculateSimilarity(text1: string, text2: string): number {
   return Math.round((matches / union) * 100);
 }
 
+/**
+ * Filter out suggestions that recommend something the user already wrote
+ * e.g., "Use 'bald eagle'" when user already wrote "bald eagle"
+ */
+function filterContradictorySuggestions(
+  userTranslation: string,
+  suggestions: string[]
+): string[] {
+  const normalizedUser = normalizeForComparison(userTranslation);
+
+  return suggestions.filter((suggestion) => {
+    // Extract quoted terms from the suggestion (e.g., 'bald eagle' or "bald eagle")
+    const quotedTerms = suggestion.match(/['"]([^'"]+)['"]/g);
+    if (!quotedTerms) return true;
+
+    // Check if any suggested term already exists in user's translation
+    for (const quoted of quotedTerms) {
+      const term = quoted.replace(/['"]/g, "").toLowerCase();
+      if (normalizedUser.includes(term)) {
+        // User already has this term, filter out this contradictory suggestion
+        return false;
+      }
+    }
+    return true;
+  });
+}
+
+/**
+ * Filter out grammar errors that are contradictory
+ * e.g., "Replace X with Y" when user already has Y
+ */
+function filterContradictoryGrammarErrors(
+  userTranslation: string,
+  errors: GrammarError[]
+): GrammarError[] {
+  const normalizedUser = normalizeForComparison(userTranslation);
+
+  return errors.filter((error) => {
+    // Check if the suggestion contains a term the user already has
+    const suggestion = error.suggestion.toLowerCase();
+    const quotedTerms = suggestion.match(/['"]([^'"]+)['"]/g);
+
+    if (quotedTerms) {
+      for (const quoted of quotedTerms) {
+        const term = quoted.replace(/['"]/g, "");
+        if (normalizedUser.includes(term)) {
+          return false;
+        }
+      }
+    }
+
+    // Also check if the suggestion itself (without quotes) is in user's text
+    const cleanSuggestion = normalizeForComparison(error.suggestion);
+    if (cleanSuggestion.length > 3 && normalizedUser.includes(cleanSuggestion)) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
 function correctScoreIfSimilar(
   userTranslation: string,
   result: TranslationCheckResult
 ): TranslationCheckResult {
-  if (!result.referenceTranslation) return result;
+  // First, filter out contradictory suggestions and grammar errors
+  const filteredSuggestions = filterContradictorySuggestions(
+    userTranslation,
+    result.suggestions
+  );
+  const filteredGrammarErrors = filterContradictoryGrammarErrors(
+    userTranslation,
+    result.grammarErrors
+  );
+
+  // Update result with filtered values
+  let correctedResult: TranslationCheckResult = {
+    ...result,
+    suggestions: filteredSuggestions,
+    grammarErrors: filteredGrammarErrors,
+    grammarCorrect: filteredGrammarErrors.length === 0,
+  };
+
+  // If we filtered out all suggestions/errors, boost the score
+  const removedSuggestions = result.suggestions.length - filteredSuggestions.length;
+  const removedErrors = result.grammarErrors.length - filteredGrammarErrors.length;
+
+  if (removedSuggestions > 0 || removedErrors > 0) {
+    // LLM made contradictory claims, boost the score
+    const scoreBoost = (removedSuggestions + removedErrors) * 5;
+    correctedResult = {
+      ...correctedResult,
+      score: Math.min(100, correctedResult.score + scoreBoost),
+      feedback: filteredSuggestions.length === 0 && filteredGrammarErrors.length === 0
+        ? "Good translation!"
+        : correctedResult.feedback,
+    };
+  }
+
+  if (!result.referenceTranslation) return correctedResult;
 
   const similarity = calculateSimilarity(
     userTranslation,
     result.referenceTranslation
   );
 
-  if (similarity >= 90 && result.score < 90) {
+  if (similarity >= 90 && correctedResult.score < 90) {
     return {
-      ...result,
-      score: Math.max(result.score, 95),
+      ...correctedResult,
+      score: Math.max(correctedResult.score, 95),
       isCorrect: true,
       feedback: "Excellent! Your translation matches the reference very closely.",
       suggestions: [],
+      grammarErrors: [],
+      grammarCorrect: true,
     };
   }
 
-  if (similarity >= 80 && result.score < 80) {
+  if (similarity >= 80 && correctedResult.score < 80) {
     return {
-      ...result,
-      score: Math.max(result.score, 85),
+      ...correctedResult,
+      score: Math.max(correctedResult.score, 85),
       isCorrect: true,
-      feedback: result.feedback || "Good translation with minor differences.",
+      feedback: correctedResult.feedback || "Good translation with minor differences.",
       suggestions:
-        result.suggestions.length > 2
-          ? result.suggestions.slice(0, 1)
-          : result.suggestions,
+        correctedResult.suggestions.length > 2
+          ? correctedResult.suggestions.slice(0, 1)
+          : correctedResult.suggestions,
     };
   }
 
-  return result;
+  return correctedResult;
 }
 
 // ============ MAIN EXPORT ============
@@ -320,9 +423,9 @@ export async function checkTranslation(
     let result: TranslationCheckResult;
 
     if (LLM_PROVIDER === "openai") {
-      result = await checkWithOpenAI(vietnameseSentence, userTranslation);
+      result = await checkWithOpenAI(vietnameseSentence, userTranslation, vocabularyWord);
     } else {
-      result = await checkWithOllama(vietnameseSentence, userTranslation);
+      result = await checkWithOllama(vietnameseSentence, userTranslation, vocabularyWord);
     }
 
     // Post-process to fix inconsistent scores
