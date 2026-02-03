@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { useMistakes } from '@/hooks/useMistakes';
-import type { VocabularyTopic, VocabularyItem } from '@/lib/vocabulary/types';
+import type { VocabularyItem, VocabularyTopic } from '@/lib/vocabulary/types';
 import { AlertCircle, ArrowRight, RotateCcw } from 'lucide-react';
+import Link from 'next/link';
 
 interface MistakesListProps {
   topics: VocabularyTopic[];
@@ -51,7 +51,7 @@ export function MistakesList({
   return (
     <div className="space-y-6">
       {/* Summary card */}
-      <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
+      <div className="bg-linear-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">

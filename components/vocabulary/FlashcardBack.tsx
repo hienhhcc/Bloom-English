@@ -8,7 +8,7 @@ interface FlashcardBackProps {
 export function FlashcardBack({ item }: FlashcardBackProps) {
   return (
     <div className="absolute inset-0 backface-hidden rotate-y-180 bg-white dark:bg-gray-900 rounded-2xl p-6 flex flex-col shadow-lg overflow-y-auto">
-      <div className="relative w-full h-40 md:h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+      <div className="relative w-full h-40 md:h-48 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 shrink-0">
         <Image
           src={item.imageUrl}
           alt={item.word}
@@ -96,7 +96,7 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
         )}
       </div>
 
-      <p className="text-center text-sm text-gray-400 mt-4 flex-shrink-0">Click to flip back</p>
+      <p className="text-center text-sm text-gray-400 mt-4 shrink-0">Click to flip back</p>
     </div>
   );
 }
