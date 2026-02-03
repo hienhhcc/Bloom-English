@@ -52,16 +52,14 @@ export function useTextToSpeech(): UseTextToSpeechReturn {
 
   // Load puter.js after mount
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsSupported(true); // Puter.js works in all browsers
 
     // Dynamically import puter.js
-    import("@heyputer/puter.js").then((module) => {
-      puterRef.current = module.default;
+    import("@heyputer/puter.js").then((puterModule) => {
+      puterRef.current = puterModule.default;
     }).catch((err) => {
       console.error("Failed to load puter.js:", err);
       // Fall back to Web Speech API support check
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsSupported(checkWebSpeechSupport());
     });
   }, []);

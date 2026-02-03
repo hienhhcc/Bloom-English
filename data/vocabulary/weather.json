@@ -24,8 +24,15 @@
           "vietnamese": "Vui lòng giữ thuốc ở nhiệt độ phòng."
         }
       ],
-      "collocations": ["high temperature", "low temperature", "room temperature"],
-      "synonyms": ["heat", "warmth"],
+      "collocations": [
+        "high temperature",
+        "low temperature",
+        "room temperature"
+      ],
+      "synonyms": [
+        "heat",
+        "warmth"
+      ],
       "antonyms": [],
       "wordFamily": []
     },
@@ -52,11 +59,21 @@
           "vietnamese": "Dự báo năm ngày cho thấy thời tiết nắng sắp tới."
         }
       ],
-      "collocations": ["weather forecast", "accurate forecast", "five-day forecast"],
-      "synonyms": ["prediction", "outlook"],
+      "collocations": [
+        "weather forecast",
+        "accurate forecast",
+        "five-day forecast"
+      ],
+      "synonyms": [
+        "prediction",
+        "outlook"
+      ],
       "antonyms": [],
       "wordFamily": [
-        { "word": "forecast", "partOfSpeech": "verb" }
+        {
+          "word": "forecast",
+          "partOfSpeech": "verb"
+        }
       ]
     },
     {
@@ -82,11 +99,23 @@
           "vietnamese": "Độ ẩm tương đối trong rừng nhiệt đới thường trên 80 phần trăm."
         }
       ],
-      "collocations": ["high humidity", "low humidity", "relative humidity"],
-      "synonyms": ["moisture", "dampness"],
-      "antonyms": ["dryness"],
+      "collocations": [
+        "high humidity",
+        "low humidity",
+        "relative humidity"
+      ],
+      "synonyms": [
+        "moisture",
+        "dampness"
+      ],
+      "antonyms": [
+        "dryness"
+      ],
       "wordFamily": [
-        { "word": "humid", "partOfSpeech": "adjective" }
+        {
+          "word": "humid",
+          "partOfSpeech": "adjective"
+        }
       ]
     },
     {
@@ -112,11 +141,24 @@
           "vietnamese": "Chúng tôi mở cửa sổ để đón gió sáng."
         }
       ],
-      "collocations": ["cool breeze", "gentle breeze", "sea breeze"],
-      "synonyms": ["wind", "draft"],
-      "antonyms": ["gale", "storm"],
+      "collocations": [
+        "cool breeze",
+        "gentle breeze",
+        "sea breeze"
+      ],
+      "synonyms": [
+        "wind",
+        "draft"
+      ],
+      "antonyms": [
+        "gale",
+        "storm"
+      ],
       "wordFamily": [
-        { "word": "breezy", "partOfSpeech": "adjective" }
+        {
+          "word": "breezy",
+          "partOfSpeech": "adjective"
+        }
       ]
     },
     {
@@ -142,9 +184,17 @@
           "vietnamese": "Nông dân lo lắng về hạn hán kéo dài ảnh hưởng đến mùa màng của họ."
         }
       ],
-      "collocations": ["severe drought", "prolonged drought", "drought conditions"],
-      "synonyms": ["dry spell"],
-      "antonyms": ["flood"],
+      "collocations": [
+        "severe drought",
+        "prolonged drought",
+        "drought conditions"
+      ],
+      "synonyms": [
+        "dry spell"
+      ],
+      "antonyms": [
+        "flood"
+      ],
       "wordFamily": []
     },
     {
@@ -170,11 +220,20 @@
           "vietnamese": "Con chó trốn dưới gầm giường vì nó sợ cơn dông."
         }
       ],
-      "collocations": ["severe thunderstorm", "thunderstorm warning", "heavy thunderstorm"],
-      "synonyms": ["electrical storm"],
+      "collocations": [
+        "severe thunderstorm",
+        "thunderstorm warning",
+        "heavy thunderstorm"
+      ],
+      "synonyms": [
+        "electrical storm"
+      ],
       "antonyms": [],
       "wordFamily": [
-        { "word": "thunder", "partOfSpeech": "noun" }
+        {
+          "word": "thunder",
+          "partOfSpeech": "noun"
+        }
       ]
     },
     {
@@ -200,9 +259,19 @@
           "vietnamese": "Thời tiết âm u hoàn hảo để chụp ảnh mà không có bóng đổ gắt."
         }
       ],
-      "collocations": ["overcast sky", "overcast weather", "become overcast"],
-      "synonyms": ["cloudy", "gloomy"],
-      "antonyms": ["sunny", "clear"],
+      "collocations": [
+        "overcast sky",
+        "overcast weather",
+        "become overcast"
+      ],
+      "synonyms": [
+        "cloudy",
+        "gloomy"
+      ],
+      "antonyms": [
+        "sunny",
+        "clear"
+      ],
       "wordFamily": []
     },
     {
@@ -228,11 +297,24 @@
           "vietnamese": "Khí hậu ôn hòa khiến thành phố này trở thành điểm đến phổ biến cho du khách."
         }
       ],
-      "collocations": ["mild weather", "mild climate", "mild temperature"],
-      "synonyms": ["moderate", "temperate"],
-      "antonyms": ["extreme", "harsh"],
+      "collocations": [
+        "mild weather",
+        "mild climate",
+        "mild temperature"
+      ],
+      "synonyms": [
+        "moderate",
+        "temperate"
+      ],
+      "antonyms": [
+        "extreme",
+        "harsh"
+      ],
       "wordFamily": [
-        { "word": "mildness", "partOfSpeech": "noun" }
+        {
+          "word": "mildness",
+          "partOfSpeech": "noun"
+        }
       ]
     },
     {
@@ -258,12 +340,27 @@
           "vietnamese": "Bạn không cần ô cho mưa phùn này, chỉ cần mũ trùm đầu là đủ."
         }
       ],
-      "collocations": ["light drizzle", "steady drizzle", "fine drizzle"],
-      "synonyms": ["sprinkle", "mist"],
-      "antonyms": ["downpour"],
+      "collocations": [
+        "light drizzle",
+        "steady drizzle",
+        "fine drizzle"
+      ],
+      "synonyms": [
+        "sprinkle",
+        "mist"
+      ],
+      "antonyms": [
+        "downpour"
+      ],
       "wordFamily": [
-        { "word": "drizzle", "partOfSpeech": "verb" },
-        { "word": "drizzly", "partOfSpeech": "adjective" }
+        {
+          "word": "drizzle",
+          "partOfSpeech": "verb"
+        },
+        {
+          "word": "drizzly",
+          "partOfSpeech": "adjective"
+        }
       ]
     },
     {
@@ -289,11 +386,25 @@
           "vietnamese": "Chúng tôi ở trong bóng râm để tránh nắng nóng như thiêu."
         }
       ],
-      "collocations": ["scorching heat", "scorching hot", "scorching sun"],
-      "synonyms": ["sweltering", "blazing", "burning"],
-      "antonyms": ["freezing", "cold"],
+      "collocations": [
+        "scorching heat",
+        "scorching hot",
+        "scorching sun"
+      ],
+      "synonyms": [
+        "sweltering",
+        "blazing",
+        "burning"
+      ],
+      "antonyms": [
+        "freezing",
+        "cold"
+      ],
       "wordFamily": [
-        { "word": "scorch", "partOfSpeech": "verb" }
+        {
+          "word": "scorch",
+          "partOfSpeech": "verb"
+        }
       ]
     },
     {
@@ -319,11 +430,24 @@
           "vietnamese": "Tôi quên găng tay và tay tôi đang lạnh cóng."
         }
       ],
-      "collocations": ["freezing cold", "freezing point", "freezing temperatures"],
-      "synonyms": ["icy", "frigid"],
-      "antonyms": ["boiling", "scorching"],
+      "collocations": [
+        "freezing cold",
+        "freezing point",
+        "freezing temperatures"
+      ],
+      "synonyms": [
+        "icy",
+        "frigid"
+      ],
+      "antonyms": [
+        "boiling",
+        "scorching"
+      ],
       "wordFamily": [
-        { "word": "freeze", "partOfSpeech": "verb" }
+        {
+          "word": "freeze",
+          "partOfSpeech": "verb"
+        }
       ]
     },
     {
@@ -349,11 +473,23 @@
           "vietnamese": "Người lái xe nên giảm tốc độ và bật đèn pha trong điều kiện sương mù."
         }
       ],
-      "collocations": ["foggy weather", "foggy morning", "thick foggy"],
-      "synonyms": ["misty", "hazy"],
-      "antonyms": ["clear"],
+      "collocations": [
+        "foggy weather",
+        "foggy morning",
+        "thick foggy"
+      ],
+      "synonyms": [
+        "misty",
+        "hazy"
+      ],
+      "antonyms": [
+        "clear"
+      ],
       "wordFamily": [
-        { "word": "fog", "partOfSpeech": "noun" }
+        {
+          "word": "fog",
+          "partOfSpeech": "noun"
+        }
       ]
     },
     {
@@ -379,9 +515,17 @@
           "vietnamese": "Trong đợt nắng nóng, thành phố mở các trung tâm làm mát cho cư dân."
         }
       ],
-      "collocations": ["severe heatwave", "summer heatwave", "heatwave warning"],
-      "synonyms": ["hot spell"],
-      "antonyms": ["cold snap"],
+      "collocations": [
+        "severe heatwave",
+        "summer heatwave",
+        "heatwave warning"
+      ],
+      "synonyms": [
+        "hot spell"
+      ],
+      "antonyms": [
+        "cold snap"
+      ],
       "wordFamily": []
     },
     {
@@ -407,11 +551,24 @@
           "vietnamese": "Những buổi sáng mùa thu gần đây hơi se lạnh."
         }
       ],
-      "collocations": ["chilly weather", "chilly morning", "a bit chilly"],
-      "synonyms": ["cool", "cold"],
-      "antonyms": ["warm", "hot"],
+      "collocations": [
+        "chilly weather",
+        "chilly morning",
+        "a bit chilly"
+      ],
+      "synonyms": [
+        "cool",
+        "cold"
+      ],
+      "antonyms": [
+        "warm",
+        "hot"
+      ],
       "wordFamily": [
-        { "word": "chill", "partOfSpeech": "noun" }
+        {
+          "word": "chill",
+          "partOfSpeech": "noun"
+        }
       ]
     },
     {
@@ -437,9 +594,18 @@
           "vietnamese": "Chúng tôi phải đợi trong quán cà phê cho đến khi cơn mưa như trút dừng lại."
         }
       ],
-      "collocations": ["heavy downpour", "sudden downpour", "torrential downpour"],
-      "synonyms": ["deluge", "cloudburst"],
-      "antonyms": ["drizzle"],
+      "collocations": [
+        "heavy downpour",
+        "sudden downpour",
+        "torrential downpour"
+      ],
+      "synonyms": [
+        "deluge",
+        "cloudburst"
+      ],
+      "antonyms": [
+        "drizzle"
+      ],
       "wordFamily": []
     },
     {
@@ -465,11 +631,25 @@
           "vietnamese": "Bầu trời ảm đạm phù hợp hoàn hảo với tâm trạng buồn của tôi."
         }
       ],
-      "collocations": ["gloomy weather", "gloomy sky", "gloomy day"],
-      "synonyms": ["dreary", "dull", "overcast"],
-      "antonyms": ["bright", "sunny"],
+      "collocations": [
+        "gloomy weather",
+        "gloomy sky",
+        "gloomy day"
+      ],
+      "synonyms": [
+        "dreary",
+        "dull",
+        "overcast"
+      ],
+      "antonyms": [
+        "bright",
+        "sunny"
+      ],
       "wordFamily": [
-        { "word": "gloom", "partOfSpeech": "noun" }
+        {
+          "word": "gloom",
+          "partOfSpeech": "noun"
+        }
       ]
     },
     {
@@ -495,11 +675,18 @@
           "vietnamese": "Nông dân che phủ hoa màu để bảo vệ chúng khỏi mưa đá."
         }
       ],
-      "collocations": ["heavy hail", "hailstorm", "hail stones"],
+      "collocations": [
+        "heavy hail",
+        "hailstorm",
+        "hail stones"
+      ],
       "synonyms": [],
       "antonyms": [],
       "wordFamily": [
-        { "word": "hailstorm", "partOfSpeech": "noun" }
+        {
+          "word": "hailstorm",
+          "partOfSpeech": "noun"
+        }
       ]
     },
     {
@@ -525,11 +712,23 @@
           "vietnamese": "Con mèo thích ngủ trong ánh nắng bên cửa sổ."
         }
       ],
-      "collocations": ["bright sunshine", "warm sunshine", "hours of sunshine"],
-      "synonyms": ["sunlight"],
-      "antonyms": ["shade", "darkness"],
+      "collocations": [
+        "bright sunshine",
+        "warm sunshine",
+        "hours of sunshine"
+      ],
+      "synonyms": [
+        "sunlight"
+      ],
+      "antonyms": [
+        "shade",
+        "darkness"
+      ],
       "wordFamily": [
-        { "word": "sunny", "partOfSpeech": "adjective" }
+        {
+          "word": "sunny",
+          "partOfSpeech": "adjective"
+        }
       ]
     },
     {
@@ -555,8 +754,14 @@
           "vietnamese": "Trường học đóng cửa ba ngày vì trận bão tuyết."
         }
       ],
-      "collocations": ["severe blizzard", "winter blizzard", "blizzard conditions"],
-      "synonyms": ["snowstorm"],
+      "collocations": [
+        "severe blizzard",
+        "winter blizzard",
+        "blizzard conditions"
+      ],
+      "synonyms": [
+        "snowstorm"
+      ],
       "antonyms": [],
       "wordFamily": []
     },
@@ -583,7 +788,11 @@
           "vietnamese": "Chúng tôi nhìn thấy cầu vồng đôi trải dài khắp bầu trời."
         }
       ],
-      "collocations": ["beautiful rainbow", "double rainbow", "rainbow colors"],
+      "collocations": [
+        "beautiful rainbow",
+        "double rainbow",
+        "rainbow colors"
+      ],
       "synonyms": [],
       "antonyms": [],
       "wordFamily": []

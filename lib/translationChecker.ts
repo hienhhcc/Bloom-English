@@ -36,13 +36,18 @@ function getEvaluationPrompt(
 
 Vietnamese: "${vietnameseSentence}"
 English translation to evaluate: "${userTranslation}"
-Required vocabulary word: "${vocabularyWord}"
+Required vocabulary word that MUST appear in reference: "${vocabularyWord}"
 
-Task: Provide a natural reference translation that uses the required vocabulary word "${vocabularyWord}", and score the user's attempt.
+=== MOST IMPORTANT RULE ===
+Your referenceTranslation MUST contain the EXACT word "${vocabularyWord}".
+DO NOT use synonyms like "delicious" instead of "scrumptious", or "happy" instead of "joyful".
+The word "${vocabularyWord}" MUST appear exactly as written in your referenceTranslation.
+
+Task: Create a reference translation using "${vocabularyWord}" and evaluate the user's attempt.
 
 Output valid JSON only:
 {
-  "referenceTranslation": "your natural English translation using the word '${vocabularyWord}'",
+  "referenceTranslation": "your translation that MUST include the exact word '${vocabularyWord}'",
   "grammarCorrect": true or false,
   "grammarErrors": [{"message": "error description", "context": "problematic text", "suggestion": "fix"}],
   "isCorrect": true or false,
@@ -53,16 +58,21 @@ Output valid JSON only:
 
 Scoring guide:
 - 95-100: Perfect or nearly identical to reference
-- 85-94: Same meaning, minor word choice differences (synonyms OK)
+- 85-94: Same meaning, minor word choice differences (synonyms OK for non-vocabulary words)
 - 70-84: Correct meaning but awkward phrasing
-- Below 70: Wrong meaning or major errors
+- 50-69: Some meaning conveyed but significant issues
+- Below 50: Wrong meaning, major errors, or misspellings of key words
+
+CRITICAL REQUIREMENTS:
+1. referenceTranslation MUST contain "${vocabularyWord}" - NOT a synonym! This is mandatory.
+2. SPELLING ERRORS: Misspelled words like "chicket" instead of "chicken" MUST be marked as grammarCorrect: false
+3. ALWAYS provide a referenceTranslation - never leave it empty
+4. If user correctly uses "${vocabularyWord}" and the translation is accurate, score should be 85+
 
 Important:
-- The reference translation MUST include the vocabulary word "${vocabularyWord}" (not synonyms)
+- If user's translation has ANY misspelled words, set grammarCorrect to false and list the spelling error
 - Translate the Vietnamese accurately - pay attention to specific terms
-- If user's translation matches your reference, score 95-100 and leave suggestions empty
-- Only list grammar errors if there are actual mistakes
-- Synonyms are acceptable for other words, but the vocabulary word should be used`;
+- If user's translation uses "${vocabularyWord}" correctly with accurate meaning, reward that with a high score`;
 }
 
 // ============ OLLAMA PROVIDER ============
@@ -146,7 +156,18 @@ Always provide accurate translations - for example:
 - "Cá heo" = "Dolphin"
 - "Voi" = "Elephant"
 Be precise with animal names, technical terms, and cultural references.
-When a vocabulary word is specified, your reference translation MUST use that exact word.`;
+
+MANDATORY RULE FOR REFERENCE TRANSLATIONS:
+When a vocabulary word is specified (like "scrumptious", "beverage", etc.), your referenceTranslation MUST use that EXACT word.
+DO NOT substitute synonyms! If the vocabulary word is "scrumptious", use "scrumptious" NOT "delicious".
+If the vocabulary word is "beverage", use "beverage" NOT "drink".
+This is a vocabulary learning app - the whole point is to practice using the specific word.
+
+CRITICAL: You must carefully check for SPELLING ERRORS in the user's translation.
+- "chicket" is a misspelling of "chicken" - mark as grammar error
+- "reciepe" is a misspelling of "recipe" - mark as grammar error
+- Any misspelled word should set grammarCorrect to false and be listed in grammarErrors
+- ALWAYS provide a non-empty referenceTranslation that includes the required vocabulary word`;
 
   const userPrompt = getEvaluationPrompt(vietnameseSentence, userTranslation, vocabularyWord);
 
@@ -230,8 +251,8 @@ function parseJSONResponse(
             .slice(0, 3)
         : [],
       referenceTranslation:
-        typeof parsed.referenceTranslation === "string"
-          ? parsed.referenceTranslation
+        typeof parsed.referenceTranslation === "string" && parsed.referenceTranslation.trim()
+          ? parsed.referenceTranslation.trim()
           : `(Translation of: ${vietnameseSentence})`,
     };
   } catch {

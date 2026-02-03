@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback, useImperativeHandle, forwardRef } from 'react';
 
 interface LetterSlotsProps {
   word: string;
@@ -11,16 +11,32 @@ interface LetterSlotsProps {
   lockedChars?: number;
 }
 
-export function LetterSlots({
+export interface LetterSlotsRef {
+  focus: () => void;
+}
+
+export const LetterSlots = forwardRef<LetterSlotsRef, LetterSlotsProps>(function LetterSlots({
   word,
   value,
   onChange,
   disabled = false,
   showResult = null,
   lockedChars = 0,
-}: LetterSlotsProps) {
+}, ref) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+
+  // Expose focus method to parent
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        // Move cursor to end
+        const len = inputRef.current.value.length;
+        inputRef.current.setSelectionRange(len, len);
+      }
+    },
+  }), []);
 
   // Move cursor to end of input value
   const moveCursorToEnd = useCallback(() => {
@@ -143,7 +159,7 @@ export function LetterSlots({
         spellCheck={false}
       />
 
-      <div className="flex justify-center gap-1 md:gap-1.5 overflow-x-auto">
+      <div className={`flex justify-center flex-wrap gap-1 ${word.length > 12 ? 'gap-0.5' : 'md:gap-1.5'}`}>
         {word.split('').map((char, index) => {
           const isSpace = char === ' ';
           const userChar = value[index] || '';
@@ -155,13 +171,24 @@ export function LetterSlots({
             );
           }
 
+          // Smaller slots for long words
+          const slotSizeClass = word.length > 15
+            ? 'w-4 md:w-5'
+            : word.length > 12
+              ? 'w-5 md:w-6'
+              : 'w-5 md:w-7';
+
+          const fontSizeClass = word.length > 15
+            ? 'text-base md:text-lg'
+            : 'text-lg md:text-xl';
+
           return (
             <div
               key={index}
-              className="flex flex-col items-center w-5 md:w-7 flex-shrink-0"
+              className={`flex flex-col items-center ${slotSizeClass}`}
             >
               <span
-                className={`text-lg md:text-xl font-mono font-bold h-7 flex items-center justify-center ${getSlotColor(index)}`}
+                className={`${fontSizeClass} font-mono font-bold h-7 flex items-center justify-center ${getSlotColor(index)}`}
               >
                 {displayChar || '\u00A0'}
               </span>
@@ -180,4 +207,4 @@ export function LetterSlots({
       )}
     </div>
   );
-}
+});

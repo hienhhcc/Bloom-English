@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import type { VocabularyItem } from '@/lib/vocabulary/types';
-import { LetterSlots } from './LetterSlots';
+import { LetterSlots, type LetterSlotsRef } from './LetterSlots';
 import { Check, X, ArrowRight, Lightbulb } from 'lucide-react';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
 
@@ -28,6 +28,7 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
   const [hintsUsed, setHintsUsed] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
+  const letterSlotsRef = useRef<LetterSlotsRef>(null);
 
   const maxHints = useMemo(() => calculateMaxHints(item.word.length), [item.word.length]);
   const hintsRemaining = maxHints - hintsUsed;
@@ -81,6 +82,11 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
     const correctPrefix = item.word.slice(0, newHintLevel).toLowerCase();
     const userSuffix = userInput.slice(newHintLevel);
     setUserInput(correctPrefix + userSuffix);
+
+    // Focus the input after hint is revealed
+    requestAnimationFrame(() => {
+      letterSlotsRef.current?.focus();
+    });
   }, [hintsUsed, maxHints, item.word, userInput]);
 
   useEffect(() => {
@@ -129,6 +135,7 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
 
       <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-6">
         <LetterSlots
+          ref={letterSlotsRef}
           word={item.word}
           value={userInput}
           onChange={setUserInput}

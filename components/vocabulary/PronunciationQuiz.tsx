@@ -20,7 +20,7 @@ interface PronunciationQuizProps {
 
 export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) {
   const [phase, setPhase] = useState<PronunciationPhase>('word');
-  const [quizState, setQuizState] = useState<QuizState>('ready');
+  const [hasResult, setHasResult] = useState(false);
   const [wordResult, setWordResult] = useState<PronunciationResult | null>(null);
   const [sentenceResult, setSentenceResult] = useState<PronunciationResult | null>(null);
   const [showPermissionUI, setShowPermissionUI] = useState(false);
@@ -44,6 +44,15 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
 
   // Use first example sentence for pronunciation practice
   const exampleSentence = item.examples[0];
+
+  // Compute quiz state from recording/processing status and result
+  const quizState: QuizState = hasResult
+    ? 'result'
+    : isListening
+      ? 'recording'
+      : isProcessing
+        ? 'processing'
+        : 'ready';
 
   // Get the expected text based on current phase
   const getExpectedText = useCallback(() => {
@@ -97,43 +106,30 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
       playErrorSound();
     }
 
-    setQuizState('result');
+    setHasResult(true);
   }, [phase, getExpectedText]);
 
   // Handle permission errors
   const handlePermissionError = useCallback(() => {
     setShowPermissionUI(true);
-    setQuizState('ready');
+    setHasResult(false);
   }, []);
-
-  // Update quiz state based on recording/processing states
-  useEffect(() => {
-    if (isListening) {
-      setQuizState('recording');
-    } else if (isProcessing) {
-      setQuizState('processing');
-    } else if (quizState === 'recording') {
-      // Recording was cancelled before it started (e.g., user tapped stop immediately)
-      // Reset to ready state
-      setQuizState('ready');
-    }
-  }, [isListening, isProcessing, quizState]);
 
   // Handle transcription completion - when isProcessing goes from true to false
   useEffect(() => {
-    if (prevIsProcessingRef.current && !isProcessing && quizState === 'processing') {
+    if (prevIsProcessingRef.current && !isProcessing && !hasResult) {
       // Transcription just completed
       queueMicrotask(() => processRecordingResult(transcript));
     }
     prevIsProcessingRef.current = isProcessing;
-  }, [isProcessing, transcript, quizState, processRecordingResult]);
+  }, [isProcessing, transcript, hasResult, processRecordingResult]);
 
   // Handle errors
   useEffect(() => {
     if (error === 'not-allowed' || error === 'audio-capture') {
       queueMicrotask(() => handlePermissionError());
-    } else if (error === 'transcription-failed' || error === 'no-speech') {
-      // Handle transcription errors
+    } else if (error === 'transcription-failed' || error === 'no-speech' || error === 'non-english-detected') {
+      // Handle transcription errors - including non-English detection
       queueMicrotask(() => processRecordingResult(''));
     }
   }, [error, handlePermissionError, processRecordingResult]);
@@ -158,7 +154,7 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
     } else {
       setSentenceResult(null);
     }
-    setQuizState('ready');
+    setHasResult(false);
   }, [resetTranscript, phase]);
 
   const handleContinue = useCallback(() => {
@@ -167,7 +163,7 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
       resetTranscript();
       setEvaluatedText('');
       setPhase('sentence');
-      setQuizState('ready');
+      setHasResult(false);
     } else {
       // Both phases complete - determine overall result
       const wordPassed = wordResult?.isPassing ?? false;

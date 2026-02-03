@@ -52,5 +52,14 @@
     "icon": "🎨",
     "wordCount": 20,
     "difficulty": "beginner"
+  },
+  {
+    "id": "day_56",
+    "name": "Day 56",
+    "nameVietnamese": "Ngày 56",
+    "description": "Learned vocabulary for Day 56",
+    "icon": "🌟",
+    "wordCount": 20,
+    "difficulty": "intermediate"
   }
 ]

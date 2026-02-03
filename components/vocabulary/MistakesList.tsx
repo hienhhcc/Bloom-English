@@ -18,7 +18,7 @@ export function MistakesList({
   onStartReview,
   onStartReviewAll,
 }: MistakesListProps) {
-  const { allMistakes, mistakesByTopic, totalMistakesCount, isLoaded } = useMistakes();
+  const { mistakesByTopic, totalMistakesCount, isLoaded } = useMistakes();
 
   if (!isLoaded) {
     return (

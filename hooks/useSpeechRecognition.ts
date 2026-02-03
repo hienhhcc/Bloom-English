@@ -9,6 +9,7 @@ export type SpeechRecognitionError =
   | "network"
   | "not-supported"
   | "transcription-failed"
+  | "non-english-detected"
   | "unknown";
 
 interface ListeningOptions {
@@ -38,6 +39,42 @@ interface Puter {
   ai: PuterAI;
 }
 
+/**
+ * Detect if text contains non-English characters (CJK, Cyrillic, Arabic, etc.)
+ * Returns true if the text appears to be non-English
+ */
+function containsNonEnglishCharacters(text: string): boolean {
+  // Check for CJK (Chinese, Japanese, Korean) characters
+  const cjkPattern = /[\u4e00-\u9fff\u3400-\u4dbf\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/;
+  // Check for Cyrillic characters
+  const cyrillicPattern = /[\u0400-\u04ff]/;
+  // Check for Arabic characters
+  const arabicPattern = /[\u0600-\u06ff]/;
+  // Check for Thai characters
+  const thaiPattern = /[\u0e00-\u0e7f]/;
+  // Check for Devanagari (Hindi) characters
+  const devanagariPattern = /[\u0900-\u097f]/;
+
+  return (
+    cjkPattern.test(text) ||
+    cyrillicPattern.test(text) ||
+    arabicPattern.test(text) ||
+    thaiPattern.test(text) ||
+    devanagariPattern.test(text)
+  );
+}
+
+/**
+ * Remove non-English characters from text, keeping only ASCII and common punctuation
+ */
+function filterToEnglishOnly(text: string): string {
+  // Keep only ASCII letters, numbers, spaces, and common punctuation
+  return text
+    .replace(/[^\x20-\x7E]/g, ' ')  // Replace non-ASCII with space
+    .replace(/\s+/g, ' ')           // Collapse multiple spaces
+    .trim();
+}
+
 export function useSpeechRecognition(): UseSpeechRecognitionReturn {
   const [isListening, setIsListening] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -55,14 +92,18 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
   // Load Puter.js on first use
   const loadPuter = async (): Promise<Puter> => {
     if (!puterRef.current) {
-      const module = await import("@heyputer/puter.js");
-      puterRef.current = module.default as Puter;
+      console.log("Loading Puter.js...");
+      const puterModule = await import("@heyputer/puter.js");
+      console.log("Puter.js module loaded:", puterModule);
+      puterRef.current = puterModule.default as Puter;
+      console.log("Puter.js initialized:", puterRef.current);
     }
     return puterRef.current;
   };
 
   // Process audio and transcribe - called when recording stops
   const processAudio = useCallback(async (mimeType: string) => {
+    console.log("processAudio called, mimeType:", mimeType);
     setIsListening(false);
     setIsProcessing(true);
     isStartingRef.current = false;
@@ -73,27 +114,55 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
     streamRef.current = null;
 
     // Create audio blob
+    console.log("Audio chunks count:", audioChunksRef.current.length);
     const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
     audioChunksRef.current = [];
 
+    console.log("Created audio blob, size:", audioBlob.size);
     if (audioBlob.size === 0) {
+      console.log("No audio data recorded");
       setError("no-speech");
       setIsProcessing(false);
       return;
     }
 
     try {
-      // Transcribe with Puter.js - force English language
+      // Transcribe with Puter.js
       const puter = await loadPuter();
+      console.log("Sending audio to Puter.js for transcription, size:", audioBlob.size);
       const result = await puter.ai.speech2txt(audioBlob, {
-        language: "en", // Force English transcription only
+        language: "en",   // Request English transcription
       });
-      const text = typeof result === "string" ? result : result.text || "";
-      setTranscript(text.trim());
+      console.log("Puter.js transcription result:", result);
+      let text = typeof result === "string" ? result : result.text || "";
+      text = text.trim();
+
+      // Post-process: Check for non-English characters and filter them out
+      const hadNonEnglish = containsNonEnglishCharacters(text);
+      if (hadNonEnglish) {
+        console.warn("Non-English characters detected in transcription:", text);
+        // Filter to English-only characters
+        text = filterToEnglishOnly(text);
+        console.log("Filtered transcription:", text);
+      }
+
+      // If after filtering we have no meaningful text
+      if (!text || text.length < 2) {
+        // Use specific error if we filtered out non-English
+        setError(hadNonEnglish ? "non-english-detected" : "no-speech");
+      } else {
+        setTranscript(text);
+      }
     } catch (err) {
       console.error("Transcription error:", err);
+      // Log more details about the error
+      if (err instanceof Error) {
+        console.error("Error message:", err.message);
+        console.error("Error stack:", err.stack);
+      }
       setError("transcription-failed");
     } finally {
+      console.log("processAudio completed");
       setIsProcessing(false);
     }
   }, []);
@@ -155,6 +224,7 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
 
         // Set up data handler
         mediaRecorder.ondataavailable = (event) => {
+          console.log("ondataavailable, data size:", event.data.size);
           if (event.data.size > 0) {
             audioChunksRef.current.push(event.data);
           }
@@ -162,6 +232,7 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
 
         // Set up stop handler - this is called regardless of how recording stops
         mediaRecorder.onstop = () => {
+          console.log("mediaRecorder.onstop called");
           // Clear timeout if it exists
           if (maxDurationTimeoutRef.current) {
             clearTimeout(maxDurationTimeoutRef.current);
@@ -173,7 +244,9 @@ export function useSpeechRecognition(): UseSpeechRecognitionReturn {
         };
 
         // Start recording - collect data every 100ms
+        console.log("Starting MediaRecorder with mimeType:", mimeType);
         mediaRecorder.start(100);
+        console.log("MediaRecorder started, state:", mediaRecorder.state);
         setIsListening(true);
         isStartingRef.current = false;
 

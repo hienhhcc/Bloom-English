@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
+import Link from 'next/link';
 import type { VocabularyTopic, VocabularyItem } from '@/lib/vocabulary/types';
 import { MistakesList } from './MistakesList';
 import { TopicQuiz } from './TopicQuiz';
 import { useMistakes } from '@/hooks/useMistakes';
 import { useProgress } from '@/hooks/useProgress';
 import type { QuizResult } from '@/hooks/useTopicQuiz';
+import { ChevronLeft } from 'lucide-react';
 
 type PageMode = 'list' | 'quiz';
 
@@ -120,16 +122,28 @@ export function MistakesPageContent({
   if (pageMode === 'quiz' && reviewItems.length > 0) {
     return (
       <div>
+        <Link
+          href="/vocabulary/mistakes"
+          onClick={(e) => {
+            e.preventDefault();
+            handleExitQuiz();
+          }}
+          className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-4 cursor-pointer"
+        >
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back to Mistakes
+        </Link>
+
         <div className="flex items-center gap-3 mb-8">
           <span className="text-4xl">
             {activeTopic ? activeTopic.icon : '📝'}
           </span>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold">
-              {activeTopic ? `Review: ${activeTopic.name}` : 'Review All Mistakes'}
+              {activeTopic ? activeTopic.name : 'Review Mistakes'}
             </h1>
             <p className="text-gray-500 dark:text-gray-400">
-              {reviewItems.length} word{reviewItems.length !== 1 ? 's' : ''} to review
+              {reviewItems.length} word{reviewItems.length !== 1 ? 's' : ''} to practice
             </p>
           </div>
         </div>
@@ -145,11 +159,28 @@ export function MistakesPageContent({
   }
 
   return (
-    <MistakesList
-      topics={topics}
-      vocabularyByTopic={vocabularyByTopic}
-      onStartReview={handleStartReview}
-      onStartReviewAll={handleStartReviewAll}
-    />
+    <>
+      <Link
+        href="/vocabulary"
+        className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-4 cursor-pointer"
+      >
+        <ChevronLeft className="w-4 h-4 mr-1" />
+        Back to Topics
+      </Link>
+
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold mb-2">Review Mistakes</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Practice the words you got wrong to strengthen your memory
+        </p>
+      </div>
+
+      <MistakesList
+        topics={topics}
+        vocabularyByTopic={vocabularyByTopic}
+        onStartReview={handleStartReview}
+        onStartReviewAll={handleStartReviewAll}
+      />
+    </>
   );
 }

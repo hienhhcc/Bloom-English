@@ -61,7 +61,14 @@ export function useTopicQuiz(
   options?: UseTopicQuizOptions
 ): UseTopicQuizReturn {
   const { initialState, onPositionChange } = options ?? {};
-  const startedAtRef = useRef<number>(Date.now());
+  const startedAtRef = useRef<number>(0);
+
+  // Set start time on mount (avoiding impure function call during render)
+  useEffect(() => {
+    if (startedAtRef.current === 0) {
+      startedAtRef.current = Date.now();
+    }
+  }, []);
 
   // Initialize state, attempting to restore from initialState if provided
   const [shuffledItems, setShuffledItems] = useState<VocabularyItem[]>(() => {
