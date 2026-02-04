@@ -29,6 +29,17 @@ export interface ActiveReviewPosition {
   startedAt: number;
 }
 
+export interface ActiveQuizPosition {
+  currentIndex: number;
+  shuffledItemIds: string[];
+  results: Array<{
+    itemId: string;
+    userAnswer: string;
+    isCorrect: boolean;
+  }>;
+  startedAt: number;
+}
+
 export interface MistakeRecord {
   itemId: string;
   lastWrongDate: number;
@@ -42,6 +53,7 @@ export interface TopicProgress {
   completedAt: number | null;
   reviewSchedule: ReviewSchedule | null;
   activeReview: ActiveReviewPosition | null;
+  activeQuiz: ActiveQuizPosition | null;
   mistakes: MistakeRecord[];
 }
 
@@ -49,6 +61,10 @@ export interface LearningProgress {
   version: number;
   topics: Record<string, TopicProgress>;
   lastUpdated: number;
+  // Dismissed alerts - stored as "topicId-reviewType" strings
+  dismissedReviewAlerts?: string[];
+  // Dismissed mistakes alert - stores the count when dismissed (shows again if count changes)
+  dismissedMistakesAlertCount?: number;
 }
 
 export type TopicStatus = "not-started" | "completed" | "review-due";
@@ -69,14 +85,37 @@ export function createInitialTopicProgress(topicId: string): TopicProgress {
     completedAt: null,
     reviewSchedule: null,
     activeReview: null,
+    activeQuiz: null,
     mistakes: [],
   };
 }
 
+/**
+ * Get the start of the next day (00:00:00 tomorrow)
+ */
+function getStartOfNextDay(timestamp: number): number {
+  const date = new Date(timestamp);
+  date.setDate(date.getDate() + 1);
+  date.setHours(0, 0, 0, 0);
+  return date.getTime();
+}
+
+/**
+ * Get the start of day N days from now
+ */
+function getStartOfDayAfter(timestamp: number, days: number): number {
+  const date = new Date(timestamp);
+  date.setDate(date.getDate() + days);
+  date.setHours(0, 0, 0, 0);
+  return date.getTime();
+}
+
 export function createReviewSchedule(completedAt: number): ReviewSchedule {
   return {
-    oneDay: { date: completedAt + ONE_DAY_MS, completed: false },
-    oneWeek: { date: completedAt + ONE_WEEK_MS, completed: false },
+    // 1-day review: due at start of next day (00:00:00)
+    oneDay: { date: getStartOfNextDay(completedAt), completed: false },
+    // 7-day review: due at start of 7th day from now (00:00:00)
+    oneWeek: { date: getStartOfDayAfter(completedAt, 7), completed: false },
   };
 }
 

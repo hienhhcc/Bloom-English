@@ -46,6 +46,7 @@ export interface VocabularyTopic {
   icon: string;
   wordCount: number;
   difficulty: DifficultyLevel;
+  addedOrder: number; // Higher number = more recently added
 }
 
 export interface TopicData {

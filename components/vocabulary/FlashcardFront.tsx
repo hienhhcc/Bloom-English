@@ -19,7 +19,8 @@ function getDifficultyColor(difficulty: string): string {
 }
 
 function getPartOfSpeechColor(pos: string): string {
-  switch (pos) {
+  const normalizedPos = pos.toLowerCase().trim();
+  switch (normalizedPos) {
     case 'noun':
       return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
     case 'verb':
@@ -33,6 +34,10 @@ function getPartOfSpeechColor(pos: string): string {
   }
 }
 
+function parsePartsOfSpeech(pos: string): string[] {
+  return pos.split(/[;,]/).map(p => p.trim()).filter(p => p.length > 0);
+}
+
 export function FlashcardFront({ item }: FlashcardFrontProps) {
   return (
     <div className="absolute inset-0 backface-hidden bg-white dark:bg-gray-900 rounded-2xl p-6 flex flex-col shadow-lg">
@@ -40,9 +45,16 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
         <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(item.difficulty)}`}>
           {item.difficulty}
         </span>
-        <span className={`text-xs px-2 py-1 rounded-full ${getPartOfSpeechColor(item.partOfSpeech)}`}>
-          {item.partOfSpeech}
-        </span>
+        <div className="flex gap-1 flex-wrap justify-end">
+          {parsePartsOfSpeech(item.partOfSpeech).map((pos) => (
+            <span
+              key={pos}
+              className={`text-xs px-2 py-1 rounded-full ${getPartOfSpeechColor(pos)}`}
+            >
+              {pos}
+            </span>
+          ))}
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center text-center">

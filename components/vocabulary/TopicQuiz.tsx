@@ -1,13 +1,13 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useMemo } from 'react';
+import { useCallback, useEffect, useRef, useMemo, useState } from 'react';
 import type { VocabularyItem } from '@/lib/vocabulary/types';
 import { useTopicQuiz, type QuizResult, type UseTopicQuizOptions } from '@/hooks/useTopicQuiz';
 import { useProgress } from '@/hooks/useProgress';
 import { CombinedQuiz } from './CombinedQuiz';
 import { QuizResults } from './QuizResults';
 import { ProgressIndicator } from './ProgressIndicator';
-import type { ActiveReviewPosition } from '@/lib/vocabulary/progress';
+import type { ActiveReviewPosition, ActiveQuizPosition } from '@/lib/vocabulary/progress';
 
 interface TopicQuizProps {
   items: VocabularyItem[];
@@ -29,10 +29,14 @@ function TopicQuizInner({
   savedPosition,
   saveReviewPosition,
   clearReviewPosition,
+  saveQuizPosition,
+  clearQuizPosition,
 }: TopicQuizProps & {
-  savedPosition: ActiveReviewPosition | null;
+  savedPosition: ActiveReviewPosition | ActiveQuizPosition | null;
   saveReviewPosition: (topicId: string, position: ActiveReviewPosition) => void;
   clearReviewPosition: (topicId: string) => void;
+  saveQuizPosition: (topicId: string, position: ActiveQuizPosition) => void;
+  clearQuizPosition: (topicId: string) => void;
 }) {
   // Build initial state from saved position
   const initialState = useMemo((): UseTopicQuizOptions['initialState'] => {
@@ -63,17 +67,19 @@ function TopicQuizInner({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only compute on mount
 
-  // Position change handler - only save in review mode
+  // Position change handler - save for both review and topic quiz modes
   const handlePositionChange = useCallback(
     (position: Omit<ActiveReviewPosition, 'reviewType'>) => {
-      if (!reviewType) return;
-
-      saveReviewPosition(topicId, {
-        ...position,
-        reviewType,
-      });
+      if (reviewType) {
+        saveReviewPosition(topicId, {
+          ...position,
+          reviewType,
+        });
+      } else {
+        saveQuizPosition(topicId, position);
+      }
     },
-    [reviewType, topicId, saveReviewPosition]
+    [reviewType, topicId, saveReviewPosition, saveQuizPosition]
   );
 
   const {
@@ -88,7 +94,7 @@ function TopicQuizInner({
     resetQuiz,
   } = useTopicQuiz(items, {
     initialState,
-    onPositionChange: reviewType ? handlePositionChange : undefined,
+    onPositionChange: handlePositionChange,
   });
 
   const handleQuizComplete = useCallback(
@@ -108,12 +114,14 @@ function TopicQuizInner({
       hasRecordedRef.current = true;
       onQuizComplete(score, results);
 
-      // Clear saved position when review is completed
+      // Clear saved position when quiz/review is completed
       if (reviewType) {
         clearReviewPosition(topicId);
+      } else {
+        clearQuizPosition(topicId);
       }
     }
-  }, [isComplete, onQuizComplete, score, results, reviewType, topicId, clearReviewPosition]);
+  }, [isComplete, onQuizComplete, score, results, reviewType, topicId, clearReviewPosition, clearQuizPosition]);
 
   // Reset the ref when quiz is reset
   useEffect(() => {
@@ -130,6 +138,7 @@ function TopicQuizInner({
         onRetry={resetQuiz}
         onExit={onExit}
         isFirstCompletion={isFirstCompletion}
+        isReview={!!reviewType}
       />
     );
   }
@@ -160,16 +169,41 @@ export function TopicQuiz({
   isFirstCompletion = false,
   reviewType,
 }: TopicQuizProps) {
-  const { saveReviewPosition, getReviewPosition, clearReviewPosition, isLoaded } = useProgress();
+  const {
+    saveReviewPosition,
+    getReviewPosition,
+    clearReviewPosition,
+    saveQuizPosition,
+    getQuizPosition,
+    clearQuizPosition,
+    isLoaded,
+  } = useProgress();
 
-  // Get saved position if this is a review mode
-  const savedPosition = useMemo(() => {
-    if (!isLoaded || !reviewType) return null;
-    return getReviewPosition(topicId, reviewType);
-  }, [isLoaded, reviewType, topicId, getReviewPosition]);
+  // Track whether we had a saved position when first loaded (set once, never changes)
+  const [initialSavedPosition, setInitialSavedPosition] = useState<
+    ActiveReviewPosition | ActiveQuizPosition | null | undefined
+  >(undefined);
 
-  // Wait for progress to load if we're in review mode (so we can restore position)
-  if (reviewType && !isLoaded) {
+  // Get saved position - for review mode or topic quiz mode
+  const currentSavedPosition = useMemo(() => {
+    if (!isLoaded) return null;
+    if (reviewType) {
+      return getReviewPosition(topicId, reviewType);
+    }
+    return getQuizPosition(topicId);
+  }, [isLoaded, reviewType, topicId, getReviewPosition, getQuizPosition]);
+
+  // Capture the initial saved position once when first loaded
+  // This prevents the key from changing when position is cleared on completion
+  useEffect(() => {
+    if (isLoaded && initialSavedPosition === undefined) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setInitialSavedPosition(currentSavedPosition);
+    }
+  }, [isLoaded, currentSavedPosition, initialSavedPosition]);
+
+  // Wait for progress to load (so we can restore position)
+  if (!isLoaded || initialSavedPosition === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-gray-500 dark:text-gray-400">Loading...</div>
@@ -177,9 +211,9 @@ export function TopicQuiz({
     );
   }
 
-  // Use a key that changes when savedPosition is first loaded in review mode
-  // This ensures the inner component gets the correct initial state
-  const key = reviewType ? `${topicId}-${savedPosition ? 'restored' : 'fresh'}` : topicId;
+  // Use a stable key based on the INITIAL saved position state
+  // This prevents remounting when position is cleared on completion
+  const key = `${topicId}-${reviewType || 'quiz'}-${initialSavedPosition ? 'restored' : 'fresh'}`;
 
   return (
     <TopicQuizInner
@@ -190,9 +224,11 @@ export function TopicQuiz({
       onQuizComplete={onQuizComplete}
       isFirstCompletion={isFirstCompletion}
       reviewType={reviewType}
-      savedPosition={savedPosition}
+      savedPosition={initialSavedPosition}
       saveReviewPosition={saveReviewPosition}
       clearReviewPosition={clearReviewPosition}
+      saveQuizPosition={saveQuizPosition}
+      clearQuizPosition={clearQuizPosition}
     />
   );
 }

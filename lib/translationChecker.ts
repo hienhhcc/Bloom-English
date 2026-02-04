@@ -32,47 +32,49 @@ function getEvaluationPrompt(
   userTranslation: string,
   vocabularyWord: string
 ): string {
-  return `Evaluate this English translation of a Vietnamese sentence.
+  return `You are evaluating an English translation of a Vietnamese sentence for a vocabulary learning app.
 
-Vietnamese: "${vietnameseSentence}"
-English translation to evaluate: "${userTranslation}"
-Required vocabulary word that MUST appear in reference: "${vocabularyWord}"
+Vietnamese sentence: "${vietnameseSentence}"
+User's translation: "${userTranslation}"
+REQUIRED vocabulary word: "${vocabularyWord}"
 
-=== MOST IMPORTANT RULE ===
-Your referenceTranslation MUST contain the EXACT word "${vocabularyWord}".
-DO NOT use synonyms like "delicious" instead of "scrumptious", or "happy" instead of "joyful".
-The word "${vocabularyWord}" MUST appear exactly as written in your referenceTranslation.
+=== ABSOLUTE REQUIREMENT - READ CAREFULLY ===
+Your "referenceTranslation" field MUST contain the EXACT word "${vocabularyWord}".
+This is NON-NEGOTIABLE. The entire purpose of this app is to practice specific vocabulary words.
 
-Task: Create a reference translation using "${vocabularyWord}" and evaluate the user's attempt.
+WRONG examples (DO NOT DO THIS):
+- If vocabularyWord is "portion", do NOT write "amount" or "serving" - write "portion"
+- If vocabularyWord is "scrumptious", do NOT write "delicious" - write "scrumptious"
+- If vocabularyWord is "beverage", do NOT write "drink" - write "beverage"
 
-Output valid JSON only:
+CORRECT example:
+- vocabularyWord: "portion" → referenceTranslation: "Controlling food portions can help manage weight."
+
+=== YOUR TASK ===
+1. First, write a referenceTranslation that:
+   - Accurately translates the Vietnamese sentence
+   - Contains the EXACT word "${vocabularyWord}" (not a synonym!)
+2. Then evaluate the user's translation against your reference
+
+Output ONLY valid JSON:
 {
-  "referenceTranslation": "your translation that MUST include the exact word '${vocabularyWord}'",
-  "grammarCorrect": true or false,
-  "grammarErrors": [{"message": "error description", "context": "problematic text", "suggestion": "fix"}],
-  "isCorrect": true or false,
+  "referenceTranslation": "Your translation containing the word '${vocabularyWord}'",
+  "grammarCorrect": true/false,
+  "grammarErrors": [],
+  "isCorrect": true/false,
   "score": 0-100,
-  "feedback": "one sentence about the translation quality",
-  "suggestions": ["improvement suggestion"] or []
+  "feedback": "Brief feedback",
+  "suggestions": []
 }
 
-Scoring guide:
-- 95-100: Perfect or nearly identical to reference
-- 85-94: Same meaning, minor word choice differences (synonyms OK for non-vocabulary words)
+Scoring:
+- 85-100: Correct meaning AND uses "${vocabularyWord}"
 - 70-84: Correct meaning but awkward phrasing
-- 50-69: Some meaning conveyed but significant issues
-- Below 50: Wrong meaning, major errors, or misspellings of key words
+- 50-69: Partial meaning or missing "${vocabularyWord}"
+- Below 50: Wrong meaning or major errors
 
-CRITICAL REQUIREMENTS:
-1. referenceTranslation MUST contain "${vocabularyWord}" - NOT a synonym! This is mandatory.
-2. SPELLING ERRORS: Misspelled words like "chicket" instead of "chicken" MUST be marked as grammarCorrect: false
-3. ALWAYS provide a referenceTranslation - never leave it empty
-4. If user correctly uses "${vocabularyWord}" and the translation is accurate, score should be 85+
-
-Important:
-- If user's translation has ANY misspelled words, set grammarCorrect to false and list the spelling error
-- Translate the Vietnamese accurately - pay attention to specific terms
-- If user's translation uses "${vocabularyWord}" correctly with accurate meaning, reward that with a high score`;
+FINAL CHECK before responding:
+- Does your referenceTranslation contain "${vocabularyWord}"? If NO, rewrite it!`;
 }
 
 // ============ OLLAMA PROVIDER ============
@@ -83,6 +85,8 @@ interface OllamaResponse {
   done: boolean;
 }
 
+const MAX_OLLAMA_RETRIES = 3;
+
 async function checkWithOllama(
   vietnameseSentence: string,
   userTranslation: string,
@@ -90,27 +94,71 @@ async function checkWithOllama(
 ): Promise<TranslationCheckResult> {
   const prompt = getEvaluationPrompt(vietnameseSentence, userTranslation, vocabularyWord);
 
-  const response = await fetch(`${OLLAMA_BASE_URL}/api/generate`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: OLLAMA_MODEL,
-      prompt: prompt,
-      stream: false,
-      options: {
-        temperature: 0.3,
-      },
-    }),
-  });
+  let lastResult: TranslationCheckResult | null = null;
 
-  if (!response.ok) {
-    throw new Error(`Ollama API error: ${response.status}`);
+  for (let attempt = 1; attempt <= MAX_OLLAMA_RETRIES; attempt++) {
+    const response = await fetch(`${OLLAMA_BASE_URL}/api/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: OLLAMA_MODEL,
+        prompt: prompt,
+        stream: false,
+        options: {
+          temperature: 0.3,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ollama API error: ${response.status}`);
+    }
+
+    const data: OllamaResponse = await response.json();
+    const result = parseJSONResponse(data.response);
+    lastResult = result;
+
+    // Check if we got a valid reference translation:
+    // 1. Not empty
+    // 2. Not Vietnamese (doesn't contain the Vietnamese sentence)
+    // 3. Contains the required vocabulary word
+    const refLower = result.referenceTranslation?.toLowerCase() || "";
+    const vocabLower = vocabularyWord.toLowerCase();
+    const hasValidReference =
+      result.referenceTranslation &&
+      result.referenceTranslation.trim() !== "" &&
+      !result.referenceTranslation.includes(vietnameseSentence) &&
+      refLower.includes(vocabLower);
+
+    if (hasValidReference) {
+      return result;
+    }
+
+    // Log retry attempt with reason
+    if (attempt < MAX_OLLAMA_RETRIES) {
+      const reason = !result.referenceTranslation
+        ? "empty reference"
+        : !refLower.includes(vocabLower)
+          ? `missing vocabulary word "${vocabularyWord}"`
+          : "contains Vietnamese";
+      console.log(
+        `Ollama retry ${attempt}/${MAX_OLLAMA_RETRIES}: ${reason}, retrying...`
+      );
+    }
   }
 
-  const data: OllamaResponse = await response.json();
-  return parseJSONResponse(data.response, vietnameseSentence);
+  // Return the last result even if reference translation is invalid
+  // Clear the invalid reference to avoid showing Vietnamese
+  if (lastResult) {
+    return {
+      ...lastResult,
+      referenceTranslation: "",
+    };
+  }
+
+  throw new Error("Failed to get valid response from Ollama after retries");
 }
 
 export async function isOllamaAvailable(): Promise<boolean> {
@@ -149,25 +197,23 @@ async function checkWithOpenAI(
     throw new Error("OPENAI_API_KEY is required when using OpenAI provider");
   }
 
-  const systemPrompt = `You are an expert Vietnamese-English translation evaluator.
-You have deep knowledge of Vietnamese language, including regional terms and specific vocabulary.
-Always provide accurate translations - for example:
-- "Cá voi lưng gù" = "Humpback whale" (NOT dolphin)
-- "Cá heo" = "Dolphin"
-- "Voi" = "Elephant"
-Be precise with animal names, technical terms, and cultural references.
+  const systemPrompt = `You are an expert Vietnamese-English translation evaluator for a vocabulary learning app.
 
-MANDATORY RULE FOR REFERENCE TRANSLATIONS:
-When a vocabulary word is specified (like "scrumptious", "beverage", etc.), your referenceTranslation MUST use that EXACT word.
-DO NOT substitute synonyms! If the vocabulary word is "scrumptious", use "scrumptious" NOT "delicious".
-If the vocabulary word is "beverage", use "beverage" NOT "drink".
-This is a vocabulary learning app - the whole point is to practice using the specific word.
+=== ABSOLUTE REQUIREMENT ===
+Your "referenceTranslation" MUST contain the EXACT vocabulary word specified. This is NON-NEGOTIABLE.
 
-CRITICAL: You must carefully check for SPELLING ERRORS in the user's translation.
-- "chicket" is a misspelling of "chicken" - mark as grammar error
-- "reciepe" is a misspelling of "recipe" - mark as grammar error
-- Any misspelled word should set grammarCorrect to false and be listed in grammarErrors
-- ALWAYS provide a non-empty referenceTranslation that includes the required vocabulary word`;
+WRONG (never do this):
+- vocabularyWord: "portion" → "Controlling the amount of food..." ❌
+- vocabularyWord: "scrumptious" → "The food was delicious..." ❌
+
+CORRECT:
+- vocabularyWord: "portion" → "Controlling food portions..." ✓
+- vocabularyWord: "scrumptious" → "The food was scrumptious..." ✓
+
+Other rules:
+- Be precise with Vietnamese terms (e.g., "Cá voi lưng gù" = "Humpback whale")
+- Check for spelling errors and mark grammarCorrect: false if found
+- Always provide a non-empty referenceTranslation with the required vocabulary word`;
 
   const userPrompt = getEvaluationPrompt(vietnameseSentence, userTranslation, vocabularyWord);
 
@@ -197,7 +243,7 @@ CRITICAL: You must carefully check for SPELLING ERRORS in the user's translation
 
   const data: OpenAIResponse = await response.json();
   const content = data.choices[0]?.message?.content || "";
-  return parseJSONResponse(content, vietnameseSentence);
+  return parseJSONResponse(content);
 }
 
 export async function isOpenAIAvailable(): Promise<boolean> {
@@ -206,10 +252,7 @@ export async function isOpenAIAvailable(): Promise<boolean> {
 
 // ============ SHARED UTILITIES ============
 
-function parseJSONResponse(
-  response: string,
-  vietnameseSentence: string
-): TranslationCheckResult {
+function parseJSONResponse(response: string): TranslationCheckResult {
   try {
     const jsonMatch = response.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
@@ -253,7 +296,7 @@ function parseJSONResponse(
       referenceTranslation:
         typeof parsed.referenceTranslation === "string" && parsed.referenceTranslation.trim()
           ? parsed.referenceTranslation.trim()
-          : `(Translation of: ${vietnameseSentence})`,
+          : "",
     };
   } catch {
     console.error("Failed to parse LLM response:", response);

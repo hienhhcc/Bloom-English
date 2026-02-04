@@ -6,7 +6,8 @@
     "description": "Learn vocabulary about common animals and wildlife",
     "icon": "🦁",
     "wordCount": 20,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "addedOrder": 1
   },
   {
     "id": "food-drinks",
@@ -15,7 +16,8 @@
     "description": "Essential vocabulary for food, drinks, and dining",
     "icon": "🍕",
     "wordCount": 20,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "addedOrder": 2
   },
   {
     "id": "travel",
@@ -24,7 +26,8 @@
     "description": "Words and phrases for traveling and tourism",
     "icon": "✈️",
     "wordCount": 20,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "addedOrder": 3
   },
   {
     "id": "family",
@@ -33,7 +36,8 @@
     "description": "Vocabulary about family members and relationships",
     "icon": "👨‍👩‍👧‍👦",
     "wordCount": 20,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "addedOrder": 4
   },
   {
     "id": "weather",
@@ -42,7 +46,8 @@
     "description": "Words to describe weather and climate conditions",
     "icon": "🌤️",
     "wordCount": 20,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "addedOrder": 5
   },
   {
     "id": "colors",
@@ -51,7 +56,8 @@
     "description": "Learn different colors and shades in English",
     "icon": "🎨",
     "wordCount": 20,
-    "difficulty": "beginner"
+    "difficulty": "beginner",
+    "addedOrder": 6
   },
   {
     "id": "day_56",
@@ -60,6 +66,17 @@
     "description": "Learned vocabulary for Day 56",
     "icon": "🌟",
     "wordCount": 20,
-    "difficulty": "intermediate"
+    "difficulty": "intermediate",
+    "addedOrder": 7
+  },
+  {
+    "id": "day_57",
+    "name": "Day 57",
+    "nameVietnamese": "Ngày 57",
+    "description": "Learned vocabulary for Day 57",
+    "icon": "🌟",
+    "wordCount": 20,
+    "difficulty": "intermediate",
+    "addedOrder": 8
   }
 ]

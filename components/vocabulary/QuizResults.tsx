@@ -10,6 +10,7 @@ interface QuizResultsProps {
   onRetry: () => void;
   onExit: () => void;
   isFirstCompletion?: boolean;
+  isReview?: boolean;
 }
 
 function getScoreColor(percentage: number): string {
@@ -37,6 +38,7 @@ export function QuizResults({
   onRetry,
   onExit,
   isFirstCompletion = false,
+  isReview = false,
 }: QuizResultsProps) {
   const [showIncorrect, setShowIncorrect] = useState(true);
   const percentage = Math.round((score.correct / score.total) * 100);
@@ -50,7 +52,7 @@ export function QuizResults({
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Quiz Complete!
+          {isReview ? 'Review Complete!' : 'Quiz Complete!'}
         </h2>
 
         <div className={`text-5xl font-bold ${getScoreColor(percentage)} mb-2`}>

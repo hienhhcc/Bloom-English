@@ -7,6 +7,7 @@ import {
   createReviewSchedule,
   getTopicStatus,
   isReviewDue,
+  type ActiveQuizPosition,
   type ActiveReviewPosition,
   type LearningProgress,
   type MistakeRecord,
@@ -40,9 +41,17 @@ interface UseProgressReturn {
     reviewType: "oneDay" | "oneWeek",
   ) => ActiveReviewPosition | null;
   clearReviewPosition: (topicId: string) => void;
+  saveQuizPosition: (topicId: string, position: ActiveQuizPosition) => void;
+  getQuizPosition: (topicId: string) => ActiveQuizPosition | null;
+  clearQuizPosition: (topicId: string) => void;
   recordMistakes: (topicId: string, wrongItemIds: string[]) => void;
   clearMistake: (topicId: string, itemId: string) => void;
   getAllMistakes: () => Array<{ topicId: string; mistakes: MistakeRecord[] }>;
+  // Dismiss alert functions
+  dismissReviewAlert: (topicId: string, reviewType: "oneDay" | "oneWeek") => void;
+  isReviewAlertDismissed: (topicId: string, reviewType: "oneDay" | "oneWeek") => boolean;
+  dismissMistakesAlert: (count: number) => void;
+  isMistakesAlertDismissed: (count: number) => boolean;
 }
 
 export function useProgress(): UseProgressReturn {
@@ -264,6 +273,63 @@ export function useProgress(): UseProgressReturn {
     });
   }, []);
 
+  const saveQuizPosition = useCallback(
+    (topicId: string, position: ActiveQuizPosition) => {
+      setProgress((prev) => {
+        if (!prev) return prev;
+
+        const existingTopicProgress =
+          prev.topics[topicId] || createInitialTopicProgress(topicId);
+
+        return {
+          ...prev,
+          topics: {
+            ...prev.topics,
+            [topicId]: {
+              ...existingTopicProgress,
+              activeQuiz: position,
+            },
+          },
+          lastUpdated: Date.now(),
+        };
+      });
+    },
+    [],
+  );
+
+  const getQuizPosition = useCallback(
+    (topicId: string): ActiveQuizPosition | null => {
+      if (!progress) return null;
+
+      const topicProgress = progress.topics[topicId];
+      if (!topicProgress?.activeQuiz) return null;
+
+      return topicProgress.activeQuiz;
+    },
+    [progress],
+  );
+
+  const clearQuizPosition = useCallback((topicId: string) => {
+    setProgress((prev) => {
+      if (!prev) return prev;
+
+      const existingTopicProgress = prev.topics[topicId];
+      if (!existingTopicProgress) return prev;
+
+      return {
+        ...prev,
+        topics: {
+          ...prev.topics,
+          [topicId]: {
+            ...existingTopicProgress,
+            activeQuiz: null,
+          },
+        },
+        lastUpdated: Date.now(),
+      };
+    });
+  }, []);
+
   const recordMistakes = useCallback(
     (topicId: string, wrongItemIds: string[]) => {
       if (wrongItemIds.length === 0) return;
@@ -351,6 +417,59 @@ export function useProgress(): UseProgressReturn {
       }));
   }, [progress]);
 
+  const dismissReviewAlert = useCallback(
+    (topicId: string, reviewType: "oneDay" | "oneWeek") => {
+      setProgress((prev) => {
+        if (!prev) return prev;
+
+        const key = `${topicId}-${reviewType}`;
+        const existing = prev.dismissedReviewAlerts || [];
+
+        if (existing.includes(key)) return prev;
+
+        return {
+          ...prev,
+          dismissedReviewAlerts: [...existing, key],
+          lastUpdated: Date.now(),
+        };
+      });
+    },
+    []
+  );
+
+  const isReviewAlertDismissed = useCallback(
+    (topicId: string, reviewType: "oneDay" | "oneWeek"): boolean => {
+      if (!progress) return false;
+
+      const key = `${topicId}-${reviewType}`;
+      return progress.dismissedReviewAlerts?.includes(key) ?? false;
+    },
+    [progress]
+  );
+
+  const dismissMistakesAlert = useCallback((count: number) => {
+    setProgress((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        dismissedMistakesAlertCount: count,
+        lastUpdated: Date.now(),
+      };
+    });
+  }, []);
+
+  const isMistakesAlertDismissed = useCallback(
+    (count: number): boolean => {
+      if (!progress) return false;
+
+      // Alert is dismissed only if the count matches what was dismissed
+      // This way, if the count changes (more/fewer mistakes), the alert shows again
+      return progress.dismissedMistakesAlertCount === count;
+    },
+    [progress]
+  );
+
   return {
     progress,
     isLoaded,
@@ -362,8 +481,15 @@ export function useProgress(): UseProgressReturn {
     saveReviewPosition,
     getReviewPosition,
     clearReviewPosition,
+    saveQuizPosition,
+    getQuizPosition,
+    clearQuizPosition,
     recordMistakes,
     clearMistake,
     getAllMistakes,
+    dismissReviewAlert,
+    isReviewAlertDismissed,
+    dismissMistakesAlert,
+    isMistakesAlertDismissed,
   };
 }
