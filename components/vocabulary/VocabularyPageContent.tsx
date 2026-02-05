@@ -73,9 +73,9 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
     result.sort((a, b) => {
       switch (sortOption) {
         case 'added-desc':
-          return b.addedOrder - a.addedOrder;
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         case 'added-asc':
-          return a.addedOrder - b.addedOrder;
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
         case 'name-asc':
           return a.name.localeCompare(b.name);
         case 'name-desc':

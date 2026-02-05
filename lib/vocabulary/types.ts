@@ -46,7 +46,7 @@ export interface VocabularyTopic {
   icon: string;
   wordCount: number;
   difficulty: DifficultyLevel;
-  addedOrder: number; // Higher number = more recently added
+  createdAt: string; // ISO datetime string (YYYY-MM-DDTHH:mm:ss)
 }
 
 export interface TopicData {
