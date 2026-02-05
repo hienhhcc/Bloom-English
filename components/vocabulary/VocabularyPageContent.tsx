@@ -1,15 +1,16 @@
 'use client';
 
-import Link from 'next/link';
-import { useState, useMemo } from 'react';
-import { useProgress } from '@/hooks/useProgress';
 import { useMistakes } from '@/hooks/useMistakes';
-import type { VocabularyTopic, DifficultyLevel } from '@/lib/vocabulary/types';
+import { useProgress } from '@/hooks/useProgress';
 import { getTopicStatus } from '@/lib/vocabulary/progress';
+import type { DifficultyLevel, VocabularyTopic } from '@/lib/vocabulary/types';
+import { AlertCircle, ChevronRight, Plus, X } from 'lucide-react';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { AddTopicModal } from './AddTopicModal';
 import { ReviewReminders } from './ReviewReminders';
 import { TopicCard } from './TopicCard';
-import { TopicFilters, type StatusFilter, type SortOption } from './TopicFilters';
-import { AlertCircle, ChevronRight, X } from 'lucide-react';
+import { TopicFilters, type SortOption, type StatusFilter } from './TopicFilters';
 
 interface VocabularyPageContentProps {
   topics: VocabularyTopic[];
@@ -39,6 +40,9 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [difficultyFilter, setDifficultyFilter] = useState<DifficultyLevel | 'all'>('all');
   const [sortOption, setSortOption] = useState<SortOption>('added-desc');
+
+  // Add topic modal state
+  const [showAddTopicModal, setShowAddTopicModal] = useState(false);
 
   // Filter and sort topics
   const filteredTopics = useMemo(() => {
@@ -172,6 +176,17 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
         </div>
       )}
 
+      {/* Add Topic Button */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setShowAddTopicModal(true)}
+          className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors shadow-sm"
+        >
+          <Plus className="w-5 h-5" />
+          <span>Research a new Topic</span>
+        </button>
+      </div>
+
       {/* Search, Filter, and Sort */}
       <TopicFilters
         searchQuery={searchQuery}
@@ -212,6 +227,12 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
           </p>
         </div>
       )}
+
+      {/* Add Topic Modal */}
+      <AddTopicModal
+        isOpen={showAddTopicModal}
+        onClose={() => setShowAddTopicModal(false)}
+      />
     </>
   );
 }

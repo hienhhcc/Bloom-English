@@ -41,25 +41,27 @@ function parsePartsOfSpeech(pos: string): string[] {
 export function FlashcardFront({ item }: FlashcardFrontProps) {
   return (
     <div className="absolute inset-0 backface-hidden bg-white dark:bg-gray-900 rounded-2xl p-6 flex flex-col shadow-lg">
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-start items-start mb-4">
         <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(item.difficulty)}`}>
           {item.difficulty}
         </span>
-        <div className="flex gap-1 flex-wrap justify-end">
+      </div>
+
+      <div className="flex-1 flex flex-col items-center justify-center text-center">
+        <h2 className="text-4xl md:text-5xl font-bold mb-2">{item.word}</h2>
+        <p className="text-lg text-gray-500 dark:text-gray-400 mb-2">{item.phonetic}</p>
+
+        {/* Part of Speech */}
+        <div className="flex gap-2 flex-wrap justify-center mb-3">
           {parsePartsOfSpeech(item.partOfSpeech).map((pos) => (
             <span
               key={pos}
-              className={`text-xs px-2 py-1 rounded-full ${getPartOfSpeechColor(pos)}`}
+              className={`text-sm font-medium px-3 py-1 rounded-full ${getPartOfSpeechColor(pos)}`}
             >
               {pos}
             </span>
           ))}
         </div>
-      </div>
-
-      <div className="flex-1 flex flex-col items-center justify-center text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-2">{item.word}</h2>
-        <p className="text-lg text-gray-500 dark:text-gray-400 mb-4">{item.phonetic}</p>
 
         <div className="flex gap-2 mb-6">
           <AudioButton text={item.word} />
