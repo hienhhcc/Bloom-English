@@ -428,6 +428,157 @@
           "partOfSpeech": "noun"
         }
       ]
+    },
+    {
+      "id": "1",
+      "word": "resilient",
+      "phonetic": "/ˈrɛzələnt/",
+      "partOfSpeech": "adjective",
+      "definitionEnglish": "capable of recovering quickly from difficulties; able to withstand or bounce back from adverse conditions;",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "dẻo dai, chịu đựng được khó khăn"
+        }
+      ],
+      "difficulty": "intermediate",
+      "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=RESILIENT",
+      "examples": [
+        {
+          "english": "Despite the challenges, she remained resilient and kept pushing forward.",
+          "vietnamese": "Dù gặp nhiều khó khăn, cô vẫn dẻo dai và tiếp tục nỗ lực."
+        },
+        {
+          "english": "The company’s financial resilience has allowed it to weather the economic downturn.",
+          "vietnamese": "Sự dẻo dai về tài chính của công ty đã giúp nó vượt qua cuộc suy thoái kinh tế."
+        },
+        {
+          "english": "Her resilience in the face of adversity is an inspiration to everyone around her.",
+          "vietnamese": "Đối mặt với khó khăn, sức mạnh nội tâm của cô ấy là nguồn cảm hứng cho mọi người xung quanh."
+        }
+      ],
+      "collocations": [
+        "resilience",
+        "financially resilient"
+      ],
+      "synonyms": [
+        "strong-willed",
+        "tough",
+        "tenacious"
+      ],
+      "antonyms": [
+        "fragile",
+        "vulnerable",
+        "brittle"
+      ],
+      "wordFamily": [
+        {
+          "word": "resiliently",
+          "partOfSpeech": "adverb"
+        },
+        {
+          "word": "resiliency",
+          "partOfSpeech": "noun"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "word": "pragmatic",
+      "phonetic": "/ˈpræɡmætɪk/",
+      "partOfSpeech": "adjective",
+      "definitionEnglish": "concerned with practical aspects rather than theoretical considerations; realistic and sensible in a practical situation;",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "thực tế, hướng tới kết quả"
+        }
+      ],
+      "difficulty": "intermediate",
+      "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=PRAGMATIC",
+      "examples": [
+        {
+          "english": "He has a pragmatic approach to problem-solving, focusing on practical solutions.",
+          "vietnamese": "Anh ấy có cách tiếp cận thực tế khi giải quyết vấn đề, tập trung vào các phương án thực tế."
+        },
+        {
+          "english": "The company took a pragmatic stance and agreed to the terms of the contract without further negotiation.",
+          "vietnamese": "Công ty đã chấp nhận điều khoản hợp đồng một cách thực tế và không cần đàm phán thêm."
+        },
+        {
+          "english": "Her pragmatic attitude helped her navigate through difficult situations with ease.",
+          "vietnamese": "Quan điểm thực tế của cô ấy giúp cô dễ dàng vượt qua những tình huống khó khăn."
+        }
+      ],
+      "collocations": [
+        "pragmatic solution",
+        "pragmatic thinking"
+      ],
+      "synonyms": [
+        "practical",
+        "realistic",
+        "down-to-earth"
+      ],
+      "antonyms": [
+        "idealistic",
+        "theoretical",
+        "utopian"
+      ],
+      "wordFamily": [
+        {
+          "word": "pragmatically",
+          "partOfSpeech": "adverb"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "word": "elaborate",
+      "phonetic": "/ɪlˈæbəreɪt/",
+      "partOfSpeech": "adjective",
+      "definitionEnglish": "carefully detailed and complex; providing much detail or information;",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "chi tiết, phức tạp"
+        }
+      ],
+      "difficulty": "intermediate",
+      "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=ELOBRATE",
+      "examples": [
+        {
+          "english": "The architect designed an elaborate building with intricate details.",
+          "vietnamese": "Kỹ sư đã thiết kế một tòa nhà phức tạp với chi tiết tinh xảo."
+        },
+        {
+          "english": "She gave an elaborate explanation of the complex problem to make sure everyone understood.",
+          "vietnamese": "Cô ấy đã giải thích công phu về vấn đề phức tạp để đảm bảo rằng mọi người hiểu rõ."
+        },
+        {
+          "english": "The menu offers a wide range of elaborate dishes for the discerning diner.",
+          "vietnamese": "Meny cung cấp một loạt các món ăn chi tiết cho khách hàng tinh tế."
+        }
+      ],
+      "collocations": [
+        "elaborate explanation",
+        "elaborate design"
+      ],
+      "synonyms": [
+        "detailed",
+        "complex",
+        "elaborated"
+      ],
+      "antonyms": [
+        "simple",
+        "brief",
+        "bare-bones"
+      ],
+      "wordFamily": [
+        {
+          "word": "elaborately",
+          "partOfSpeech": "adverb"
+        }
+      ]
     }
   ]
 }

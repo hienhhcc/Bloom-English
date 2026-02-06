@@ -8,6 +8,7 @@ import { AlertCircle, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { AddTopicModal } from './AddTopicModal';
+import { AddVocabularyModal } from './AddVocabularyModal';
 import { ReviewReminders } from './ReviewReminders';
 import { TopicCard } from './TopicCard';
 import { TopicFilters, type SortOption, type StatusFilter } from './TopicFilters';
@@ -41,8 +42,9 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
   const [difficultyFilter, setDifficultyFilter] = useState<DifficultyLevel | 'all'>('all');
   const [sortOption, setSortOption] = useState<SortOption>('added-desc');
 
-  // Add topic modal state
+  // Modal state
   const [showAddTopicModal, setShowAddTopicModal] = useState(false);
+  const [showAddVocabularyModal, setShowAddVocabularyModal] = useState(false);
 
   // Filter and sort topics
   const filteredTopics = useMemo(() => {
@@ -183,8 +185,15 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
         </div>
       )}
 
-      {/* Add Topic Button */}
-      <div className="flex justify-end mb-4">
+      {/* Action Buttons */}
+      <div className="flex justify-end gap-3 mb-4">
+        <button
+          onClick={() => setShowAddVocabularyModal(true)}
+          className="flex items-center gap-2 px-4 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-xl font-medium transition-colors shadow-sm"
+        >
+          <Plus className="w-5 h-5" />
+          <span>Research specific Words</span>
+        </button>
         <button
           onClick={() => setShowAddTopicModal(true)}
           className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors shadow-sm"
@@ -246,6 +255,13 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
       <AddTopicModal
         isOpen={showAddTopicModal}
         onClose={() => setShowAddTopicModal(false)}
+      />
+
+      {/* Add Vocabulary Modal */}
+      <AddVocabularyModal
+        isOpen={showAddVocabularyModal}
+        onClose={() => setShowAddVocabularyModal(false)}
+        topics={topics}
       />
     </>
   );
