@@ -1,4 +1,5 @@
 import type { VocabularyItem } from '@/lib/vocabulary/types';
+import { normalizeVietnameseDefinitions, getPartOfSpeechColor } from '@/lib/vocabulary/utils';
 import { AudioButton } from './AudioButton';
 
 interface FlashcardFrontProps {
@@ -13,22 +14,6 @@ function getDifficultyColor(difficulty: string): string {
       return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
     case 'advanced':
       return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
-    default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
-  }
-}
-
-function getPartOfSpeechColor(pos: string): string {
-  const normalizedPos = pos.toLowerCase().trim();
-  switch (normalizedPos) {
-    case 'noun':
-      return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-    case 'verb':
-      return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
-    case 'adjective':
-      return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200';
-    case 'adverb':
-      return 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200';
     default:
       return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
   }
@@ -75,7 +60,18 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
           </div>
           <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Vietnamese</p>
-            <p className="text-gray-800 dark:text-gray-200">{item.definitionVietnamese}</p>
+            <div className="space-y-1.5">
+              {normalizeVietnameseDefinitions(item.definitionVietnamese).map((def, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  {def.type && (
+                    <span className={`flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-full mt-0.5 ${getPartOfSpeechColor(def.type)}`}>
+                      {def.type}
+                    </span>
+                  )}
+                  <p className="text-gray-800 dark:text-gray-200">{def.definition}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

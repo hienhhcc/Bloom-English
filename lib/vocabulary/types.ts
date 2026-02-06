@@ -22,13 +22,18 @@ export interface WordFamilyItem {
   partOfSpeech: PartOfSpeech;
 }
 
+export interface VietnameseDefinition {
+  type: string;
+  definition: string;
+}
+
 export interface VocabularyItem {
   id: string;
   word: string;
   phonetic: string;
   partOfSpeech: PartOfSpeech;
   definitionEnglish: string;
-  definitionVietnamese: string;
+  definitionVietnamese: string | VietnameseDefinition[];
   difficulty: DifficultyLevel;
   imageUrl: string;
   examples: [ExampleSentence, ExampleSentence, ExampleSentence];

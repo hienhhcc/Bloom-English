@@ -7,7 +7,12 @@
       "phonetic": "/ˈɒbətɪʃən/",
       "partOfSpeech": "noun",
       "definitionEnglish": "A person's job or profession",
-      "definitionVietnamese": "Nghề nghiệp của một người",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Nghề nghiệp của một người"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Occupation",
       "examples": [
@@ -44,7 +49,12 @@
       "phonetic": "/ɪndʊsˈtriː/",
       "partOfSpeech": "noun",
       "definitionEnglish": "A branch of economic activity that involves the production and sale of goods and services",
-      "definitionVietnamese": "Một ngành kinh tế là hoạt động sản xuất và bán hàng hóa, dịch vụ",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Một ngành kinh tế là hoạt động sản xuất và bán hàng hóa, dịch vụ"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Industry",
       "examples": [
@@ -78,10 +88,19 @@
     {
       "id": "job-003",
       "word": "Executive",
-      "phonetic": "/ɛksˈiːkʊtɪv/",
-      "partOfSpeech": "adjective",
-      "definitionEnglish": "Relating to the highest rank of a company or organization",
-      "definitionVietnamese": "Phản ứng với cấp độ cao nhất của một công ty hoặc tổ chức",
+      "phonetic": "/ɪɡˈzekjʊtɪv/ (BrE) | /ɪɡˈzɛkjətɪv/ (AmE)",
+      "partOfSpeech": "adjective, noun",
+      "definitionEnglish": "refers to a person with senior managerial responsibility in an organization, or relating to the act of managing or carrying out decisions",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "giám đốc điều hành, lãnh đạo cấp cao"
+        },
+        {
+          "type": "adjective",
+          "definition": "thuộc về điều hành, quản lý"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Executive",
       "examples": [
@@ -118,7 +137,12 @@
       "phonetic": "/mænˈʒɪərəl/",
       "partOfSpeech": "adjective",
       "definitionEnglish": "Relating to the control and direction of a company or organization",
-      "definitionVietnamese": "Phản ứng với việc kiểm soát và chỉ đạo của một công ty hoặc tổ chức",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Phản ứng với việc kiểm soát và chỉ đạo của một công ty hoặc tổ chức"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Managerial",
       "examples": [
@@ -152,10 +176,19 @@
     {
       "id": "job-005",
       "word": "Professional",
-      "phonetic": "/prəfɪˈʃenʃəl/",
-      "partOfSpeech": "adjective",
-      "definitionEnglish": "Relating to a person's work or occupation as their main activity",
-      "definitionVietnamese": "Phản ứng với việc làm của một người là hoạt động chính của họ",
+      "phonetic": "/prəˈfeʃənl/ (BrE) | /prəˈfɛʃənl/ (AmE)",
+      "partOfSpeech": "adjective, noun",
+      "definitionEnglish": "refers to having the skills, standards, and conduct expected of a trained or qualified person, or a person who works in a skilled occupation",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "(adj) chuyên nghiệp, có trình độ cao, mang tính nghề nghiệp"
+        },
+        {
+          "type": "noun",
+          "definition": "(n) người làm việc chuyên môn, người hành nghề chuyên nghiệp"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Professional",
       "examples": [
@@ -192,7 +225,12 @@
       "phonetic": "/ˈɒfɪs/",
       "partOfSpeech": "noun",
       "definitionEnglish": "A place where work or business is carried out",
-      "definitionVietnamese": "Một nơi làm việc hoặc kinh doanh",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Một nơi làm việc hoặc kinh doanh"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Office",
       "examples": [
@@ -229,7 +267,12 @@
       "phonetic": "/skɪləd/",
       "partOfSpeech": "adjective",
       "definitionEnglish": "Having or showing a high level of skill or expertise",
-      "definitionVietnamese": "Có kỹ năng hoặc khả năng cao",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "Có kỹ năng hoặc khả năng cao"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Skilled",
       "examples": [
@@ -266,7 +309,12 @@
       "phonetic": "/ʌnskilɪd/",
       "partOfSpeech": "adjective",
       "definitionEnglish": "Lacking skill or expertise",
-      "definitionVietnamese": "Không có kỹ năng hoặc khả năng",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "Không có kỹ năng hoặc khả năng"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Unskilled",
       "examples": [
@@ -303,7 +351,12 @@
       "phonetic": "/ˈkɛəriər/",
       "partOfSpeech": "noun",
       "definitionEnglish": "A person's occupation or profession, especially over a long period of time",
-      "definitionVietnamese": "Một nghề nghiệp của một người trong thời gian dài",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Một nghề nghiệp của một người trong thời gian dài"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Career",
       "examples": [
@@ -340,7 +393,12 @@
       "phonetic": "/vəˈkoʊʃən/",
       "partOfSpeech": "noun",
       "definitionEnglish": "A person's natural or chosen calling, especially their work or profession",
-      "definitionVietnamese": "Một nghề nghiệp tự nhiên hoặc được chọn của một người, đặc biệt là công việc hoặc nghề nghiệp của họ",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "nghề nghiệp, thiên hướng nghề nghiệp, (đặc biệt) ơn gọi, sự kêu gọi theo đuổi một nghề mang tính sứ mệnh (tôn giáo, giáo dục, y tế, v.v.)"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Vocation",
       "examples": [

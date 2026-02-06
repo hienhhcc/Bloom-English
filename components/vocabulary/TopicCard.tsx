@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 interface TopicCardProps {
   topic: VocabularyTopic;
   progress?: TopicProgress | null;
+  isReviewDismissed?: boolean;
 }
 
 function getDifficultyColor(difficulty: string): string {
@@ -23,8 +24,9 @@ function getDifficultyColor(difficulty: string): string {
   }
 }
 
-export function TopicCard({ topic, progress }: TopicCardProps) {
-  const status = getTopicStatus(progress ?? null);
+export function TopicCard({ topic, progress, isReviewDismissed }: TopicCardProps) {
+  const rawStatus = getTopicStatus(progress ?? null);
+  const status = rawStatus === 'review-due' && isReviewDismissed ? 'completed' : rawStatus;
 
   return (
     <Link

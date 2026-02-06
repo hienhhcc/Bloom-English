@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import type { VocabularyItem } from '@/lib/vocabulary/types';
+import { normalizeVietnameseDefinitions, getPartOfSpeechColor } from '@/lib/vocabulary/utils';
 import { LetterSlots, type LetterSlotsRef } from './LetterSlots';
 import { Check, X, ArrowRight, Lightbulb } from 'lucide-react';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
@@ -12,6 +13,10 @@ interface SpellingQuizProps {
 }
 
 type QuizState = 'input' | 'result';
+
+function parsePartsOfSpeech(pos: string): string[] {
+  return pos.split(/[;,]/).map(p => p.trim()).filter(p => p.length > 0);
+}
 
 const AUTO_ADVANCE_DELAY = 5000;
 
@@ -122,15 +127,33 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
           Spell the word for:
         </p>
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          {item.definitionVietnamese}
-        </h2>
+        <div className="mb-2 space-y-1.5">
+          {normalizeVietnameseDefinitions(item.definitionVietnamese).map((def, i) => (
+            <div key={i} className="flex items-center justify-center gap-2">
+              {def.type && (
+                <span className={`flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${getPartOfSpeechColor(def.type)}`}>
+                  {def.type}
+                </span>
+              )}
+              <span className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+                {def.definition}
+              </span>
+            </div>
+          ))}
+        </div>
         <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-1 italic">
           {item.definitionEnglish}
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          ({item.partOfSpeech})
-        </p>
+        <div className="flex gap-2 flex-wrap justify-center">
+          {parsePartsOfSpeech(item.partOfSpeech).map((pos) => (
+            <span
+              key={pos}
+              className={`text-sm font-medium px-3 py-1 rounded-full ${getPartOfSpeechColor(pos)}`}
+            >
+              {pos}
+            </span>
+          ))}
+        </div>
       </div>
 
       <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-6">

@@ -7,7 +7,12 @@
       "phonetic": "/ˈskæt.ərd/",
       "partOfSpeech": "verb; adjective",
       "definitionEnglish": "to send out in different directions; distributed in a haphazard way;",
-      "definitionVietnamese": "tràn lan; phân tán không đều",
+      "definitionVietnamese": [
+        {
+          "type": "verb",
+          "definition": "tràn lan; phân tán không đều"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=SCATTERED",
       "examples": [
@@ -49,7 +54,12 @@
       "phonetic": "/niːt/",
       "partOfSpeech": "adjective",
       "definitionEnglish": "tidy; well-arranged;",
-      "definitionVietnamese": "đẹp đẽ; ngăn nắp",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "đẹp đẽ; ngăn nắp"
+        }
+      ],
       "difficulty": "beginner",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=NEAT",
       "examples": [
@@ -86,7 +96,12 @@
       "phonetic": "/əˈkɒm.ə.deɪt/",
       "partOfSpeech": "verb",
       "definitionEnglish": "to provide a room or other accommodation; to make space for; to adjust oneself to;",
-      "definitionVietnamese": "cho ở; cung cấp chỗ ở; điều chỉnh để phù hợp",
+      "definitionVietnamese": [
+        {
+          "type": "verb",
+          "definition": "cho ở; cung cấp chỗ ở; điều chỉnh để phù hợp"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=ACCOMMODATE",
       "examples": [
@@ -128,7 +143,12 @@
       "phonetic": "/ˈʌndəɡəʊ/",
       "partOfSpeech": "verb",
       "definitionEnglish": "to experience a change or suffer an unpleasant condition; to go through;",
-      "definitionVietnamese": "trải qua; chịu đựng",
+      "definitionVietnamese": [
+        {
+          "type": "verb",
+          "definition": "trải qua; chịu đựng"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=UNDERGO",
       "examples": [
@@ -165,7 +185,12 @@
       "phonetic": "/ˈfɔː.mər/",
       "partOfSpeech": "adjective",
       "definitionEnglish": "previously existing; earlier of two or more alternatives;",
-      "definitionVietnamese": "cũ hơn; trước đây, cũ",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "cũ hơn; trước đây, cũ"
+        }
+      ],
       "difficulty": "beginner",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=FORMER",
       "examples": [
@@ -202,7 +227,12 @@
       "phonetic": "/strɪp/",
       "partOfSpeech": "verb; noun",
       "definitionEnglish": "to remove clothing or covering; a long narrow piece of material;",
-      "definitionVietnamese": "trừ bỏ; miếng vải dài",
+      "definitionVietnamese": [
+        {
+          "type": "verb",
+          "definition": "trừ bỏ; miếng vải dài"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=STRIP",
       "examples": [
@@ -244,7 +274,12 @@
       "phonetic": "/ɪlˈswɛər/",
       "partOfSpeech": "adverb; adjective",
       "definitionEnglish": "in or to some other place; somewhere else;",
-      "definitionVietnamese": "ở đâu khác; ở nơi xa",
+      "definitionVietnamese": [
+        {
+          "type": "adverb",
+          "definition": "ở đâu khác; ở nơi xa"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=ELSEWHERE",
       "examples": [

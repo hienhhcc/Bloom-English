@@ -7,7 +7,12 @@
       "phonetic": "/ɪnˌdʌstriəlaɪˈzeɪʃn/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The process by which a society or economy shifts from agriculture to large-scale industrial production",
-      "definitionVietnamese": "Công nghiệp hóa – quá trình chuyển đổi từ nông nghiệp sang sản xuất công nghiệp",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Công nghiệp hóa – quá trình chuyển đổi từ nông nghiệp sang sản xuất công nghiệp"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Industrialization",
       "examples": [
@@ -40,7 +45,12 @@
       "phonetic": "/ɪˌkɑːləˈɡaɪzeɪʃn/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The process of incorporating ecological principles and practices into economic or social systems",
-      "definitionVietnamese": "Môi trường hóa – quá trình đưa các nguyên lý và thực践性生态学原则和实践融入经济或社会系统",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Môi trường hóa – quá trình đưa các nguyên lý và thực践性生态学原则和实践融入经济或社会系统"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Ecologization",
       "examples": [
@@ -73,7 +83,12 @@
       "phonetic": "/ʌrˈbænɪzeɪʃn/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The process by which people move from rural to urban areas, leading to the growth of cities and towns",
-      "definitionVietnamese": "Thành thị hóa – quá trình di chuyển của người dân từ vùng nông thôn sang khu vực đô thị, dẫn đến sự phát triển của các thành phố và thị trấn",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Thành thị hóa – quá trình di chuyển của người dân từ vùng nông thôn sang khu vực đô thị, dẫn đến sự phát triển của các thành phố và thị trấn"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Urbanization",
       "examples": [
@@ -106,7 +121,12 @@
       "phonetic": "/ˈpɒl.ju.ə.tnt/",
       "partOfSpeech": "noun",
       "definitionEnglish": "Any substance that pollutes the air, water, or land, often causing harm to human health and ecosystems",
-      "definitionVietnamese": "Máu ô nhiễm – bất kỳ chất nào gây ô nhiễm không khí, nước hoặc đất, thường gây hại đến sức khỏe con người và hệ sinh thái",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Máu ô nhiễm – bất kỳ chất nào gây ô nhiễm không khí, nước hoặc đất, thường gây hại đến sức khỏe con người và hệ sinh thái"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Pollutant",
       "examples": [
@@ -139,7 +159,12 @@
       "phonetic": "/dɪˌfɔːr.təˈzeɪ.ʃn/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The large-scale cutting down of trees, leading to the loss of forested areas and biodiversity",
-      "definitionVietnamese": "Phá rừng – việc chặt cây hàng loạt, dẫn đến mất mát khu vực rừng và đa dạng sinh học",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Phá rừng – việc chặt cây hàng loạt, dẫn đến mất mát khu vực rừng và đa dạng sinh học"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Deforestation",
       "examples": [
@@ -172,7 +197,12 @@
       "phonetic": "/ˈhæbɪtæt/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The natural environment in which a plant or animal lives and grows, providing it with the necessary resources to survive",
-      "definitionVietnamese": "Môi trường sống – nơi tự nhiên mà một loài thực vật hoặc động vật sinh sống và phát triển, cung cấp cho nó những tài nguyên cần thiết để tồn tại",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Môi trường sống – nơi tự nhiên mà một loài thực vật hoặc động vật sinh sống và phát triển, cung cấp cho nó những tài nguyên cần thiết để tồn tại"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Habitat",
       "examples": [
@@ -205,7 +235,12 @@
       "phonetic": "/baɪ.oʊ.di.ˈvɜːr.tə.ti/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The variety and variability of life and its processes, including the diversity of species and ecosystems",
-      "definitionVietnamese": "Diversity sinh học – sự đa dạng và biến thể của cuộc sống và các quá trình liên quan đến sự đa dạng của các loài và hệ sinh thái",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Diversity sinh học – sự đa dạng và biến thể của cuộc sống và các quá trình liên quan đến sự đa dạng của các loài và hệ sinh thái"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Biodiversity",
       "examples": [
@@ -238,7 +273,12 @@
       "phonetic": "/ɪˈmɪʃn/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The act of sending out or releasing something, often referring to pollutants into the air, water, or land",
-      "definitionVietnamese": "Xả thải – hành động phát ra hoặc giải phóng điều gì đó, thường đề cập đến việc phát thải chất ô nhiễm vào không khí, nước hoặc đất",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Xả thải – hành động phát ra hoặc giải phóng điều gì đó, thường đề cập đến việc phát thải chất ô nhiễm vào không khí, nước hoặc đất"
+        }
+      ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Emission",
       "examples": [
@@ -271,7 +311,12 @@
       "phonetic": "/səˌstæn.dəˈbɪl.ɪ.ti/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The ability to be maintained at a certain rate or level, often in the context of environmental and economic practices",
-      "definitionVietnamese": "Sustainability - khả năng duy trì ở một mức độ hoặc tốc độ nhất định, thường trong bối cảnh thực践性可持续环境和经济实践。",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Sustainability - khả năng duy trì ở một mức độ hoặc tốc độ nhất định, thường trong bối cảnh thực践性可持续环境和经济实践。"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Sustainability",
       "examples": [
@@ -304,7 +349,12 @@
       "phonetic": "/rɪˈnjuː.wə.bɪl.i.ti/",
       "partOfSpeech": "noun",
       "definitionEnglish": "The ability to be renewed or replaced by natural processes, often in the context of energy sources and resources",
-      "definitionVietnamese": "Renewability - khả năng được tái tạo hoặc thay thế thông qua các quá trình tự nhiên, thường trong bối cảnh nguồn năng lượng và tài nguyên",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "Renewability - khả năng được tái tạo hoặc thay thế thông qua các quá trình tự nhiên, thường trong bối cảnh nguồn năng lượng và tài nguyên"
+        }
+      ],
       "difficulty": "advanced",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475669?text=Renewability",
       "examples": [

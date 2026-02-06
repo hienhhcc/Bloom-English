@@ -1,6 +1,7 @@
 'use client';
 
 import type { QuizResult } from '@/hooks/useTopicQuiz';
+import { normalizeVietnameseDefinitions, getPartOfSpeechColor } from '@/lib/vocabulary/utils';
 import { Trophy, RotateCcw, ArrowLeft, ChevronDown, ChevronUp, CalendarCheck } from 'lucide-react';
 import { useState } from 'react';
 
@@ -103,8 +104,17 @@ export function QuizResults({
                     key={result.item.id}
                     className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800"
                   >
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      {result.item.definitionVietnamese}
+                    <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                      {normalizeVietnameseDefinitions(result.item.definitionVietnamese).map((def, i) => (
+                        <div key={i} className="flex items-center gap-1.5">
+                          {def.type && (
+                            <span className={`flex-shrink-0 text-[10px] font-medium px-1.5 py-0.5 rounded-full ${getPartOfSpeechColor(def.type)}`}>
+                              {def.type}
+                            </span>
+                          )}
+                          <span>{def.definition}</span>
+                        </div>
+                      ))}
                     </div>
                     <div className="font-medium text-gray-900 dark:text-white">
                       → {result.item.word}
