@@ -2,16 +2,19 @@
 
 import { useMistakes } from '@/hooks/useMistakes';
 import { useProgress } from '@/hooks/useProgress';
+import { useWorkflowNotifications } from '@/hooks/useWorkflowNotifications';
 import { getTopicStatus } from '@/lib/vocabulary/progress';
 import type { DifficultyLevel, VocabularyTopic } from '@/lib/vocabulary/types';
+import type { WorkflowType } from '@/lib/workflowStore';
 import { AlertCircle, Plus, X } from 'lucide-react';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { AddTopicModal } from './AddTopicModal';
 import { AddVocabularyModal } from './AddVocabularyModal';
 import { ReviewReminders } from './ReviewReminders';
 import { TopicCard } from './TopicCard';
 import { TopicFilters, type SortOption, type StatusFilter } from './TopicFilters';
+import { WorkflowNotifications } from './WorkflowNotifications';
 
 interface VocabularyPageContentProps {
   topics: VocabularyTopic[];
@@ -45,6 +48,20 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
   // Modal state
   const [showAddTopicModal, setShowAddTopicModal] = useState(false);
   const [showAddVocabularyModal, setShowAddVocabularyModal] = useState(false);
+
+  // Workflow notifications
+  const {
+    notifications: workflowNotifications,
+    trackWorkflow,
+    dismissNotification,
+  } = useWorkflowNotifications();
+
+  const handleWorkflowTriggered = useCallback(
+    (workflowId: string, label: string, type: WorkflowType = 'topic') => {
+      trackWorkflow(workflowId, type, label);
+    },
+    [trackWorkflow]
+  );
 
   // Filter and sort topics
   const filteredTopics = useMemo(() => {
@@ -185,6 +202,12 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
         </div>
       )}
 
+      {/* Workflow Notifications */}
+      <WorkflowNotifications
+        notifications={workflowNotifications}
+        onDismiss={dismissNotification}
+      />
+
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 mb-4">
         <button
@@ -255,6 +278,7 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
       <AddTopicModal
         isOpen={showAddTopicModal}
         onClose={() => setShowAddTopicModal(false)}
+        onWorkflowTriggered={(id, label) => handleWorkflowTriggered(id, label, 'topic')}
       />
 
       {/* Add Vocabulary Modal */}
@@ -262,6 +286,7 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
         isOpen={showAddVocabularyModal}
         onClose={() => setShowAddVocabularyModal(false)}
         topics={topics}
+        onWorkflowTriggered={(id, label) => handleWorkflowTriggered(id, label, 'specific-vocabulary')}
       />
     </>
   );

@@ -6,9 +6,10 @@ import { X, Loader2, Sparkles } from 'lucide-react';
 interface AddTopicModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onWorkflowTriggered?: (workflowId: string, label: string) => void;
 }
 
-export function AddTopicModal({ isOpen, onClose }: AddTopicModalProps) {
+export function AddTopicModal({ isOpen, onClose, onWorkflowTriggered }: AddTopicModalProps) {
   const [topic, setTopic] = useState('');
   const [vocabulariesCount, setVocabulariesCount] = useState(10);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,11 @@ export function AddTopicModal({ isOpen, onClose }: AddTopicModalProps) {
 
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.workflowId && onWorkflowTriggered) {
+        onWorkflowTriggered(data.workflowId, `New topic: ${topic.trim()}`);
       }
 
       setStatus('success');
@@ -139,7 +145,7 @@ export function AddTopicModal({ isOpen, onClose }: AddTopicModalProps) {
           {status === 'success' && (
             <div className="p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl">
               <p className="text-sm text-green-700 dark:text-green-300">
-                Workflow triggered successfully! The new topic will be created shortly.
+                Workflow started! You&apos;ll be notified when it completes.
               </p>
             </div>
           )}

@@ -8,9 +8,10 @@ interface AddVocabularyModalProps {
   isOpen: boolean;
   onClose: () => void;
   topics: VocabularyTopic[];
+  onWorkflowTriggered?: (workflowId: string, label: string) => void;
 }
 
-export function AddVocabularyModal({ isOpen, onClose, topics }: AddVocabularyModalProps) {
+export function AddVocabularyModal({ isOpen, onClose, topics, onWorkflowTriggered }: AddVocabularyModalProps) {
   const [fileName, setFileName] = useState('');
   const [vocabularies, setVocabularies] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +55,11 @@ export function AddVocabularyModal({ isOpen, onClose, topics }: AddVocabularyMod
 
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.workflowId && onWorkflowTriggered) {
+        onWorkflowTriggered(data.workflowId, `Words: ${wordList.join(', ')}`);
       }
 
       setStatus('success');
@@ -160,7 +166,7 @@ export function AddVocabularyModal({ isOpen, onClose, topics }: AddVocabularyMod
           {status === 'success' && (
             <div className="p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl">
               <p className="text-sm text-green-700 dark:text-green-300">
-                Workflow triggered successfully! The words will be researched and added shortly.
+                Workflow started! You&apos;ll be notified when it completes.
               </p>
             </div>
           )}

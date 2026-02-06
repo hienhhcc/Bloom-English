@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createWorkflow } from '@/lib/workflowStore';
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,11 +29,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Generate workflow tracking ID and callback URL
+    const workflowId = crypto.randomUUID();
+    const origin = process.env.APP_URL || request.nextUrl.origin;
+    const callbackUrl = `${origin}/api/workflow-callback`;
+
+    // Store pending workflow record
+    createWorkflow(workflowId, 'topic', `New topic: ${topic.trim()}`);
+
     // Forward request to n8n webhook
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic: topic.trim(), vocabulariesCount }),
+      body: JSON.stringify({
+        topic: topic.trim(),
+        vocabulariesCount,
+        workflowId,
+        callbackUrl,
+      }),
     });
 
     if (!response.ok) {
@@ -43,7 +57,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, workflowId });
   } catch (error) {
     console.error('Error triggering vocabulary workflow:', error);
     return NextResponse.json(

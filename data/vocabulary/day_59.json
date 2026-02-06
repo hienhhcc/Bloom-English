@@ -579,6 +579,160 @@
           "partOfSpeech": "adverb"
         }
       ]
+    },
+    {
+      "id": "1",
+      "word": "astonish",
+      "phonetic": "/ˈæstənɪʃ/",
+      "partOfSpeech": "verb",
+      "definitionEnglish": "to surprise (someone) greatly; to cause wonder or amazement in (someone); to awe or impress (someone)",
+      "definitionVietnamese": [
+        {
+          "type": "verb",
+          "definition": "kinh ngạc, gây ấn tượng mạnh"
+        }
+      ],
+      "difficulty": "intermediate",
+      "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=astonish",
+      "examples": [
+        {
+          "english": "The magician's tricks always astonish the audience.",
+          "vietnamese": "Bí thuật của nghệ sĩ luôn gây ấn tượng mạnh cho khán giả."
+        },
+        {
+          "english": "She was astonished by the beauty of the scenery.",
+          "vietnamese": "Cảnh quan đẹp mê hồn đã kinh ngạc cô gái ấy."
+        },
+        {
+          "english": "The news astonished him so much that he couldn't speak for a moment.",
+          "vietnamese": "Tin tức đó gây ấn tượng mạnh đến nỗi anh ta không nói được trong giây lát."
+        }
+      ],
+      "collocations": [
+        "astonish sb",
+        "be astonished by sth"
+      ],
+      "synonyms": [
+        "amaze",
+        "surprise",
+        "wonder"
+      ],
+      "antonyms": [
+        "disappoint",
+        "deceit"
+      ],
+      "wordFamily": [
+        {
+          "word": "astonishment",
+          "partOfSpeech": "noun"
+        },
+        {
+          "word": "astound",
+          "partOfSpeech": "verb"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "word": "storey",
+      "phonetic": "/ˈstɔːri/",
+      "partOfSpeech": "noun",
+      "definitionEnglish": "a level of a building; a story in a book or film",
+      "definitionVietnamese": [
+        {
+          "type": "noun",
+          "definition": "một tầng của tòa nhà"
+        }
+      ],
+      "difficulty": "beginner",
+      "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=storey",
+      "examples": [
+        {
+          "english": "The building has ten storeys.",
+          "vietnamese": "Tòa nhà này có mười tầng."
+        },
+        {
+          "english": "In the story, there were three main storeys: past, present, and future.",
+          "vietnamese": "Trong câu chuyện, có ba tầng chính: quá khứ, hiện tại và tương lai."
+        },
+        {
+          "english": "I live on the third storey of this apartment building.",
+          "vietnamese": "Tôi ở tầng thứ ba của tòa nhà chung cư này."
+        }
+      ],
+      "collocations": [
+        "the first/last storey",
+        "ground floor (storey)"
+      ],
+      "synonyms": [
+        "floor",
+        "level"
+      ],
+      "antonyms": [],
+      "wordFamily": [
+        {
+          "word": "storeroom",
+          "partOfSpeech": "noun"
+        },
+        {
+          "word": "storytelling",
+          "partOfSpeech": "noun"
+        }
+      ]
+    },
+    {
+      "id": "lame1",
+      "word": "lame",
+      "phonetic": "/leɪm/",
+      "partOfSpeech": "adjective",
+      "definitionEnglish": "Incompetent or ineffective; not impressive, weak, or unsatisfactory;",
+      "definitionVietnamese": [
+        {
+          "type": "adjective",
+          "definition": "Không hiệu quả; kém cỏi, không ấn tượng, yếu, không thỏa mãn"
+        }
+      ],
+      "difficulty": "intermediate",
+      "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=LAME",
+      "examples": [
+        {
+          "english": "His argument was so lame that everyone laughed.",
+          "vietnamese": "Lời tranh辩解如此无力，以至于每个人都笑了。"
+        },
+        {
+          "english": "Don’t bother with the lame excuses; just tell me the truth.",
+          "vietnamese": "Khỏe别理那些苍白的借口；直接告诉我真相吧。"
+        },
+        {
+          "english": "The plot of that movie was so lame, it didn't even work as a satire.",
+          "vietnamese": "Lòng故事情节如此苍白，以至于它连讽刺都没有起到作用。"
+        }
+      ],
+      "collocations": [
+        "argument",
+        "excuse",
+        "plot"
+      ],
+      "synonyms": [
+        "weak",
+        "incompetent",
+        "unsatisfactory"
+      ],
+      "antonyms": [
+        "effective",
+        "impressive",
+        "satisfactory"
+      ],
+      "wordFamily": [
+        {
+          "word": "lamely",
+          "partOfSpeech": "adverb"
+        },
+        {
+          "word": "lamelegacy",
+          "partOfSpeech": "noun"
+        }
+      ]
     }
   ]
 }
