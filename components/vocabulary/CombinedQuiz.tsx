@@ -5,6 +5,7 @@ import type { VocabularyItem } from '@/lib/vocabulary/types';
 import { SpellingQuiz } from './SpellingQuiz';
 import { PronunciationQuiz } from './PronunciationQuiz';
 import { TranslationQuiz } from './TranslationQuiz';
+import { Badge } from '@/components/ui/badge';
 
 type QuizPhase = 'spelling' | 'pronunciation' | 'translation';
 
@@ -42,9 +43,9 @@ export function CombinedQuiz({ item, onComplete }: CombinedQuizProps) {
     return (
       <div className="space-y-4">
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium rounded-full">
+          <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
             Step 1 of 3: Spelling
-          </span>
+          </Badge>
         </div>
         <SpellingQuiz
           item={item}
@@ -58,9 +59,9 @@ export function CombinedQuiz({ item, onComplete }: CombinedQuizProps) {
     return (
       <div className="space-y-4">
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-sm font-medium rounded-full">
+          <Badge variant="secondary" className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">
             Step 2 of 3: Pronunciation
-          </span>
+          </Badge>
         </div>
         <PronunciationQuiz
           item={item}
@@ -73,9 +74,9 @@ export function CombinedQuiz({ item, onComplete }: CombinedQuizProps) {
   return (
     <div className="space-y-4">
       <div className="text-center">
-        <span className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium rounded-full">
+        <Badge variant="secondary" className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
           Step 3 of 3: Translation
-        </span>
+        </Badge>
       </div>
       <TranslationQuiz
         item={item}

@@ -1,8 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Loader2, BookOpen } from 'lucide-react';
+import { Loader2, BookOpen, FilePlus, FileText } from 'lucide-react';
 import type { VocabularyTopic } from '@/lib/vocabulary/types';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+
+type FileMode = 'existing' | 'new';
 
 interface AddVocabularyModalProps {
   isOpen: boolean;
@@ -12,17 +20,27 @@ interface AddVocabularyModalProps {
 }
 
 export function AddVocabularyModal({ isOpen, onClose, topics, onWorkflowTriggered }: AddVocabularyModalProps) {
+  const [fileMode, setFileMode] = useState<FileMode>('existing');
   const [fileName, setFileName] = useState('');
+  const [newFileName, setNewFileName] = useState('');
   const [vocabularies, setVocabularies] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const resolvedFileName = fileMode === 'existing' ? fileName : newFileName.trim();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!fileName) {
+    if (fileMode === 'existing' && !fileName) {
       setErrorMessage('Please select a file');
+      setStatus('error');
+      return;
+    }
+
+    if (fileMode === 'new' && !newFileName.trim()) {
+      setErrorMessage('Please enter a file name');
       setStatus('error');
       return;
     }
@@ -50,7 +68,11 @@ export function AddVocabularyModal({ isOpen, onClose, topics, onWorkflowTriggere
       const response = await fetch('/api/trigger-specific-vocabulary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fileName, vocabularies: wordList }),
+        body: JSON.stringify({
+          fileName: resolvedFileName,
+          vocabularies: wordList,
+          mode: fileMode,
+        }),
       });
 
       if (!response.ok) {
@@ -64,12 +86,12 @@ export function AddVocabularyModal({ isOpen, onClose, topics, onWorkflowTriggere
 
       setStatus('success');
       setFileName('');
+      setNewFileName('');
       setVocabularies('');
 
       // Auto-close after success
       setTimeout(() => {
-        onClose();
-        setStatus('idle');
+        handleClose();
       }, 2000);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Failed to trigger workflow');
@@ -87,135 +109,130 @@ export function AddVocabularyModal({ isOpen, onClose, topics, onWorkflowTriggere
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={handleClose}
-      />
-
-      {/* Modal */}
-      <div className="relative w-full max-w-md mx-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-purple-500" />
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleClose(); }}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <BookOpen className="size-5 text-purple-500" />
             Research Specific Vocabularies
-          </h2>
-          <button
-            onClick={handleClose}
-            disabled={isLoading}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors disabled:opacity-50"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+          </DialogTitle>
+          <DialogDescription>
+            The n8n workflow will research these words using AI and {fileMode === 'existing' ? 'append them to the selected file' : 'create a new file with them'}.
+          </DialogDescription>
+        </DialogHeader>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-4 space-y-4">
-          {/* File Name Select */}
-          <div>
-            <label
-              htmlFor="fileName"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
-            >
-              Target File
-            </label>
-            <select
-              id="fileName"
-              value={fileName}
-              onChange={(e) => setFileName(e.target.value)}
-              disabled={isLoading}
-              className="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all disabled:opacity-50"
-            >
-              <option value="">Select a file...</option>
-              {topics.map((topic) => (
-                <option key={topic.id} value={topic.id}>
-                  {topic.icon} {topic.name}
-                </option>
-              ))}
-            </select>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* File Mode Toggle */}
+          <div className="space-y-1.5">
+            <Label>Destination</Label>
+            <Tabs value={fileMode} onValueChange={(v) => setFileMode(v as FileMode)}>
+              <TabsList className="w-full">
+                <TabsTrigger value="existing" disabled={isLoading} className="flex-1">
+                  <FileText className="size-4" />
+                  Existing File
+                </TabsTrigger>
+                <TabsTrigger value="new" disabled={isLoading} className="flex-1">
+                  <FilePlus className="size-4" />
+                  New File
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="existing">
+                <div className="space-y-1.5 mt-3">
+                  <Label htmlFor="fileName">Target File</Label>
+                  <select
+                    id="fileName"
+                    value={fileName}
+                    onChange={(e) => setFileName(e.target.value)}
+                    disabled={isLoading}
+                    className="w-full h-9 px-3 bg-card border border-input rounded-md text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all disabled:opacity-50"
+                  >
+                    <option value="">Select a file...</option>
+                    {topics.map((topic) => (
+                      <option key={topic.id} value={topic.id}>
+                        {topic.icon} {topic.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="new">
+                <div className="space-y-1.5 mt-3">
+                  <Label htmlFor="newFileName">New File Name</Label>
+                  <Input
+                    id="newFileName"
+                    type="text"
+                    value={newFileName}
+                    onChange={(e) => setNewFileName(e.target.value)}
+                    placeholder="e.g., day_60"
+                    disabled={isLoading}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    A new JSON file will be created in the vocabulary folder
+                  </p>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
 
           {/* Vocabularies Input */}
-          <div>
-            <label
-              htmlFor="vocabularies"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
-            >
-              Words to Research
-            </label>
-            <input
+          <div className="space-y-1.5">
+            <Label htmlFor="vocabularies">Words to Research</Label>
+            <Input
               id="vocabularies"
               type="text"
               value={vocabularies}
               onChange={(e) => setVocabularies(e.target.value)}
               placeholder='e.g., resilient, pragmatic, elaborate'
               disabled={isLoading}
-              className="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all disabled:opacity-50"
             />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-muted-foreground">
               Separate words with commas
             </p>
           </div>
 
           {/* Status Messages */}
           {status === 'success' && (
-            <div className="p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl">
-              <p className="text-sm text-green-700 dark:text-green-300">
+            <Alert className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800">
+              <AlertDescription className="text-green-700 dark:text-green-300">
                 Workflow started! You&apos;ll be notified when it completes.
-              </p>
-            </div>
+              </AlertDescription>
+            </Alert>
           )}
 
           {status === 'error' && (
-            <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl">
-              <p className="text-sm text-red-700 dark:text-red-300">
-                {errorMessage}
-              </p>
-            </div>
+            <Alert variant="destructive">
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
           )}
 
-          {/* Actions */}
-          <div className="flex gap-3 pt-2">
-            <button
+          <DialogFooter>
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleClose}
               disabled={isLoading}
-              className="flex-1 px-4 py-2.5 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl font-medium transition-colors disabled:opacity-50"
             >
               Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="flex-1 px-4 py-2.5 text-white bg-purple-500 hover:bg-purple-600 rounded-xl font-medium transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-            >
+            </Button>
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="size-4 animate-spin" />
                   Researching...
                 </>
               ) : (
                 <>
-                  <BookOpen className="w-4 h-4" />
+                  <BookOpen className="size-4" />
                   Research
                 </>
               )}
-            </button>
-          </div>
+            </Button>
+          </DialogFooter>
         </form>
-
-        {/* Footer Note */}
-        <div className="px-4 pb-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-            The n8n workflow will research these words using AI and append them to the selected file.
-          </p>
-        </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

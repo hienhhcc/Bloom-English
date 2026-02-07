@@ -6,6 +6,9 @@ import { normalizeVietnameseDefinitions, getPartOfSpeechColor } from '@/lib/voca
 import { LetterSlots, type LetterSlotsRef } from './LetterSlots';
 import { Check, X, ArrowRight, Lightbulb } from 'lucide-react';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface SpellingQuizProps {
   item: VocabularyItem;
@@ -119,115 +122,119 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
   );
 
   return (
-    <div
-      className="w-full max-w-lg mx-auto bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg"
+    <Card
+      className="w-full max-w-lg mx-auto rounded-2xl p-6"
       onKeyDown={handleKeyDown}
     >
-      <div className="text-center mb-8">
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-          Spell the word for:
-        </p>
-        <div className="mb-2 space-y-1.5">
-          {normalizeVietnameseDefinitions(item.definitionVietnamese).map((def, i) => (
-            <div key={i} className="flex items-center justify-center gap-2">
-              {def.type && (
-                <span className={`flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${getPartOfSpeechColor(def.type)}`}>
-                  {def.type}
+      <CardContent className="p-0">
+        <div className="text-center mb-8">
+          <p className="text-sm text-muted-foreground mb-2">
+            Spell the word for:
+          </p>
+          <div className="mb-2 space-y-1.5">
+            {normalizeVietnameseDefinitions(item.definitionVietnamese).map((def, i) => (
+              <div key={i} className="flex items-center justify-center gap-2">
+                {def.type && (
+                  <span className={`flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${getPartOfSpeechColor(def.type)}`}>
+                    {def.type}
+                  </span>
+                )}
+                <span className="text-lg md:text-xl font-bold text-foreground">
+                  {def.definition}
                 </span>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm md:text-base text-muted-foreground mb-1 italic">
+            {item.definitionEnglish}
+          </p>
+          <div className="flex gap-2 flex-wrap justify-center">
+            {parsePartsOfSpeech(item.partOfSpeech).map((pos) => (
+              <Badge
+                key={pos}
+                variant="secondary"
+                className={getPartOfSpeechColor(pos)}
+              >
+                {pos}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-muted rounded-xl p-6 mb-6">
+          <LetterSlots
+            ref={letterSlotsRef}
+            word={item.word}
+            value={userInput}
+            onChange={setUserInput}
+            disabled={quizState === 'result'}
+            showResult={quizState === 'result' ? (isCorrect ? 'correct' : 'incorrect') : null}
+            lockedChars={hintsUsed}
+          />
+        </div>
+
+        {quizState === 'result' && (
+          <div
+            className={`flex flex-col items-center gap-2 mb-6 p-3 rounded-lg ${
+              isCorrect
+                ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              {isCorrect ? (
+                <>
+                  <Check className="size-5" />
+                  <span className="font-medium">Correct!</span>
+                </>
+              ) : (
+                <>
+                  <X className="size-5" />
+                  <span className="font-medium">
+                    The correct word is: <strong>{item.word}</strong>
+                  </span>
+                </>
               )}
-              <span className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
-                {def.definition}
-              </span>
             </div>
-          ))}
-        </div>
-        <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-1 italic">
-          {item.definitionEnglish}
-        </p>
-        <div className="flex gap-2 flex-wrap justify-center">
-          {parsePartsOfSpeech(item.partOfSpeech).map((pos) => (
-            <span
-              key={pos}
-              className={`text-sm font-medium px-3 py-1 rounded-full ${getPartOfSpeechColor(pos)}`}
-            >
-              {pos}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-6">
-        <LetterSlots
-          ref={letterSlotsRef}
-          word={item.word}
-          value={userInput}
-          onChange={setUserInput}
-          disabled={quizState === 'result'}
-          showResult={quizState === 'result' ? (isCorrect ? 'correct' : 'incorrect') : null}
-          lockedChars={hintsUsed}
-        />
-      </div>
-
-      {quizState === 'result' && (
-        <div
-          className={`flex flex-col items-center gap-2 mb-6 p-3 rounded-lg ${
-            isCorrect
-              ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300'
-              : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            {isCorrect ? (
-              <>
-                <Check className="w-5 h-5" />
-                <span className="font-medium">Correct!</span>
-              </>
-            ) : (
-              <>
-                <X className="w-5 h-5" />
-                <span className="font-medium">
-                  The correct word is: <strong>{item.word}</strong>
-                </span>
-              </>
+            {isCorrect && (
+              <span className="text-sm opacity-75">
+                Continuing in {countdown}s...
+              </span>
             )}
           </div>
-          {isCorrect && (
-            <span className="text-sm opacity-75">
-              Continuing in {countdown}s...
-            </span>
-          )}
-        </div>
-      )}
+        )}
 
-      {quizState === 'input' ? (
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={useHint}
-            disabled={hintsRemaining === 0}
-            className="w-full py-2.5 px-4 border border-amber-400 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 disabled:border-gray-300 disabled:dark:border-gray-600 disabled:text-gray-400 disabled:dark:text-gray-500 disabled:hover:bg-transparent font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+        {quizState === 'input' ? (
+          <div className="flex flex-col gap-3">
+            <Button
+              variant="outline"
+              onClick={useHint}
+              disabled={hintsRemaining === 0}
+              className="w-full border-amber-400 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+            >
+              <Lightbulb className="size-4" />
+              {hintsRemaining > 0
+                ? `Get Hint (${hintsRemaining} left)`
+                : 'No hints left'}
+            </Button>
+            <Button
+              onClick={checkAnswer}
+              disabled={userInput.length === 0}
+              className="w-full"
+            >
+              Check
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={handleContinue}
+            className="w-full"
           >
-            <Lightbulb className="w-4 h-4" />
-            {hintsRemaining > 0
-              ? `Get Hint (${hintsRemaining} left)`
-              : 'No hints left'}
-          </button>
-          <button
-            onClick={checkAnswer}
-            disabled={userInput.length === 0}
-            className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:dark:bg-gray-700 text-white font-medium rounded-xl transition-colors disabled:cursor-not-allowed"
-          >
-            Check
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={handleContinue}
-          className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
-        >
-          Continue
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      )}
-    </div>
+            Continue
+            <ArrowRight className="size-4" />
+          </Button>
+        )}
+      </CardContent>
+    </Card>
   );
 }

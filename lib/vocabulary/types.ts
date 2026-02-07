@@ -20,6 +20,7 @@ export interface ExampleSentence {
 export interface WordFamilyItem {
   word: string;
   partOfSpeech: PartOfSpeech;
+  definition?: string;
 }
 
 export interface VietnameseDefinition {

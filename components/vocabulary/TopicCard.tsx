@@ -4,6 +4,8 @@ import type { TopicProgress } from '@/lib/vocabulary/progress';
 import { getTopicStatus } from '@/lib/vocabulary/progress';
 import { TopicProgressBadge } from './TopicProgressBadge';
 import { ArrowRight } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface TopicCardProps {
   topic: VocabularyTopic;
@@ -11,7 +13,7 @@ interface TopicCardProps {
   isReviewDismissed?: boolean;
 }
 
-function getDifficultyColor(difficulty: string): string {
+function getDifficultyVariant(difficulty: string): string {
   switch (difficulty) {
     case 'beginner':
       return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
@@ -20,7 +22,7 @@ function getDifficultyColor(difficulty: string): string {
     case 'advanced':
       return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
     default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+      return 'bg-muted text-muted-foreground';
   }
 }
 
@@ -29,43 +31,44 @@ export function TopicCard({ topic, progress, isReviewDismissed }: TopicCardProps
   const status = rawStatus === 'review-due' && isReviewDismissed ? 'completed' : rawStatus;
 
   return (
-    <Link
-      href={`/vocabulary/${topic.id}`}
-      className={`block p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-lg transition-shadow border cursor-pointer ${
+    <Link href={`/vocabulary/${topic.id}`}>
+      <Card className={`p-6 hover:shadow-lg transition-shadow cursor-pointer ${
         status === 'review-due'
           ? 'border-amber-300 dark:border-amber-700'
-          : 'border-gray-100 dark:border-gray-800'
-      }`}
-    >
-      <div className="flex items-start justify-between mb-4">
-        <span className="text-4xl">{topic.icon}</span>
-        <div className="flex items-center gap-2">
-          <TopicProgressBadge status={status} bestScore={progress?.bestScore} />
-          <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(topic.difficulty)}`}>
-            {topic.difficulty}
-          </span>
-        </div>
-      </div>
+          : ''
+      }`}>
+        <CardContent className="p-0">
+          <div className="flex items-start justify-between mb-4">
+            <span className="text-4xl">{topic.icon}</span>
+            <div className="flex items-center gap-2">
+              <TopicProgressBadge status={status} bestScore={progress?.bestScore} />
+              <Badge variant="secondary" className={getDifficultyVariant(topic.difficulty)}>
+                {topic.difficulty}
+              </Badge>
+            </div>
+          </div>
 
-      <h3 className="text-xl font-semibold mb-1">{topic.name}</h3>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{topic.nameVietnamese}</p>
-      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">{topic.description}</p>
+          <h3 className="text-xl font-semibold mb-1">{topic.name}</h3>
+          <p className="text-sm text-muted-foreground mb-2">{topic.nameVietnamese}</p>
+          <p className="text-sm text-muted-foreground mb-4">{topic.description}</p>
 
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-gray-500 dark:text-gray-400">{topic.wordCount} words</span>
-        <span
-          className={`font-medium inline-flex items-center gap-1 ${
-            status === 'review-due'
-              ? 'text-amber-600 dark:text-amber-400'
-              : 'text-blue-500'
-          }`}
-        >
-          {status === 'not-started' && 'Start Learning'}
-          {status === 'completed' && 'Practice More'}
-          {status === 'review-due' && 'Review Now'}
-          <ArrowRight className="w-4 h-4" />
-        </span>
-      </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">{topic.wordCount} words</span>
+            <span
+              className={`font-medium inline-flex items-center gap-1 ${
+                status === 'review-due'
+                  ? 'text-amber-600 dark:text-amber-400'
+                  : 'text-primary'
+              }`}
+            >
+              {status === 'not-started' && 'Start Learning'}
+              {status === 'completed' && 'Practice More'}
+              {status === 'review-due' && 'Review Now'}
+              <ArrowRight className="size-4" />
+            </span>
+          </div>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

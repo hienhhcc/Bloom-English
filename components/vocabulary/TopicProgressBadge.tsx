@@ -1,6 +1,7 @@
 'use client';
 
 import { Check, Clock } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import type { TopicStatus } from '@/lib/vocabulary/progress';
 
 interface TopicProgressBadgeProps {
@@ -15,22 +16,22 @@ export function TopicProgressBadge({ status, bestScore }: TopicProgressBadgeProp
 
   if (status === 'review-due') {
     return (
-      <div className="flex items-center gap-1 px-2 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-xs font-medium rounded-full animate-pulse">
-        <Clock className="w-3 h-3" />
+      <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 animate-pulse">
+        <Clock className="size-3" />
         <span>Review Due</span>
-      </div>
+      </Badge>
     );
   }
 
   // status === 'completed'
   return (
-    <div className="flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 text-xs font-medium rounded-full">
-      <Check className="w-3 h-3" />
+    <Badge variant="outline" className="bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800">
+      <Check className="size-3" />
       {bestScore !== null && bestScore !== undefined ? (
         <span>Best: {bestScore}%</span>
       ) : (
         <span>Completed</span>
       )}
-    </div>
+    </Badge>
   );
 }

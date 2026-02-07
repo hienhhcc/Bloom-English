@@ -9,6 +9,8 @@ import { ArrowRight, Check, Mic, RotateCcw, Snail, Volume2, X } from 'lucide-rea
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MicrophonePermission } from './MicrophonePermission';
 import { RecordingButton } from './RecordingButton';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 type QuizState = 'ready' | 'recording' | 'processing' | 'result';
 type PronunciationPhase = 'word' | 'sentence';
@@ -193,19 +195,16 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
   if (!isSupported) {
     return (
       <div className="w-full max-w-2xl mx-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
-          <div className="text-center p-6">
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <Card className="rounded-2xl p-6 md:p-8">
+          <CardContent className="text-center p-0">
+            <p className="text-muted-foreground mb-4">
               Audio recording is not supported in your browser.
             </p>
-            <button
-              onClick={handleSkip}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
-            >
+            <Button variant="secondary" onClick={handleSkip}>
               Skip Pronunciation Quiz
-            </button>
-          </div>
-        </div>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -214,13 +213,15 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
   if (showPermissionUI) {
     return (
       <div className="w-full max-w-2xl mx-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
-          <MicrophonePermission
-            error={error === 'not-allowed' || error === 'audio-capture' ? error : null}
-            onRetry={handleRetryPermission}
-            onSkip={handleSkip}
-          />
-        </div>
+        <Card className="rounded-2xl p-6 md:p-8">
+          <CardContent className="p-0">
+            <MicrophonePermission
+              error={error === 'not-allowed' || error === 'audio-capture' ? error : null}
+              onRetry={handleRetryPermission}
+              onSkip={handleSkip}
+            />
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -229,164 +230,171 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
-            <Mic className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+      <Card className="rounded-2xl p-6 md:p-8">
+        <CardContent className="p-0">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="size-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
+              <Mic className="size-5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">
+                Pronunciation Quiz
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {phase === 'word' ? 'Pronounce the vocabulary word' : 'Pronounce the sentence'}
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Pronunciation Quiz
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {phase === 'word' ? 'Pronounce the vocabulary word' : 'Pronounce the sentence'}
+
+          {/* Phase indicator */}
+          <div className="flex gap-2 mb-6">
+            <div className={`flex-1 h-1 rounded-full ${phase === 'word' ? 'bg-emerald-500' : 'bg-emerald-500'
+              }`} />
+            <div className={`flex-1 h-1 rounded-full ${phase === 'sentence' ? 'bg-emerald-500' : 'bg-muted'
+              }`} />
+          </div>
+
+          {/* Text to pronounce */}
+          <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
+            <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-2">
+              {phase === 'word' ? 'Pronounce this word:' : 'Pronounce this sentence:'}
             </p>
-          </div>
-        </div>
-
-        {/* Phase indicator */}
-        <div className="flex gap-2 mb-6">
-          <div className={`flex-1 h-1 rounded-full ${phase === 'word' ? 'bg-emerald-500' : 'bg-emerald-500'
-            }`} />
-          <div className={`flex-1 h-1 rounded-full ${phase === 'sentence' ? 'bg-emerald-500' : 'bg-gray-200 dark:bg-gray-700'
-            }`} />
-        </div>
-
-        {/* Text to pronounce */}
-        <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
-          <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-2">
-            {phase === 'word' ? 'Pronounce this word:' : 'Pronounce this sentence:'}
-          </p>
-          <p className="text-xl font-medium text-emerald-900 dark:text-emerald-100 mb-3">
-            {phase === 'word' ? item.word : `"${exampleSentence.english}"`}
-          </p>
-
-          {/* Listen buttons */}
-          <div className="flex gap-2">
-            <button
-              onClick={() => handleListen(false)}
-              disabled={isSpeaking}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm bg-emerald-100 dark:bg-emerald-800/50 hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300 rounded-lg transition-colors disabled:opacity-50"
-            >
-              <Volume2 className="w-4 h-4" />
-              Listen
-            </button>
-            <button
-              onClick={() => handleListen(true)}
-              disabled={isSpeaking}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm bg-emerald-100 dark:bg-emerald-800/50 hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300 rounded-lg transition-colors disabled:opacity-50"
-            >
-              <Snail className="w-4 h-4" />
-              Slow
-            </button>
-          </div>
-        </div>
-
-        {/* Ready state - show record button */}
-        {quizState === 'ready' && (
-          <div className="flex flex-col items-center py-6">
-            <RecordingButton
-              isRecording={false}
-              isDisabled={false}
-              onStartRecording={handleStartRecording}
-              onStopRecording={handleStopRecording}
-              size="lg"
-            />
-            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-              Tap to start recording
+            <p className="text-xl font-medium text-emerald-900 dark:text-emerald-100 mb-3">
+              {phase === 'word' ? item.word : `"${exampleSentence.english}"`}
             </p>
-          </div>
-        )}
 
-        {/* Recording state */}
-        {quizState === 'recording' && (
-          <div className="flex flex-col items-center py-6">
-            {/* Recording indicator ring */}
-            <div className="relative">
-              <div className="absolute inset-0 -m-2 rounded-full bg-red-400/30 animate-ping pointer-events-none" />
-              <div className="absolute inset-0 -m-1 rounded-full bg-red-400/50 animate-pulse pointer-events-none" />
+            {/* Listen buttons */}
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleListen(false)}
+                disabled={isSpeaking}
+                className="bg-emerald-100 dark:bg-emerald-800/50 hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300"
+              >
+                <Volume2 className="size-4" />
+                Listen
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleListen(true)}
+                disabled={isSpeaking}
+                className="bg-emerald-100 dark:bg-emerald-800/50 hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300"
+              >
+                <Snail className="size-4" />
+                Slow
+              </Button>
+            </div>
+          </div>
+
+          {/* Ready state - show record button */}
+          {quizState === 'ready' && (
+            <div className="flex flex-col items-center py-6">
               <RecordingButton
-                isRecording={true}
+                isRecording={false}
                 isDisabled={false}
                 onStartRecording={handleStartRecording}
                 onStopRecording={handleStopRecording}
                 size="lg"
               />
+              <p className="mt-4 text-sm text-muted-foreground">
+                Tap to start recording
+              </p>
             </div>
-            <p className="mt-4 text-sm text-red-500 dark:text-red-400 font-medium">
-              Recording... Tap to stop
-            </p>
-          </div>
-        )}
+          )}
 
-        {/* Processing state */}
-        {quizState === 'processing' && (
-          <div className="flex flex-col items-center py-6">
-            <div className="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-              <div className="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin" />
+          {/* Recording state */}
+          {quizState === 'recording' && (
+            <div className="flex flex-col items-center py-6">
+              {/* Recording indicator ring */}
+              <div className="relative">
+                <div className="absolute inset-0 -m-2 rounded-full bg-red-400/30 animate-ping pointer-events-none" />
+                <div className="absolute inset-0 -m-1 rounded-full bg-red-400/50 animate-pulse pointer-events-none" />
+                <RecordingButton
+                  isRecording={true}
+                  isDisabled={false}
+                  onStartRecording={handleStartRecording}
+                  onStopRecording={handleStopRecording}
+                  size="lg"
+                />
+              </div>
+              <p className="mt-4 text-sm text-red-500 dark:text-red-400 font-medium">
+                Recording... Tap to stop
+              </p>
             </div>
-            <p className="mt-4 text-sm text-amber-600 dark:text-amber-400 font-medium">
-              Processing your pronunciation...
-            </p>
-          </div>
-        )}
+          )}
 
-        {/* Result state */}
-        {quizState === 'result' && currentResult && (
-          <div className="space-y-4">
-            {/* What was recognized */}
-            <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">You said:</p>
-              <p className="text-gray-900 dark:text-white">{evaluatedText || '(No speech detected)'}</p>
+          {/* Processing state */}
+          {quizState === 'processing' && (
+            <div className="flex flex-col items-center py-6">
+              <div className="size-16 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                <div className="size-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin" />
+              </div>
+              <p className="mt-4 text-sm text-amber-600 dark:text-amber-400 font-medium">
+                Processing your pronunciation...
+              </p>
             </div>
+          )}
 
-            {/* Result indicator */}
-            <div className={`flex items-center gap-3 p-3 rounded-xl ${currentResult.isPassing
-                ? 'bg-green-50 dark:bg-green-900/20'
-                : 'bg-red-50 dark:bg-red-900/20'
-              }`}>
-              {currentResult.isPassing ? (
-                <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
-              ) : (
-                <X className="w-5 h-5 text-red-600 dark:text-red-400" />
-              )}
-              <div className="flex-1">
-                <span className={currentResult.isPassing
-                  ? 'text-green-800 dark:text-green-300'
-                  : 'text-red-800 dark:text-red-300'
-                }>
-                  {getPronunciationFeedback(currentResult)}
+          {/* Result state */}
+          {quizState === 'result' && currentResult && (
+            <div className="space-y-4">
+              {/* What was recognized */}
+              <div className="p-4 bg-muted rounded-xl">
+                <p className="text-sm text-muted-foreground mb-1">You said:</p>
+                <p className="text-foreground">{evaluatedText || '(No speech detected)'}</p>
+              </div>
+
+              {/* Result indicator */}
+              <div className={`flex items-center gap-3 p-3 rounded-xl ${currentResult.isPassing
+                  ? 'bg-green-50 dark:bg-green-900/20'
+                  : 'bg-red-50 dark:bg-red-900/20'
+                }`}>
+                {currentResult.isPassing ? (
+                  <Check className="size-5 text-green-600 dark:text-green-400" />
+                ) : (
+                  <X className="size-5 text-red-600 dark:text-red-400" />
+                )}
+                <div className="flex-1">
+                  <span className={currentResult.isPassing
+                    ? 'text-green-800 dark:text-green-300'
+                    : 'text-red-800 dark:text-red-300'
+                  }>
+                    {getPronunciationFeedback(currentResult)}
+                  </span>
+                </div>
+                <span className={`text-lg font-bold ${currentResult.isPassing
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-red-600 dark:text-red-400'
+                  }`}>
+                  {currentResult.overallScore}%
                 </span>
               </div>
-              <span className={`text-lg font-bold ${currentResult.isPassing
-                  ? 'text-green-600 dark:text-green-400'
-                  : 'text-red-600 dark:text-red-400'
-                }`}>
-                {currentResult.overallScore}%
-              </span>
-            </div>
 
-            {/* Retry and continue buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={handleRetryRecording}
-                className="flex-1 py-3 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
-              >
-                <RotateCcw className="w-5 h-5" />
-                Try Again
-              </button>
-              <button
-                onClick={handleContinue}
-                className="flex-1 py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
-              >
-                Continue
-                <ArrowRight className="w-5 h-5" />
-              </button>
+              {/* Retry and continue buttons */}
+              <div className="flex gap-3">
+                <Button
+                  variant="secondary"
+                  onClick={handleRetryRecording}
+                  className="flex-1"
+                >
+                  <RotateCcw className="size-5" />
+                  Try Again
+                </Button>
+                <Button
+                  onClick={handleContinue}
+                  className="flex-1"
+                >
+                  Continue
+                  <ArrowRight className="size-5" />
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

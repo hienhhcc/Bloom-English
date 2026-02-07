@@ -46,13 +46,13 @@ export default async function TopicPage({ params, searchParams }: TopicPageProps
   const reviewType = review === 'oneDay' || review === 'oneWeek' ? review : undefined;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Link
           href="/vocabulary"
-          className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-4 cursor-pointer"
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-4 cursor-pointer"
         >
-          <ChevronLeft className="w-4 h-4 mr-1" />
+          <ChevronLeft className="size-4 mr-1" />
           Back to Topics
         </Link>
 

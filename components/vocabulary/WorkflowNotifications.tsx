@@ -2,6 +2,8 @@
 
 import { CheckCircle, Loader2, X, XCircle, Zap } from 'lucide-react';
 import type { WorkflowNotification } from '@/hooks/useWorkflowNotifications';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface WorkflowNotificationsProps {
   notifications: WorkflowNotification[];
@@ -17,7 +19,7 @@ const statusConfig = {
     headerText: 'text-blue-800 dark:text-blue-200',
     iconBg: 'bg-blue-50 dark:bg-blue-900/30',
     statusText: 'text-blue-600 dark:text-blue-400',
-    icon: <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />,
+    icon: <Loader2 className="size-5 text-blue-500 animate-spin" />,
     label: 'Processing...',
   },
   completed: {
@@ -28,7 +30,7 @@ const statusConfig = {
     headerText: 'text-green-800 dark:text-green-200',
     iconBg: 'bg-green-50 dark:bg-green-900/30',
     statusText: 'text-green-600 dark:text-green-400',
-    icon: <CheckCircle className="w-5 h-5 text-green-500" />,
+    icon: <CheckCircle className="size-5 text-green-500" />,
     label: 'Completed',
   },
   failed: {
@@ -39,7 +41,7 @@ const statusConfig = {
     headerText: 'text-red-800 dark:text-red-200',
     iconBg: 'bg-red-50 dark:bg-red-900/30',
     statusText: 'text-red-600 dark:text-red-400',
-    icon: <XCircle className="w-5 h-5 text-red-500" />,
+    icon: <XCircle className="size-5 text-red-500" />,
     label: 'Failed',
   },
 } as const;
@@ -69,9 +71,9 @@ export function WorkflowNotifications({
             {/* Header */}
             <div className="flex items-center gap-2 mb-3">
               <div
-                className={`flex items-center justify-center w-7 h-7 rounded-lg ${config.headerBg}`}
+                className={`flex items-center justify-center size-7 rounded-lg ${config.headerBg}`}
               >
-                <Zap className="w-4 h-4 text-white" />
+                <Zap className="size-4 text-white" />
               </div>
               <span
                 className={`text-sm font-bold ${config.headerText} uppercase tracking-wide`}
@@ -81,18 +83,18 @@ export function WorkflowNotifications({
             </div>
 
             {/* Card */}
-            <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-sm">
+            <Card className="relative shadow-sm py-0">
               <div className="flex items-center gap-3 p-3 pr-10">
                 {/* Status Icon */}
                 <div
-                  className={`flex-shrink-0 w-10 h-10 ${config.iconBg} rounded-lg flex items-center justify-center`}
+                  className={`flex-shrink-0 size-10 ${config.iconBg} rounded-lg flex items-center justify-center`}
                 >
                   {config.icon}
                 </div>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-900 dark:text-white truncate text-sm">
+                  <h3 className="font-semibold text-foreground truncate text-sm">
                     {notification.label}
                   </h3>
                   <p className={`text-xs ${config.statusText} font-medium`}>
@@ -103,15 +105,17 @@ export function WorkflowNotifications({
 
               {/* Dismiss Button — only on resolved cards */}
               {notification.status !== 'pending' && (
-                <button
+                <Button
+                  variant="outline"
+                  size="icon-xs"
                   onClick={() => onDismiss(notification.id)}
-                  className="absolute -top-2 -right-2 p-1 bg-white dark:bg-gray-700 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-full shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                  className="absolute -top-2 -right-2 rounded-full shadow-sm"
                   title="Dismiss"
                 >
-                  <X className="w-3.5 h-3.5" />
-                </button>
+                  <X className="size-3.5" />
+                </Button>
               )}
-            </div>
+            </Card>
           </div>
         );
       })}

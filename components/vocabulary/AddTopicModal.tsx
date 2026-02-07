@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface AddTopicModalProps {
   isOpen: boolean;
@@ -51,8 +56,7 @@ export function AddTopicModal({ isOpen, onClose, onWorkflowTriggered }: AddTopic
 
       // Auto-close after success
       setTimeout(() => {
-        onClose();
-        setStatus('idle');
+        handleClose();
       }, 2000);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Failed to trigger workflow');
@@ -70,63 +74,37 @@ export function AddTopicModal({ isOpen, onClose, onWorkflowTriggered }: AddTopic
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={handleClose}
-      />
-
-      {/* Modal */}
-      <div className="relative w-full max-w-md mx-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-blue-500" />
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) handleClose(); }}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Sparkles className="size-5 text-blue-500" />
             Add New Vocabulary Topic
-          </h2>
-          <button
-            onClick={handleClose}
-            disabled={isLoading}
-            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors disabled:opacity-50"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+          </DialogTitle>
+          <DialogDescription>
+            The n8n workflow will generate vocabulary using AI. This may take a moment.
+          </DialogDescription>
+        </DialogHeader>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-4 space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Topic Theme Input */}
-          <div>
-            <label
-              htmlFor="topic"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
-            >
-              Topic Theme
-            </label>
-            <input
+          <div className="space-y-1.5">
+            <Label htmlFor="topic">Topic Theme</Label>
+            <Input
               id="topic"
               type="text"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="e.g., Business, Sports, Technology..."
               disabled={isLoading}
-              className="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
             />
           </div>
 
           {/* Vocabulary Count Input */}
-          <div>
-            <label
-              htmlFor="vocabulariesCount"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
-            >
-              Number of Words
-            </label>
-            <input
+          <div className="space-y-1.5">
+            <Label htmlFor="vocabulariesCount">Number of Words</Label>
+            <Input
               id="vocabulariesCount"
               type="number"
               min={1}
@@ -134,67 +112,52 @@ export function AddTopicModal({ isOpen, onClose, onWorkflowTriggered }: AddTopic
               value={vocabulariesCount}
               onChange={(e) => setVocabulariesCount(Math.max(1, Math.min(50, parseInt(e.target.value) || 1)))}
               disabled={isLoading}
-              className="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50"
             />
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-muted-foreground">
               Choose between 1 and 50 words
             </p>
           </div>
 
           {/* Status Messages */}
           {status === 'success' && (
-            <div className="p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl">
-              <p className="text-sm text-green-700 dark:text-green-300">
+            <Alert className="bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800">
+              <AlertDescription className="text-green-700 dark:text-green-300">
                 Workflow started! You&apos;ll be notified when it completes.
-              </p>
-            </div>
+              </AlertDescription>
+            </Alert>
           )}
 
           {status === 'error' && (
-            <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl">
-              <p className="text-sm text-red-700 dark:text-red-300">
-                {errorMessage}
-              </p>
-            </div>
+            <Alert variant="destructive">
+              <AlertDescription>{errorMessage}</AlertDescription>
+            </Alert>
           )}
 
-          {/* Actions */}
-          <div className="flex gap-3 pt-2">
-            <button
+          <DialogFooter>
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleClose}
               disabled={isLoading}
-              className="flex-1 px-4 py-2.5 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-xl font-medium transition-colors disabled:opacity-50"
             >
               Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="flex-1 px-4 py-2.5 text-white bg-blue-500 hover:bg-blue-600 rounded-xl font-medium transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-            >
+            </Button>
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="size-4 animate-spin" />
                   Generating...
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4" />
+                  <Sparkles className="size-4" />
                   Generate
                 </>
               )}
-            </button>
-          </div>
+            </Button>
+          </DialogFooter>
         </form>
-
-        {/* Footer Note */}
-        <div className="px-4 pb-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-            The n8n workflow will generate vocabulary using AI. This may take a moment.
-          </p>
-        </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

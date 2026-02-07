@@ -1,6 +1,8 @@
 'use client';
 
 import { Mic, MicOff, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface MicrophonePermissionProps {
   error: 'not-allowed' | 'audio-capture' | null;
@@ -13,20 +15,20 @@ export function MicrophonePermission({ error, onRetry, onSkip }: MicrophonePermi
   const isMicrophoneError = error === 'audio-capture';
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
-      <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${
+    <div className="flex flex-col items-center justify-center p-6 bg-muted rounded-2xl">
+      <div className={`size-16 rounded-full flex items-center justify-center mb-4 ${
         isPermissionDenied || isMicrophoneError
           ? 'bg-red-100 dark:bg-red-900/30'
           : 'bg-amber-100 dark:bg-amber-900/30'
       }`}>
         {isPermissionDenied || isMicrophoneError ? (
-          <MicOff className="w-8 h-8 text-red-600 dark:text-red-400" />
+          <MicOff className="size-8 text-red-600 dark:text-red-400" />
         ) : (
-          <Mic className="w-8 h-8 text-amber-600 dark:text-amber-400" />
+          <Mic className="size-8 text-amber-600 dark:text-amber-400" />
         )}
       </div>
 
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+      <h3 className="text-lg font-semibold text-foreground mb-2">
         {isPermissionDenied
           ? 'Microphone Access Denied'
           : isMicrophoneError
@@ -34,7 +36,7 @@ export function MicrophonePermission({ error, onRetry, onSkip }: MicrophonePermi
           : 'Microphone Access Required'}
       </h3>
 
-      <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-4 max-w-sm">
+      <p className="text-sm text-muted-foreground text-center mb-4 max-w-sm">
         {isPermissionDenied ? (
           <>
             Please allow microphone access in your browser settings to use the pronunciation quiz.
@@ -51,31 +53,25 @@ export function MicrophonePermission({ error, onRetry, onSkip }: MicrophonePermi
       </p>
 
       {(isPermissionDenied || isMicrophoneError) && (
-        <div className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg mb-4">
-          <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-          <p className="text-xs text-amber-800 dark:text-amber-300">
+        <Alert className="mb-4 bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800">
+          <AlertCircle className="size-5 text-amber-600 dark:text-amber-400" />
+          <AlertDescription className="text-xs text-amber-800 dark:text-amber-300">
             {isPermissionDenied
               ? 'After updating permissions, you may need to refresh the page.'
               : 'Try disconnecting and reconnecting your microphone, then click retry.'}
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
       <div className="flex gap-3">
-        <button
-          onClick={onRetry}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition-colors"
-        >
+        <Button onClick={onRetry}>
           {isPermissionDenied || isMicrophoneError ? 'Retry' : 'Enable Microphone'}
-        </button>
+        </Button>
 
         {onSkip && (
-          <button
-            onClick={onSkip}
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors"
-          >
+          <Button variant="secondary" onClick={onSkip}>
             Skip
-          </button>
+          </Button>
         )}
       </div>
     </div>

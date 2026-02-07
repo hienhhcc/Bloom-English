@@ -2,6 +2,9 @@
 
 import Link from 'next/link';
 import { Bell, X } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 interface ReviewItem {
   topicId: string;
@@ -30,8 +33,8 @@ export function ReviewReminders({ reviews, onDismiss }: ReviewRemindersProps) {
     <div className="relative mb-6 rounded-2xl bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 dark:from-amber-950/40 dark:via-orange-950/40 dark:to-amber-950/40 border border-amber-200 dark:border-amber-800/60 p-4 shadow-sm">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
-        <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-400 dark:bg-amber-500">
-          <Bell className="w-4 h-4 text-white" />
+        <div className="flex items-center justify-center size-7 rounded-lg bg-amber-400 dark:bg-amber-500">
+          <Bell className="size-4 text-white" />
         </div>
         <span className="text-sm font-bold text-amber-800 dark:text-amber-200 uppercase tracking-wide">
           {reviews.length} review{reviews.length > 1 ? 's' : ''} due
@@ -45,47 +48,51 @@ export function ReviewReminders({ reviews, onDismiss }: ReviewRemindersProps) {
           return (
             <div
               key={`${review.topicId}-${review.reviewType}`}
-              className="relative bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all"
+              className="relative"
             >
-              <Link
-                href={`/vocabulary/${review.topicId}?mode=quiz&review=${review.reviewType}`}
-                className="flex items-center gap-3 p-3 pr-10"
-              >
-                {/* Topic Icon */}
-                <div className="flex-shrink-0 w-10 h-10 bg-amber-50 dark:bg-amber-900/30 rounded-lg flex items-center justify-center text-xl">
-                  {review.topicIcon}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white truncate text-sm">
-                      {review.topicName}
-                    </h3>
-                    <span className={`flex-shrink-0 px-2 py-0.5 text-xs font-semibold rounded-full ${badge.color}`}>
-                      {badge.label}
-                    </span>
-                  </div>
-                  <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">
-                    Ready for review
-                  </p>
-                </div>
-              </Link>
-
-              {/* Dismiss Button - top right of each card */}
-              {onDismiss && (
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onDismiss(review.topicId, review.reviewType);
-                  }}
-                  className="absolute -top-2 -right-2 p-1 bg-white dark:bg-gray-700 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-full shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-                  title="Dismiss"
+              <Card className="shadow-sm hover:shadow-md transition-all py-0">
+                <Link
+                  href={`/vocabulary/${review.topicId}?mode=quiz&review=${review.reviewType}`}
+                  className="flex items-center gap-3 p-3 pr-10"
                 >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
+                  {/* Topic Icon */}
+                  <div className="flex-shrink-0 size-10 bg-amber-50 dark:bg-amber-900/30 rounded-lg flex items-center justify-center text-xl">
+                    {review.topicIcon}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-foreground truncate text-sm">
+                        {review.topicName}
+                      </h3>
+                      <Badge variant="secondary" className={badge.color}>
+                        {badge.label}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                      Ready for review
+                    </p>
+                  </div>
+                </Link>
+
+                {/* Dismiss Button - top right of each card */}
+                {onDismiss && (
+                  <Button
+                    variant="outline"
+                    size="icon-xs"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onDismiss(review.topicId, review.reviewType);
+                    }}
+                    className="absolute -top-2 -right-2 rounded-full shadow-sm"
+                    title="Dismiss"
+                  >
+                    <X className="size-3.5" />
+                  </Button>
+                )}
+              </Card>
             </div>
           );
         })}

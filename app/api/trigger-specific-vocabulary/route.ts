@@ -4,7 +4,7 @@ import { createWorkflow } from '@/lib/workflowStore';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { fileName, vocabularies } = body;
+    const { fileName, vocabularies, mode = 'existing' } = body;
 
     // Validate input
     if (!fileName || typeof fileName !== 'string') {
@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         fileName,
         vocabularies,
+        mode,
         workflowId,
         callbackUrl,
       }),

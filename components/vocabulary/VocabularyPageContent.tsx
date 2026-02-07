@@ -1,14 +1,13 @@
 'use client';
 
-import { useMistakes } from '@/hooks/useMistakes';
 import { useProgress } from '@/hooks/useProgress';
 import { useWorkflowNotifications } from '@/hooks/useWorkflowNotifications';
 import { getTopicStatus } from '@/lib/vocabulary/progress';
 import type { DifficultyLevel, VocabularyTopic } from '@/lib/vocabulary/types';
 import type { WorkflowType } from '@/lib/workflowStore';
-import { AlertCircle, Plus, X } from 'lucide-react';
-import Link from 'next/link';
+import { Plus } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { AddTopicModal } from './AddTopicModal';
 import { AddVocabularyModal } from './AddVocabularyModal';
 import { ReviewReminders } from './ReviewReminders';
@@ -33,11 +32,8 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
     getDueReviews,
     dismissReviewAlert,
     isReviewAlertDismissed,
-    dismissMistakesAlert,
-    isMistakesAlertDismissed,
     getTopicProgress,
   } = useProgress();
-  const { totalMistakesCount, isLoaded: mistakesLoaded } = useMistakes();
 
   // Filter and sort state
   const [searchQuery, setSearchQuery] = useState('');
@@ -138,12 +134,6 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
     })
     .filter((r): r is NonNullable<typeof r> => r !== null);
 
-  // Check if mistakes alert should be shown
-  const showMistakesAlert =
-    mistakesLoaded &&
-    totalMistakesCount > 0 &&
-    !isMistakesAlertDismissed(totalMistakesCount);
-
   return (
     <>
       {isLoaded && reviewsWithTopicInfo.length > 0 && (
@@ -151,55 +141,6 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
           reviews={reviewsWithTopicInfo}
           onDismiss={dismissReviewAlert}
         />
-      )}
-
-      {/* Review Mistakes Card */}
-      {showMistakesAlert && (
-        <div className="relative mb-6 rounded-2xl bg-gradient-to-r from-red-50 via-rose-50 to-red-50 dark:from-red-950/40 dark:via-rose-950/40 dark:to-red-950/40 border border-red-200 dark:border-red-800/60 p-4 shadow-sm">
-          {/* Header */}
-          <div className="flex items-center gap-2 mb-3">
-            <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-red-400 dark:bg-red-500">
-              <AlertCircle className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-sm font-bold text-red-800 dark:text-red-200 uppercase tracking-wide">
-              {totalMistakesCount} word{totalMistakesCount !== 1 ? 's' : ''} to review
-            </span>
-          </div>
-
-          {/* Mistakes Card */}
-          <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all">
-            <Link
-              href="/vocabulary/mistakes"
-              className="flex items-center gap-3 p-3 pr-10"
-            >
-              <div className="flex-shrink-0 w-10 h-10 bg-red-50 dark:bg-red-900/30 rounded-lg flex items-center justify-center text-xl">
-                📝
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-gray-900 dark:text-white truncate text-sm">
-                    Review Mistakes
-                  </h3>
-                  <span className="flex-shrink-0 px-2 py-0.5 text-xs font-semibold rounded-full bg-white/80 text-red-700 dark:bg-red-900/80 dark:text-red-200">
-                    {totalMistakesCount}
-                  </span>
-                </div>
-                <p className="text-xs text-red-600 dark:text-red-400 font-medium">
-                  Practice misspelled words
-                </p>
-              </div>
-            </Link>
-
-            {/* Dismiss Button */}
-            <button
-              onClick={() => dismissMistakesAlert(totalMistakesCount)}
-              className="absolute -top-2 -right-2 p-1 bg-white dark:bg-gray-700 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 rounded-full shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-              title="Dismiss"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
       )}
 
       {/* Workflow Notifications */}
@@ -210,20 +151,19 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
 
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 mb-4">
-        <button
+        <Button
+          variant="secondary"
           onClick={() => setShowAddVocabularyModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-xl font-medium transition-colors shadow-sm"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="size-5" />
           <span>Research specific Words</span>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => setShowAddTopicModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors shadow-sm"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="size-5" />
           <span>Research a new Topic</span>
-        </button>
+        </Button>
       </div>
 
       {/* Search, Filter, and Sort */}
@@ -260,15 +200,15 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
         </div>
       ) : (
         <div className="text-center py-12">
-          <div className="text-gray-400 dark:text-gray-500 mb-2">
-            <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="text-muted-foreground/50 mb-2">
+            <svg className="size-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
+          <h3 className="text-lg font-medium text-foreground mb-1">
             No topics found
           </h3>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-muted-foreground">
             Try adjusting your search or filters
           </p>
         </div>

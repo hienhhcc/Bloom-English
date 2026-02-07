@@ -206,7 +206,7 @@ export function TopicQuiz({
   if (!isLoaded || initialSavedPosition === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-gray-500 dark:text-gray-400">Loading...</div>
+        <div className="text-muted-foreground">Loading...</div>
       </div>
     );
   }

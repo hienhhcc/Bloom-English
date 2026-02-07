@@ -26,6 +26,6 @@ export function getPartOfSpeechColor(pos: string): string {
     case 'adverb':
       return 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200';
     default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+      return 'bg-muted text-muted-foreground';
   }
 }

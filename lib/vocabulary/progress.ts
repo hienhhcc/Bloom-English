@@ -40,12 +40,6 @@ export interface ActiveQuizPosition {
   startedAt: number;
 }
 
-export interface MistakeRecord {
-  itemId: string;
-  lastWrongDate: number;
-  timesWrong: number;
-}
-
 export interface TopicProgress {
   topicId: string;
   quizAttempts: QuizAttempt[];
@@ -54,7 +48,6 @@ export interface TopicProgress {
   reviewSchedule: ReviewSchedule | null;
   activeReview: ActiveReviewPosition | null;
   activeQuiz: ActiveQuizPosition | null;
-  mistakes: MistakeRecord[];
 }
 
 export interface LearningProgress {
@@ -63,8 +56,6 @@ export interface LearningProgress {
   lastUpdated: number;
   // Dismissed alerts - stored as "topicId-reviewType" strings
   dismissedReviewAlerts?: string[];
-  // Dismissed mistakes alert - stores the count when dismissed (shows again if count changes)
-  dismissedMistakesAlertCount?: number;
 }
 
 export type TopicStatus = "not-started" | "completed" | "review-due";
@@ -86,7 +77,6 @@ export function createInitialTopicProgress(topicId: string): TopicProgress {
     reviewSchedule: null,
     activeReview: null,
     activeQuiz: null,
-    mistakes: [],
   };
 }
 

@@ -6,6 +6,7 @@ import { Flashcard } from './Flashcard';
 import { ProgressIndicator } from './ProgressIndicator';
 import { CombinedQuiz } from './CombinedQuiz';
 import { BookCheck, GraduationCap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface FlashcardContainerProps {
   items: VocabularyItem[];
@@ -26,7 +27,7 @@ export function FlashcardContainer({ items }: FlashcardContainerProps) {
   if (!currentItem) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">No vocabulary items found.</p>
+        <p className="text-muted-foreground">No vocabulary items found.</p>
       </div>
     );
   }
@@ -48,20 +49,21 @@ export function FlashcardContainer({ items }: FlashcardContainerProps) {
           />
 
           <div className="flex flex-col gap-3 max-w-lg mx-auto w-full">
-            <button
+            <Button
               onClick={startQuiz}
-              className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+              className="w-full"
             >
-              <BookCheck className="w-5 h-5" />
+              <BookCheck className="size-5" />
               Check Knowledge
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
               onClick={goToNext}
-              className="w-full py-3 px-4 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+              className="w-full"
             >
-              <GraduationCap className="w-5 h-5" />
+              <GraduationCap className="size-5" />
               I have learned this word
-            </button>
+            </Button>
           </div>
         </>
       )}

@@ -10,7 +10,6 @@ import {
   type ActiveQuizPosition,
   type ActiveReviewPosition,
   type LearningProgress,
-  type MistakeRecord,
   type TopicProgress,
   type TopicStatus,
 } from "@/lib/vocabulary/progress";
@@ -44,14 +43,9 @@ interface UseProgressReturn {
   saveQuizPosition: (topicId: string, position: ActiveQuizPosition) => void;
   getQuizPosition: (topicId: string) => ActiveQuizPosition | null;
   clearQuizPosition: (topicId: string) => void;
-  recordMistakes: (topicId: string, wrongItemIds: string[]) => void;
-  clearMistake: (topicId: string, itemId: string) => void;
-  getAllMistakes: () => Array<{ topicId: string; mistakes: MistakeRecord[] }>;
   // Dismiss alert functions
   dismissReviewAlert: (topicId: string, reviewType: "oneDay" | "oneWeek") => void;
   isReviewAlertDismissed: (topicId: string, reviewType: "oneDay" | "oneWeek") => boolean;
-  dismissMistakesAlert: (count: number) => void;
-  isMistakesAlertDismissed: (count: number) => boolean;
 }
 
 export function useProgress(): UseProgressReturn {
@@ -330,93 +324,6 @@ export function useProgress(): UseProgressReturn {
     });
   }, []);
 
-  const recordMistakes = useCallback(
-    (topicId: string, wrongItemIds: string[]) => {
-      if (wrongItemIds.length === 0) return;
-
-      setProgress((prev) => {
-        if (!prev) return prev;
-
-        const existingTopicProgress =
-          prev.topics[topicId] || createInitialTopicProgress(topicId);
-        const now = Date.now();
-
-        // Update or add mistake records
-        const updatedMistakes = [...(existingTopicProgress.mistakes || [])];
-        for (const itemId of wrongItemIds) {
-          const existingIndex = updatedMistakes.findIndex(
-            (m) => m.itemId === itemId
-          );
-          if (existingIndex !== -1) {
-            updatedMistakes[existingIndex] = {
-              ...updatedMistakes[existingIndex],
-              timesWrong: updatedMistakes[existingIndex].timesWrong + 1,
-              lastWrongDate: now,
-            };
-          } else {
-            updatedMistakes.push({
-              itemId,
-              lastWrongDate: now,
-              timesWrong: 1,
-            });
-          }
-        }
-
-        return {
-          ...prev,
-          topics: {
-            ...prev.topics,
-            [topicId]: {
-              ...existingTopicProgress,
-              mistakes: updatedMistakes,
-            },
-          },
-          lastUpdated: now,
-        };
-      });
-    },
-    []
-  );
-
-  const clearMistake = useCallback((topicId: string, itemId: string) => {
-    setProgress((prev) => {
-      if (!prev) return prev;
-
-      const existingTopicProgress = prev.topics[topicId];
-      if (!existingTopicProgress) return prev;
-
-      const updatedMistakes = (existingTopicProgress.mistakes || []).filter(
-        (m) => m.itemId !== itemId
-      );
-
-      return {
-        ...prev,
-        topics: {
-          ...prev.topics,
-          [topicId]: {
-            ...existingTopicProgress,
-            mistakes: updatedMistakes,
-          },
-        },
-        lastUpdated: Date.now(),
-      };
-    });
-  }, []);
-
-  const getAllMistakes = useCallback((): Array<{
-    topicId: string;
-    mistakes: MistakeRecord[];
-  }> => {
-    if (!progress) return [];
-
-    return Object.values(progress.topics)
-      .filter((topic) => topic.mistakes && topic.mistakes.length > 0)
-      .map((topic) => ({
-        topicId: topic.topicId,
-        mistakes: topic.mistakes,
-      }));
-  }, [progress]);
-
   const dismissReviewAlert = useCallback(
     (topicId: string, reviewType: "oneDay" | "oneWeek") => {
       setProgress((prev) => {
@@ -447,29 +354,6 @@ export function useProgress(): UseProgressReturn {
     [progress]
   );
 
-  const dismissMistakesAlert = useCallback((count: number) => {
-    setProgress((prev) => {
-      if (!prev) return prev;
-
-      return {
-        ...prev,
-        dismissedMistakesAlertCount: count,
-        lastUpdated: Date.now(),
-      };
-    });
-  }, []);
-
-  const isMistakesAlertDismissed = useCallback(
-    (count: number): boolean => {
-      if (!progress) return false;
-
-      // Alert is dismissed only if the count matches what was dismissed
-      // This way, if the count changes (more/fewer mistakes), the alert shows again
-      return progress.dismissedMistakesAlertCount === count;
-    },
-    [progress]
-  );
-
   return {
     progress,
     isLoaded,
@@ -484,12 +368,7 @@ export function useProgress(): UseProgressReturn {
     saveQuizPosition,
     getQuizPosition,
     clearQuizPosition,
-    recordMistakes,
-    clearMistake,
-    getAllMistakes,
     dismissReviewAlert,
     isReviewAlertDismissed,
-    dismissMistakesAlert,
-    isMistakesAlertDismissed,
   };
 }

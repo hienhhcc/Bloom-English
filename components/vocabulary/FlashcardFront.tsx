@@ -1,6 +1,7 @@
 import type { VocabularyItem } from '@/lib/vocabulary/types';
 import { normalizeVietnameseDefinitions, getPartOfSpeechColor } from '@/lib/vocabulary/utils';
 import { AudioButton } from './AudioButton';
+import { Badge } from '@/components/ui/badge';
 
 interface FlashcardFrontProps {
   item: VocabularyItem;
@@ -15,7 +16,7 @@ function getDifficultyColor(difficulty: string): string {
     case 'advanced':
       return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
     default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+      return 'bg-muted text-muted-foreground';
   }
 }
 
@@ -25,26 +26,27 @@ function parsePartsOfSpeech(pos: string): string[] {
 
 export function FlashcardFront({ item }: FlashcardFrontProps) {
   return (
-    <div className="absolute inset-0 backface-hidden bg-white dark:bg-gray-900 rounded-2xl p-6 flex flex-col shadow-lg">
+    <div className="absolute inset-0 backface-hidden bg-card rounded-2xl p-6 flex flex-col shadow-lg">
       <div className="flex justify-start items-start mb-4">
-        <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(item.difficulty)}`}>
+        <Badge variant="secondary" className={getDifficultyColor(item.difficulty)}>
           {item.difficulty}
-        </span>
+        </Badge>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center text-center">
         <h2 className="text-4xl md:text-5xl font-bold mb-2">{item.word}</h2>
-        <p className="text-lg text-gray-500 dark:text-gray-400 mb-2">{item.phonetic}</p>
+        <p className="text-lg text-muted-foreground mb-2">{item.phonetic}</p>
 
         {/* Part of Speech */}
         <div className="flex gap-2 flex-wrap justify-center mb-3">
           {parsePartsOfSpeech(item.partOfSpeech).map((pos) => (
-            <span
+            <Badge
               key={pos}
-              className={`text-sm font-medium px-3 py-1 rounded-full ${getPartOfSpeechColor(pos)}`}
+              variant="secondary"
+              className={getPartOfSpeechColor(pos)}
             >
               {pos}
-            </span>
+            </Badge>
           ))}
         </div>
 
@@ -54,12 +56,12 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
         </div>
 
         <div className="space-y-3 w-full max-w-md">
-          <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">English</p>
-            <p className="text-gray-800 dark:text-gray-200">{item.definitionEnglish}</p>
+          <div className="p-3 bg-muted rounded-lg">
+            <p className="text-sm text-muted-foreground mb-1">English</p>
+            <p className="text-foreground">{item.definitionEnglish}</p>
           </div>
-          <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Vietnamese</p>
+          <div className="p-3 bg-muted rounded-lg">
+            <p className="text-sm text-muted-foreground mb-1">Vietnamese</p>
             <div className="space-y-1.5">
               {normalizeVietnameseDefinitions(item.definitionVietnamese).map((def, i) => (
                 <div key={i} className="flex items-start gap-2">
@@ -68,7 +70,7 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
                       {def.type}
                     </span>
                   )}
-                  <p className="text-gray-800 dark:text-gray-200">{def.definition}</p>
+                  <p className="text-foreground">{def.definition}</p>
                 </div>
               ))}
             </div>
@@ -76,7 +78,7 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
         </div>
       </div>
 
-      <p className="text-center text-sm text-gray-400 mt-4">Click to flip</p>
+      <p className="text-center text-sm text-muted-foreground mt-4">Click to flip</p>
     </div>
   );
 }

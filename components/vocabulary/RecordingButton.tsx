@@ -2,6 +2,8 @@
 
 import { useCallback, useRef } from 'react';
 import { Mic, Square } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface RecordingButtonProps {
   isRecording: boolean;
@@ -24,15 +26,15 @@ export function RecordingButton({
   const handledByTouchRef = useRef(false);
 
   const sizeClasses = {
-    sm: 'w-10 h-10',
-    md: 'w-14 h-14',
-    lg: 'w-20 h-20',
+    sm: 'size-10',
+    md: 'size-14',
+    lg: 'size-20',
   };
 
   const iconSizes = {
-    sm: 'w-5 h-5',
-    md: 'w-6 h-6',
-    lg: 'w-8 h-8',
+    sm: 'size-5',
+    md: 'size-6',
+    lg: 'size-8',
   };
 
   const handleAction = useCallback(() => {
@@ -72,24 +74,18 @@ export function RecordingButton({
   }, [handleAction]);
 
   return (
-    <button
+    <Button
       onClick={handleClick}
       onTouchEnd={handleTouchEnd}
       disabled={isDisabled}
-      className={`
-        ${sizeClasses[size]}
-        rounded-full
-        flex items-center justify-center
-        transition-colors duration-200
-        disabled:opacity-50 disabled:cursor-not-allowed
-        touch-manipulation
-        select-none
-        ${isRecording
+      className={cn(
+        'rounded-full flex items-center justify-center touch-manipulation select-none',
+        sizeClasses[size],
+        isRecording
           ? 'bg-red-500 hover:bg-red-600 active:bg-red-700 text-white'
-          : 'bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white'
-        }
-        ${className}
-      `}
+          : 'bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white',
+        className
+      )}
       style={{ WebkitTapHighlightColor: 'transparent' }}
       aria-label={isRecording ? 'Stop recording' : 'Start recording'}
     >
@@ -98,6 +94,6 @@ export function RecordingButton({
       ) : (
         <Mic className={iconSizes[size]} />
       )}
-    </button>
+    </Button>
   );
 }

@@ -4,42 +4,62 @@
     {
       "id": "job-001",
       "word": "Occupation",
-      "phonetic": "/ˈɒbətɪʃən/",
+      "phonetic": "/ˌɒkjʊˈpeɪʃn/ (BrE) | /ˌɑːkjəˈpeɪʃn/ (AmE)",
       "partOfSpeech": "noun",
       "definitionEnglish": "A person's job or profession",
       "definitionVietnamese": [
         {
           "type": "noun",
           "definition": "Nghề nghiệp của một người"
+        },
+        {
+          "type": "noun",
+          "definition": "sự chiếm đóng, sự chiếm giữ (đất đai, tòa nhà)"
         }
       ],
       "difficulty": "intermediate",
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Occupation",
       "examples": [
         {
-          "english": "She is a doctor.",
-          "vietnamese": "Cô là bác sĩ."
+          "english": "Her occupation is listed as software engineer. ",
+          "vietnamese": "Nghề nghiệp của cô ấy được ghi là kỹ sư phần mềm."
         },
         {
-          "english": "He was an engineer.",
-          "vietnamese": "Anh ấy là một kỹ sư."
+          "english": "The occupation of the city lasted several years.",
+          "vietnamese": "Sự chiếm đóng thành phố kéo dài trong nhiều năm."
         },
         {
-          "english": "They are teachers.",
-          "vietnamese": "Họ là giáo viên."
+          "english": "The occupation of the territory continued for over a decade.",
+          "vietnamese": "Sự chiếm đóng lãnh thổ đó kéo dài hơn một thập kỷ."
         }
       ],
-      "collocations": [],
-      "synonyms": [],
+      "collocations": [
+        "full-time occupation",
+        "main occupation",
+        "change one's occupation",
+        "military occupation"
+      ],
+      "synonyms": [
+        "job",
+        "profession",
+        "career"
+      ],
       "antonyms": [],
       "wordFamily": [
         {
-          "word": "Profession",
-          "partOfSpeech": "noun"
+          "word": "occupy",
+          "partOfSpeech": "verb",
+          "definition": "chiếm giữ; làm cho bận rộn"
         },
         {
-          "word": "Career",
-          "partOfSpeech": "noun"
+          "word": "occupational",
+          "partOfSpeech": "adjective",
+          "definition": "thuộc nghề nghiệp"
+        },
+        {
+          "word": "occupant",
+          "partOfSpeech": "noun",
+          "definition": "người cư trú, người chiếm giữ"
         }
       ]
     },
@@ -134,9 +154,9 @@
     {
       "id": "job-004",
       "word": "Managerial",
-      "phonetic": "/mænˈʒɪərəl/",
+      "phonetic": "/ˌmænəˈdʒɪəriəl/ (BrE) | /ˌmænəˈdʒɪriəl/ (AmE)",
       "partOfSpeech": "adjective",
-      "definitionEnglish": "Relating to the control and direction of a company or organization",
+      "definitionEnglish": "Refers to relating to the responsibilities, skills, or functions involved in managing people, resources, or organizations",
       "definitionVietnamese": [
         {
           "type": "noun",
@@ -147,29 +167,40 @@
       "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Managerial",
       "examples": [
         {
-          "english": "She is a managerial trainee.",
-          "vietnamese": "Cô là một nhân viên đào tạo quản lý."
+          "english": "She gained valuable managerial experience while leading the project. ",
+          "vietnamese": "Cô ấy tích lũy được kinh nghiệm quản lý quý giá khi dẫn dắt dự án. "
         },
         {
-          "english": "He works in managerial roles.",
-          "vietnamese": "Anh ấy làm việc trong các vai trò quản lý."
+          "english": "The position requires strong managerial skills as well as technical knowledge.",
+          "vietnamese": "Vị trí này yêu cầu kỹ năng quản lý vững cùng với kiến thức chuyên môn. "
         },
         {
-          "english": "The company needs more managerial expertise.",
-          "vietnamese": "Công ty cần thêm chuyên môn quản lý."
+          "english": "He moved from a technical role into a managerial position last year.  ",
+          "vietnamese": "Anh ấy đã chuyển từ vai trò kỹ thuật sang vị trí quản lý vào năm ngoái."
         }
       ],
-      "collocations": [],
-      "synonyms": [],
+      "collocations": [
+        "managerial skills",
+        "managerial role",
+        "managerial responsibilities",
+        "managerial functions"
+      ],
+      "synonyms": [
+        "administrative",
+        "leadership",
+        "management"
+      ],
       "antonyms": [],
       "wordFamily": [
         {
-          "word": "Administration",
-          "partOfSpeech": "noun"
+          "word": "Manage",
+          "partOfSpeech": "verb",
+          "definition": "quản lý, quản trị"
         },
         {
-          "word": "Direction",
-          "partOfSpeech": "noun"
+          "word": "Manager",
+          "partOfSpeech": "noun",
+          "definition": "người quản lý"
         }
       ]
     },
@@ -432,13 +463,17 @@
     {
       "id": "1",
       "word": "resilient",
-      "phonetic": "/ˈrɛzələnt/",
+      "phonetic": "/rɪˈzɪlɪənt/ (BrE) | /rɪˈzɪljənt/ (AmE) ",
       "partOfSpeech": "adjective",
       "definitionEnglish": "capable of recovering quickly from difficulties; able to withstand or bounce back from adverse conditions;",
       "definitionVietnamese": [
         {
           "type": "adjective",
-          "definition": "dẻo dai, chịu đựng được khó khăn"
+          "definition": "kiên cường, có khả năng phục hồi nhanh"
+        },
+        {
+          "type": "adjective",
+          "definition": "(về vật liệu) đàn hồi, không dễ bị hư hỏng"
         }
       ],
       "difficulty": "intermediate",
@@ -453,8 +488,8 @@
           "vietnamese": "Sự dẻo dai về tài chính của công ty đã giúp nó vượt qua cuộc suy thoái kinh tế."
         },
         {
-          "english": "Her resilience in the face of adversity is an inspiration to everyone around her.",
-          "vietnamese": "Đối mặt với khó khăn, sức mạnh nội tâm của cô ấy là nguồn cảm hứng cho mọi người xung quanh."
+          "english": "The company proved resilient during the economic downturn.  ",
+          "vietnamese": "Công ty đã chứng tỏ khả năng chống chịu tốt trong giai đoạn suy thoái kinh tế."
         }
       ],
       "collocations": [
@@ -689,7 +724,11 @@
       "definitionVietnamese": [
         {
           "type": "adjective",
-          "definition": "Không hiệu quả; kém cỏi, không ấn tượng, yếu, không thỏa mãn"
+          "definition": "què, đi khập khiễng (do chấn thương ở chân)"
+        },
+        {
+          "type": "adjective",
+          "definition": "(thân mật/không trang trọng) tệ, nhạt nhẽo, thiếu thuyết phục"
         }
       ],
       "difficulty": "intermediate",
@@ -697,21 +736,22 @@
       "examples": [
         {
           "english": "His argument was so lame that everyone laughed.",
-          "vietnamese": "Lời tranh辩解如此无力，以至于每个人都笑了。"
+          "vietnamese": "Lời tranh luận thiếu thuyết phục đến nỗi mọi người cười."
         },
         {
-          "english": "Don’t bother with the lame excuses; just tell me the truth.",
-          "vietnamese": "Khỏe别理那些苍白的借口；直接告诉我真相吧。"
+          "english": "The horse became lame after the accident.",
+          "vietnamese": "Con ngựa bị què sau vụ tai nạn."
         },
         {
-          "english": "The plot of that movie was so lame, it didn't even work as a satire.",
-          "vietnamese": "Lòng故事情节如此苍白，以至于它连讽刺都没有起到作用。"
+          "english": "That excuse sounds pretty lame.",
+          "vietnamese": "Lý do đó nghe khá là không thuyết phục."
         }
       ],
       "collocations": [
-        "argument",
-        "excuse",
-        "plot"
+        "go lame",
+        "badly lame",
+        "a lame excuse",
+        "sound lame"
       ],
       "synonyms": [
         "weak",

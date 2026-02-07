@@ -3,6 +3,9 @@
 import { Search, SlidersHorizontal, ArrowUpDown, X } from 'lucide-react';
 import { useState } from 'react';
 import type { DifficultyLevel } from '@/lib/vocabulary/types';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 export type StatusFilter = 'all' | 'not-started' | 'completed' | 'review-due';
 export type SortOption = 'added-desc' | 'added-asc' | 'name-asc' | 'name-desc' | 'words-asc' | 'words-desc' | 'difficulty-asc' | 'difficulty-desc';
@@ -28,7 +31,7 @@ const statusOptions: { value: StatusFilter; label: string }[] = [
 ];
 
 const difficultyOptions: { value: DifficultyLevel | 'all'; label: string; color: string }[] = [
-  { value: 'all', label: 'All Levels', color: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300' },
+  { value: 'all', label: 'All Levels', color: 'bg-muted text-muted-foreground' },
   { value: 'beginner', label: 'Beginner', color: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300' },
   { value: 'intermediate', label: 'Intermediate', color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300' },
   { value: 'advanced', label: 'Advanced', color: 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' },
@@ -73,46 +76,45 @@ export function TopicFilters({
       <div className="flex gap-3">
         {/* Search Input */}
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
+          <Input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search topics..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="pl-10 pr-10 h-10"
           />
           {searchQuery && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon-xs"
               onClick={() => onSearchChange('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="absolute right-2 top-1/2 -translate-y-1/2"
             >
-              <X className="w-4 h-4" />
-            </button>
+              <X className="size-4" />
+            </Button>
           )}
         </div>
 
         {/* Filter Toggle Button */}
-        <button
+        <Button
+          variant={showFilters || hasActiveFilters ? 'secondary' : 'outline'}
           onClick={() => setShowFilters(!showFilters)}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all ${
-            showFilters || hasActiveFilters
-              ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400'
-              : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
-          }`}
+          className={showFilters || hasActiveFilters ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400' : ''}
         >
-          <SlidersHorizontal className="w-5 h-5" />
+          <SlidersHorizontal className="size-5" />
           <span className="hidden sm:inline font-medium">Filters</span>
           {hasActiveFilters && (
-            <span className="w-2 h-2 bg-blue-500 rounded-full" />
+            <span className="size-2 bg-blue-500 rounded-full" />
           )}
-        </button>
+        </Button>
 
         {/* Sort Dropdown */}
         <div className="relative">
           <select
             value={sortOption}
             onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className="appearance-none pl-4 pr-10 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-600 dark:text-gray-400 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-all"
+            className="appearance-none pl-4 pr-10 h-10 bg-card border border-input rounded-md text-muted-foreground font-medium focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent cursor-pointer transition-all"
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -120,72 +122,65 @@ export function TopicFilters({
               </option>
             ))}
           </select>
-          <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
         </div>
       </div>
 
       {/* Expandable Filters */}
       {showFilters && (
-        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 space-y-4">
+        <div className="p-4 bg-muted rounded-xl border border-border space-y-4">
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Status
-            </label>
+            <Label className="mb-2">Status</Label>
             <div className="flex flex-wrap gap-2">
               {statusOptions.map((option) => (
-                <button
+                <Button
                   key={option.value}
+                  variant={statusFilter === option.value ? 'default' : 'outline'}
+                  size="sm"
                   onClick={() => onStatusChange(option.value)}
-                  className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${
-                    statusFilter === option.value
-                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
-                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
-                  }`}
+                  className={statusFilter === option.value ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 hover:bg-blue-200' : ''}
                 >
                   {option.label}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
 
           {/* Difficulty Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Difficulty
-            </label>
+            <Label className="mb-2">Difficulty</Label>
             <div className="flex flex-wrap gap-2">
               {difficultyOptions.map((option) => (
-                <button
+                <Button
                   key={option.value}
+                  variant={difficultyFilter === option.value ? 'default' : 'outline'}
+                  size="sm"
                   onClick={() => onDifficultyChange(option.value)}
-                  className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${
-                    difficultyFilter === option.value
-                      ? option.color
-                      : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
-                  }`}
+                  className={difficultyFilter === option.value ? option.color : ''}
                 >
                   {option.label}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
 
           {/* Clear Filters */}
           {hasActiveFilters && (
-            <button
+            <Button
+              variant="link"
               onClick={clearAllFilters}
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 underline"
+              className="text-muted-foreground p-0 h-auto"
             >
               Clear all filters
-            </button>
+            </Button>
           )}
         </div>
       )}
 
       {/* Results Count */}
       {(hasActiveFilters || searchQuery) && (
-        <div className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="text-sm text-muted-foreground">
           Showing {resultCount} of {totalCount} topics
           {resultCount === 0 && (
             <span className="ml-2 text-amber-600 dark:text-amber-400">
