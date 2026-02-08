@@ -26,19 +26,19 @@ function parsePartsOfSpeech(pos: string): string[] {
 
 export function FlashcardFront({ item }: FlashcardFrontProps) {
   return (
-    <div className="absolute inset-0 backface-hidden bg-card rounded-2xl p-6 flex flex-col shadow-lg">
-      <div className="flex justify-start items-start mb-4">
+    <div className="[grid-area:1/1] backface-hidden bg-card rounded-2xl p-6 flex flex-col border shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
+      <div className="flex justify-start items-start mb-2">
         <Badge variant="secondary" className={getDifficultyColor(item.difficulty)}>
           {item.difficulty}
         </Badge>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-2">{item.word}</h2>
-        <p className="text-lg text-muted-foreground mb-2">{item.phonetic}</p>
+        <h2 className="text-4xl md:text-5xl font-bold mb-1">{item.word}</h2>
+        <p className="text-lg text-muted-foreground mb-1">{item.phonetic}</p>
 
         {/* Part of Speech */}
-        <div className="flex gap-2 flex-wrap justify-center mb-3">
+        <div className="flex gap-1.5 flex-wrap justify-center mb-2">
           {parsePartsOfSpeech(item.partOfSpeech).map((pos) => (
             <Badge
               key={pos}
@@ -50,35 +50,33 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
           ))}
         </div>
 
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-2 mb-4">
           <AudioButton text={item.word} />
           <AudioButton text={item.word} slow />
         </div>
 
-        <div className="space-y-3 w-full max-w-md">
-          <div className="p-3 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">English</p>
-            <p className="text-foreground">{item.definitionEnglish}</p>
+        <div className="space-y-2 w-full max-w-md">
+          <div className="px-3 py-2 bg-muted rounded-lg">
+            <p className="text-xs text-muted-foreground mb-0.5">English</p>
+            <p className="text-sm text-foreground">{item.definitionEnglish}</p>
           </div>
-          <div className="p-3 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Vietnamese</p>
-            <div className="space-y-1.5">
+          <div className="px-3 py-2 bg-muted rounded-lg">
+            <p className="text-xs text-muted-foreground mb-0.5">Vietnamese</p>
+            <div className="space-y-1">
               {normalizeVietnameseDefinitions(item.definitionVietnamese).map((def, i) => (
                 <div key={i} className="flex items-start gap-2">
                   {def.type && (
-                    <span className={`flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-full mt-0.5 ${getPartOfSpeechColor(def.type)}`}>
+                    <span className={`flex-shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full mt-0.5 ${getPartOfSpeechColor(def.type)}`}>
                       {def.type}
                     </span>
                   )}
-                  <p className="text-foreground">{def.definition}</p>
+                  <p className="text-sm text-foreground">{def.definition}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
-
-      <p className="text-center text-sm text-muted-foreground mt-4">Click to flip</p>
     </div>
   );
 }

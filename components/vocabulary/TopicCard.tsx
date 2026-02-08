@@ -32,12 +32,12 @@ export function TopicCard({ topic, progress, isReviewDismissed }: TopicCardProps
 
   return (
     <Link href={`/vocabulary/${topic.id}`}>
-      <Card className={`p-6 hover:shadow-lg transition-shadow cursor-pointer ${
+      <Card className={`p-6 h-full hover:shadow-lg transition-shadow cursor-pointer ${
         status === 'review-due'
           ? 'border-amber-300 dark:border-amber-700'
           : ''
       }`}>
-        <CardContent className="p-0">
+        <CardContent className="p-0 flex flex-col h-full">
           <div className="flex items-start justify-between mb-4">
             <span className="text-4xl">{topic.icon}</span>
             <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ export function TopicCard({ topic, progress, isReviewDismissed }: TopicCardProps
 
           <h3 className="text-xl font-semibold mb-1">{topic.name}</h3>
           <p className="text-sm text-muted-foreground mb-2">{topic.nameVietnamese}</p>
-          <p className="text-sm text-muted-foreground mb-4">{topic.description}</p>
+          <p className="text-sm text-muted-foreground mb-4 flex-1">{topic.description}</p>
 
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{topic.wordCount} words</span>

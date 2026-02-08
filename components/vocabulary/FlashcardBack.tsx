@@ -1,6 +1,5 @@
-import type { VocabularyItem } from '@/lib/vocabulary/types';
-import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import type { VocabularyItem } from '@/lib/vocabulary/types';
 
 interface FlashcardBackProps {
   item: VocabularyItem;
@@ -8,25 +7,16 @@ interface FlashcardBackProps {
 
 export function FlashcardBack({ item }: FlashcardBackProps) {
   return (
-    <div className="absolute inset-0 backface-hidden rotate-y-180 bg-card rounded-2xl p-6 flex flex-col shadow-lg overflow-y-auto">
-      <div className="relative w-full h-40 md:h-48 mb-4 rounded-lg overflow-hidden bg-muted shrink-0">
-        <Image
-          src={item.imageUrl}
-          alt={item.word}
-          fill
-          className="object-cover"
-          unoptimized
-        />
-      </div>
+    <div className="[grid-area:1/1] backface-hidden rotate-y-180 bg-card rounded-2xl p-4 flex flex-col border shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
 
-      <div className="flex-1 space-y-4">
+      <div className="space-y-3">
         <div>
-          <h3 className="text-sm font-semibold text-muted-foreground mb-2">Examples</h3>
-          <div className="space-y-2">
+          <h3 className="text-xs font-semibold text-muted-foreground mb-1.5">Examples</h3>
+          <div className="space-y-1.5">
             {item.examples.slice(0, -1).map((example, index) => (
-              <div key={index} className="p-3 bg-muted rounded-lg">
-                <p className="text-foreground mb-1">{example.english}</p>
-                <p className="text-sm text-muted-foreground">{example.vietnamese}</p>
+              <div key={index} className="px-3 py-2 bg-muted rounded-lg">
+                <p className="text-sm text-foreground mb-0.5">{example.english}</p>
+                <p className="text-xs text-muted-foreground">{example.vietnamese}</p>
               </div>
             ))}
           </div>
@@ -34,8 +24,8 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
 
         {item.collocations.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-muted-foreground mb-2">Collocations</h3>
-            <div className="flex flex-wrap gap-2">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-1.5">Collocations</h3>
+            <div className="flex flex-wrap gap-1.5">
               {item.collocations.map((collocation) => (
                 <Badge
                   key={collocation}
@@ -51,8 +41,8 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
 
         {item.synonyms.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-muted-foreground mb-2">Synonyms</h3>
-            <div className="flex flex-wrap gap-2">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-1.5">Synonyms</h3>
+            <div className="flex flex-wrap gap-1.5">
               {item.synonyms.map((synonym) => (
                 <Badge
                   key={synonym}
@@ -68,8 +58,8 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
 
         {item.antonyms.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-muted-foreground mb-2">Antonyms</h3>
-            <div className="flex flex-wrap gap-2">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-1.5">Antonyms</h3>
+            <div className="flex flex-wrap gap-1.5">
               {item.antonyms.map((antonym) => (
                 <Badge
                   key={antonym}
@@ -85,10 +75,10 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
 
         {item.wordFamily.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-muted-foreground mb-2">Word Family</h3>
-            <div className="space-y-2">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-1.5">Word Family</h3>
+            <div className="space-y-1.5">
               {item.wordFamily.map((wf) => (
-                <div key={wf.word} className="flex items-start gap-2">
+                <div key={`${wf.word}-${wf.partOfSpeech}`} className="flex items-start gap-2">
                   <Badge
                     variant="outline"
                     className="bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800 shrink-0"
@@ -104,8 +94,6 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
           </div>
         )}
       </div>
-
-      <p className="text-center text-sm text-muted-foreground mt-4 shrink-0">Click to flip back</p>
     </div>
   );
 }
