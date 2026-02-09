@@ -108,5 +108,15 @@
     "wordCount": 10,
     "difficulty": "intermediate",
     "createdAt": "2026-02-06T08:28:35.068Z"
+  },
+  {
+    "id": "day_61",
+    "name": "Day 61",
+    "nameVietnamese": "Ngày 61",
+    "description": "Vocabulary about Day 61",
+    "icon": "🌟",
+    "wordCount": 10,
+    "difficulty": "intermediate",
+    "createdAt": "2026-02-07T08:28:35.068Z"
   }
 ]

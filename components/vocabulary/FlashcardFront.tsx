@@ -55,8 +55,8 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
                 type="button"
                 onClick={(e) => handleAccentSelect(label, e)}
                 className={`flex items-center gap-2 px-2.5 py-0.5 rounded-md transition-colors ${accent === label
-                    ? 'bg-primary/10 text-foreground'
-                    : 'text-muted-foreground hover:bg-muted'
+                  ? 'bg-primary/10 text-foreground'
+                  : 'text-muted-foreground hover:bg-muted'
                   }`}
               >
                 <span className={`text-[10px] font-semibold uppercase tracking-wide w-7 text-left ${accent === label ? 'text-primary' : ''
@@ -100,7 +100,7 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
               {normalizeVietnameseDefinitions(item.definitionVietnamese).map((def, i) => (
                 <div key={i} className="flex items-start gap-2">
                   {def.type && (
-                    <span className={`flex-shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full mt-0.5 ${getPartOfSpeechColor(def.type)}`}>
+                    <span className={`shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full mt-0.5 ${getPartOfSpeechColor(def.type)}`}>
                       {def.type}
                     </span>
                   )}
