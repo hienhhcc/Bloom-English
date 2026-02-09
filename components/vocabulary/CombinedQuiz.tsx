@@ -43,7 +43,7 @@ export function CombinedQuiz({ item, onComplete }: CombinedQuizProps) {
     return (
       <div className="space-y-4">
         <div className="text-center">
-          <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+          <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
             Step 1 of 3: Spelling
           </Badge>
         </div>
@@ -59,7 +59,7 @@ export function CombinedQuiz({ item, onComplete }: CombinedQuizProps) {
     return (
       <div className="space-y-4">
         <div className="text-center">
-          <Badge variant="secondary" className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">
+          <Badge variant="secondary" className="bg-primary/10 text-primary">
             Step 2 of 3: Pronunciation
           </Badge>
         </div>
@@ -74,7 +74,7 @@ export function CombinedQuiz({ item, onComplete }: CombinedQuizProps) {
   return (
     <div className="space-y-4">
       <div className="text-center">
-        <Badge variant="secondary" className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
+        <Badge variant="secondary" className="bg-accent text-accent-foreground">
           Step 3 of 3: Translation
         </Badge>
       </div>

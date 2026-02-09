@@ -1,10 +1,12 @@
 'use client';
 
 import { useSpeechRecognition } from '@/hooks/useSpeechRecognition';
+import { useAccentPreference } from '@/hooks/useAccentPreference';
 import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 import { playErrorSound, playSuccessSound } from '@/lib/audio';
 import { evaluatePronunciation, getPronunciationFeedback, type PronunciationResult } from '@/lib/pronunciationEvaluator';
 import type { VocabularyItem } from '@/lib/vocabulary/types';
+import type { Accent } from '@/lib/vocabulary/utils';
 import { ArrowRight, Check, Mic, RotateCcw, Snail, Volume2, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MicrophonePermission } from './MicrophonePermission';
@@ -42,7 +44,8 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
     resetTranscript,
   } = useSpeechRecognition();
 
-  const { speak, isSpeaking } = useTextToSpeech();
+  const { accent, setAccent } = useAccentPreference();
+  const { speak, isSpeaking } = useTextToSpeech(accent);
 
   // Use first example sentence for pronunciation practice
   const exampleSentence = item.examples[0];
@@ -234,8 +237,8 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
         <CardContent className="p-0">
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="size-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
-              <Mic className="size-5 text-emerald-600 dark:text-emerald-400" />
+            <div className="size-10 bg-primary/10 rounded-full flex items-center justify-center">
+              <Mic className="size-5 text-primary" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-foreground">
@@ -249,29 +252,29 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
 
           {/* Phase indicator */}
           <div className="flex gap-2 mb-6">
-            <div className={`flex-1 h-1 rounded-full ${phase === 'word' ? 'bg-emerald-500' : 'bg-emerald-500'
+            <div className={`flex-1 h-1 rounded-full ${phase === 'word' ? 'bg-primary' : 'bg-primary'
               }`} />
-            <div className={`flex-1 h-1 rounded-full ${phase === 'sentence' ? 'bg-emerald-500' : 'bg-muted'
+            <div className={`flex-1 h-1 rounded-full ${phase === 'sentence' ? 'bg-primary' : 'bg-muted'
               }`} />
           </div>
 
           {/* Text to pronounce */}
-          <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
-            <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-2">
+          <div className="mb-6 p-4 bg-secondary/50 dark:bg-secondary/20 rounded-xl border border-border">
+            <p className="text-sm text-muted-foreground mb-2">
               {phase === 'word' ? 'Pronounce this word:' : 'Pronounce this sentence:'}
             </p>
-            <p className="text-xl font-medium text-emerald-900 dark:text-emerald-100 mb-3">
+            <p className="text-xl font-medium text-foreground mb-3">
               {phase === 'word' ? item.word : `"${exampleSentence.english}"`}
             </p>
 
-            {/* Listen buttons */}
-            <div className="flex gap-2">
+            {/* Listen buttons and accent selector */}
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => handleListen(false)}
                 disabled={isSpeaking}
-                className="bg-emerald-100 dark:bg-emerald-800/50 hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300"
+                className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
               >
                 <Volume2 className="size-4" />
                 Listen
@@ -281,11 +284,27 @@ export function PronunciationQuiz({ item, onComplete }: PronunciationQuizProps) 
                 size="sm"
                 onClick={() => handleListen(true)}
                 disabled={isSpeaking}
-                className="bg-emerald-100 dark:bg-emerald-800/50 hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300"
+                className="bg-secondary hover:bg-secondary/80 text-secondary-foreground"
               >
                 <Snail className="size-4" />
                 Slow
               </Button>
+              <div className="ml-auto flex rounded-md border border-border overflow-hidden">
+                {(['AmE', 'BrE'] as Accent[]).map((a) => (
+                  <button
+                    key={a}
+                    type="button"
+                    onClick={() => setAccent(a)}
+                    className={`px-2 py-0.5 text-xs font-medium transition-colors ${
+                      accent === a
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 

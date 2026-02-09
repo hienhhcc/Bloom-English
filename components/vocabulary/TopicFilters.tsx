@@ -100,12 +100,12 @@ export function TopicFilters({
         <Button
           variant={showFilters || hasActiveFilters ? 'secondary' : 'outline'}
           onClick={() => setShowFilters(!showFilters)}
-          className={showFilters || hasActiveFilters ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400' : ''}
+          className={showFilters || hasActiveFilters ? 'bg-primary/10 border-primary/20 text-primary' : ''}
         >
           <SlidersHorizontal className="size-5" />
           <span className="hidden sm:inline font-medium">Filters</span>
           {hasActiveFilters && (
-            <span className="size-2 bg-blue-500 rounded-full" />
+            <span className="size-2 bg-primary rounded-full" />
           )}
         </Button>
 
@@ -139,7 +139,7 @@ export function TopicFilters({
                   variant={statusFilter === option.value ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => onStatusChange(option.value)}
-                  className={statusFilter === option.value ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 hover:bg-blue-200' : ''}
+                  className={statusFilter === option.value ? 'bg-primary/10 text-primary hover:bg-primary/20' : ''}
                 >
                   {option.label}
                 </Button>

@@ -83,7 +83,7 @@ export function RecordingButton({
         sizeClasses[size],
         isRecording
           ? 'bg-red-500 hover:bg-red-600 active:bg-red-700 text-white'
-          : 'bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white',
+          : 'bg-primary hover:bg-primary/90 active:bg-primary/80 text-primary-foreground',
         className
       )}
       style={{ WebkitTapHighlightColor: 'transparent' }}

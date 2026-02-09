@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { Accent } from "@/lib/vocabulary/utils";
 
 interface UseTextToSpeechReturn {
   speak: (text: string, slow?: boolean) => void;
@@ -17,21 +18,23 @@ function checkWebSpeechSupport(): boolean {
 function fallbackSpeak(
   text: string,
   slow: boolean,
-  setIsSpeaking: (value: boolean) => void
+  setIsSpeaking: (value: boolean) => void,
+  accent: Accent = "AmE"
 ): void {
   if (!checkWebSpeechSupport()) return;
 
   window.speechSynthesis.cancel();
 
+  const lang = accent === "BrE" ? "en-GB" : "en-US";
+
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate = slow ? 0.5 : 1;
-  utterance.lang = "en-US";
+  utterance.lang = lang;
 
   const voices = window.speechSynthesis.getVoices();
   const englishVoice =
-    voices.find(
-      (voice) => voice.lang.startsWith("en") && voice.name.includes("English")
-    ) || voices.find((voice) => voice.lang.startsWith("en"));
+    voices.find((voice) => voice.lang === lang) ||
+    voices.find((voice) => voice.lang.startsWith("en"));
 
   if (englishVoice) {
     utterance.voice = englishVoice;
@@ -44,7 +47,7 @@ function fallbackSpeak(
   window.speechSynthesis.speak(utterance);
 }
 
-export function useTextToSpeech(): UseTextToSpeechReturn {
+export function useTextToSpeech(accent: Accent = "AmE"): UseTextToSpeechReturn {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
   const currentAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -83,11 +86,13 @@ export function useTextToSpeech(): UseTextToSpeechReturn {
         throw new Error("Puter.js not loaded");
       }
 
-      // Use Puter.js with neural voice for better quality
+      const voice = accent === "BrE" ? "Amy" : "Joanna";
+      const language = accent === "BrE" ? "en-GB" : "en-US";
+
       const audio = await puter.ai.txt2speech(text, {
-        voice: "Joanna", // AWS Polly neural voice
+        voice,
         engine: "neural",
-        language: "en-US",
+        language,
       });
 
       currentAudioRef.current = audio;
@@ -111,9 +116,9 @@ export function useTextToSpeech(): UseTextToSpeechReturn {
       console.error("TTS error:", error);
       setIsSpeaking(false);
       // Fallback to Web Speech API if Puter fails
-      fallbackSpeak(text, slow, setIsSpeaking);
+      fallbackSpeak(text, slow, setIsSpeaking, accent);
     }
-  }, []);
+  }, [accent]);
 
   const cancel = useCallback(() => {
     if (currentAudioRef.current) {

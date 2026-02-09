@@ -110,7 +110,7 @@ export const LetterSlots = forwardRef<LetterSlotsRef, LetterSlotsProps>(function
       if (index < lockedChars) {
         return 'text-amber-600 dark:text-amber-400';
       }
-      return 'text-gray-800 dark:text-gray-200';
+      return 'text-foreground';
     }
     if (showResult === 'correct') {
       return 'text-green-600 dark:text-green-400';
@@ -133,9 +133,9 @@ export const LetterSlots = forwardRef<LetterSlotsRef, LetterSlotsProps>(function
     }
     // Highlight current typing position
     if (!disabled && isFocused && index === value.length) {
-      return 'bg-blue-500 dark:bg-blue-400 animate-pulse';
+      return 'bg-primary animate-pulse';
     }
-    return 'bg-gray-400 dark:bg-gray-500';
+    return 'bg-muted-foreground/40';
   };
 
   return (
@@ -201,7 +201,7 @@ export const LetterSlots = forwardRef<LetterSlotsRef, LetterSlotsProps>(function
       </div>
 
       {!disabled && (
-        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">
+        <p className="text-center text-xs text-muted-foreground mt-3">
           Type the word ({word.length} letters)
         </p>
       )}

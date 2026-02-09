@@ -41,8 +41,8 @@ export default function Home() {
                 <Card className="hover:shadow-lg transition-shadow h-full">
                   <CardContent>
                     <div className="flex items-center gap-4 mb-4">
-                      <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                        <feature.icon className="size-6 text-blue-600 dark:text-blue-400" />
+                      <div className="p-3 bg-primary/10 rounded-lg">
+                        <feature.icon className="size-6 text-primary" />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground">
                         {feature.name}

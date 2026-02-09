@@ -114,7 +114,7 @@ export function AddVocabularyModal({ isOpen, onClose, topics, onWorkflowTriggere
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <BookOpen className="size-5 text-purple-500" />
+            <BookOpen className="size-5 text-primary" />
             Research Specific Vocabularies
           </DialogTitle>
           <DialogDescription>

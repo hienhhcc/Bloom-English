@@ -93,8 +93,8 @@ export function TranslationQuiz({ item, onComplete }: TranslationQuizProps) {
         <CardContent className="p-0">
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="size-10 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-              <Languages className="size-5 text-purple-600 dark:text-purple-400" />
+            <div className="size-10 bg-primary/10 rounded-full flex items-center justify-center">
+              <Languages className="size-5 text-primary" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-foreground">
@@ -197,11 +197,11 @@ export function TranslationQuiz({ item, onComplete }: TranslationQuizProps) {
               </div>
 
               {/* Reference translation */}
-              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-blue-700 dark:text-blue-300 mb-1">
+              <div className="p-4 bg-secondary/50 dark:bg-secondary/20 rounded-xl border border-border">
+                <p className="text-sm text-muted-foreground mb-1">
                   Expected translation:
                 </p>
-                <p className="text-blue-900 dark:text-blue-100">
+                <p className="text-foreground">
                   &ldquo;{referenceTranslation}&rdquo;
                 </p>
               </div>

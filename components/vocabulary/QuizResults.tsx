@@ -72,12 +72,12 @@ export function QuizResults({
           </p>
 
           {isFirstCompletion && (
-            <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-              <div className="flex items-center gap-2 text-blue-700 dark:text-blue-300 mb-2">
-                <CalendarCheck className="size-5" />
+            <div className="mb-6 p-4 bg-secondary/50 dark:bg-secondary/20 rounded-xl border border-border">
+              <div className="flex items-center gap-2 text-foreground mb-2">
+                <CalendarCheck className="size-5 text-primary" />
                 <span className="font-medium">Review Scheduled</span>
               </div>
-              <ul className="text-sm text-blue-600 dark:text-blue-400 space-y-1 text-left">
+              <ul className="text-sm text-muted-foreground space-y-1 text-left">
                 <li>• Review in 1 day to strengthen memory</li>
                 <li>• Final review in 1 week for long-term retention</li>
               </ul>

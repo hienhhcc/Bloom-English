@@ -1,8 +1,49 @@
 import { Badge } from '@/components/ui/badge';
+import { generateWordVariations } from '@/lib/languageTool';
 import type { VocabularyItem } from '@/lib/vocabulary/types';
+import type { ReactNode } from 'react';
 
 interface FlashcardBackProps {
   item: VocabularyItem;
+}
+
+function boldWord(text: string, item: VocabularyItem): ReactNode {
+  // Collect all inflected forms: the word + word family, each with variations
+  const allForms = new Set<string>();
+  for (const form of generateWordVariations(item.word)) {
+    allForms.add(form.toLowerCase());
+  }
+  for (const wf of item.wordFamily) {
+    for (const form of generateWordVariations(wf.word)) {
+      allForms.add(form.toLowerCase());
+    }
+  }
+
+  // Sort longest-first so "offenders" matches before "offend"
+  const sorted = [...allForms].sort((a, b) => b.length - a.length);
+
+  const pattern = new RegExp(
+    `\\b(${sorted.map(f => f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,
+    'gi'
+  );
+
+  const parts: ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    parts.push(<strong key={match.index}>{match[0]}</strong>);
+    lastIndex = pattern.lastIndex;
+  }
+
+  if (lastIndex === 0) return text;
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
 }
 
 export function FlashcardBack({ item }: FlashcardBackProps) {
@@ -15,7 +56,7 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
           <div className="space-y-1.5">
             {item.examples.slice(0, -1).map((example, index) => (
               <div key={index} className="px-3 py-2 bg-muted rounded-lg">
-                <p className="text-sm text-foreground mb-0.5">{example.english}</p>
+                <p className="text-sm text-foreground mb-0.5">{boldWord(example.english, item)}</p>
                 <p className="text-xs text-muted-foreground">{example.vietnamese}</p>
               </div>
             ))}
@@ -30,7 +71,7 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
                 <Badge
                   key={collocation}
                   variant="outline"
-                  className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800"
+                  className="bg-secondary/50 dark:bg-secondary/20 text-secondary-foreground border-border"
                 >
                   {collocation}
                 </Badge>
@@ -47,7 +88,7 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
                 <Badge
                   key={synonym}
                   variant="outline"
-                  className="bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800"
+                  className="bg-accent/30 dark:bg-accent/20 text-accent-foreground border-accent/30"
                 >
                   {synonym}
                 </Badge>
@@ -81,7 +122,7 @@ export function FlashcardBack({ item }: FlashcardBackProps) {
                 <div key={`${wf.word}-${wf.partOfSpeech}`} className="flex items-start gap-2">
                   <Badge
                     variant="outline"
-                    className="bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800 shrink-0"
+                    className="bg-primary/10 dark:bg-primary/20 text-primary border-primary/20 shrink-0"
                   >
                     {wf.word} <span className="text-xs opacity-75">({wf.partOfSpeech})</span>
                   </Badge>

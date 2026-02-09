@@ -73,7 +73,7 @@ export async function checkGrammar(text: string): Promise<GrammarCheckResult> {
 /**
  * Generate common word variations (plurals, verb forms, etc.)
  */
-function generateWordVariations(word: string): string[] {
+export function generateWordVariations(word: string): string[] {
   const variations: string[] = [word];
   const lowerWord = word.toLowerCase();
 

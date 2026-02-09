@@ -1,5 +1,20 @@
 import type { VietnameseDefinition } from './types';
 
+export type Accent = 'BrE' | 'AmE';
+
+interface ParsedPhonetic {
+  bre: string | null;
+  ame: string | null;
+}
+
+const PHONETIC_REGEX = /(.+?)\s*\(BrE\)\s*\|\s*(.+?)\s*\(AmE\)/;
+
+export function parsePhonetic(phonetic: string): ParsedPhonetic {
+  const match = phonetic.match(PHONETIC_REGEX);
+  if (!match) return { bre: null, ame: null };
+  return { bre: match[1].trim(), ame: match[2].trim() };
+}
+
 export function normalizeVietnameseDefinitions(
   def: string | VietnameseDefinition[]
 ): VietnameseDefinition[] {

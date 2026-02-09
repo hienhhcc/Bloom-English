@@ -79,7 +79,7 @@ export function AddTopicModal({ isOpen, onClose, onWorkflowTriggered }: AddTopic
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="size-5 text-blue-500" />
+            <Sparkles className="size-5 text-primary" />
             Add New Vocabulary Topic
           </DialogTitle>
           <DialogDescription>

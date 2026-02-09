@@ -3,15 +3,17 @@
 import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 import { Volume2, Snail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import type { Accent } from '@/lib/vocabulary/utils';
 
 interface AudioButtonProps {
   text: string;
   slow?: boolean;
   className?: string;
+  accent?: Accent;
 }
 
-export function AudioButton({ text, slow = false, className = '' }: AudioButtonProps) {
-  const { speak, isSpeaking, isSupported } = useTextToSpeech();
+export function AudioButton({ text, slow = false, className = '', accent = 'AmE' }: AudioButtonProps) {
+  const { speak, isSpeaking, isSupported } = useTextToSpeech(accent);
 
   if (!isSupported) {
     return null;

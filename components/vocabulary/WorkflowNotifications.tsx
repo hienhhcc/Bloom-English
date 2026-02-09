@@ -13,18 +13,18 @@ interface WorkflowNotificationsProps {
 const statusConfig = {
   pending: {
     gradient:
-      'bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 dark:from-blue-950/40 dark:via-indigo-950/40 dark:to-blue-950/40',
-    border: 'border-blue-200 dark:border-blue-800/60',
-    headerBg: 'bg-blue-400 dark:bg-blue-500',
-    headerText: 'text-blue-800 dark:text-blue-200',
-    iconBg: 'bg-blue-50 dark:bg-blue-900/30',
-    statusText: 'text-blue-600 dark:text-blue-400',
-    icon: <Loader2 className="size-5 text-blue-500 animate-spin" />,
+      'bg-gradient-to-r from-secondary/50 via-accent/30 to-secondary/50',
+    border: 'border-border',
+    headerBg: 'bg-primary',
+    headerText: 'text-primary',
+    iconBg: 'bg-primary/10',
+    statusText: 'text-primary',
+    icon: <Loader2 className="size-5 text-primary animate-spin" />,
     label: 'Processing...',
   },
   completed: {
     gradient:
-      'bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 dark:from-green-950/40 dark:via-emerald-950/40 dark:to-green-950/40',
+      'bg-gradient-to-r from-green-50 via-green-50 to-green-50 dark:from-green-950/40 dark:via-green-950/40 dark:to-green-950/40',
     border: 'border-green-200 dark:border-green-800/60',
     headerBg: 'bg-green-400 dark:bg-green-500',
     headerText: 'text-green-800 dark:text-green-200',
@@ -35,7 +35,7 @@ const statusConfig = {
   },
   failed: {
     gradient:
-      'bg-gradient-to-r from-red-50 via-rose-50 to-red-50 dark:from-red-950/40 dark:via-rose-950/40 dark:to-red-950/40',
+      'bg-gradient-to-r from-red-50 via-red-50 to-red-50 dark:from-red-950/40 dark:via-red-950/40 dark:to-red-950/40',
     border: 'border-red-200 dark:border-red-800/60',
     headerBg: 'bg-red-400 dark:bg-red-500',
     headerText: 'text-red-800 dark:text-red-200',
