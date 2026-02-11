@@ -71,19 +71,19 @@ export const LetterSlots = forwardRef<LetterSlotsRef, LetterSlotsProps>(function
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value.toLowerCase();
+    const newValue = e.target.value;
 
     // Prevent modifying locked characters
     if (newValue.length < lockedChars) {
       // Restore locked prefix if user tried to delete it
-      const lockedPrefix = word.slice(0, lockedChars).toLowerCase();
+      const lockedPrefix = word.slice(0, lockedChars);
       onChange(lockedPrefix);
       return;
     }
 
     // Ensure locked characters remain unchanged
     if (lockedChars > 0) {
-      const lockedPrefix = word.slice(0, lockedChars).toLowerCase();
+      const lockedPrefix = word.slice(0, lockedChars);
       const userSuffix = newValue.slice(lockedChars);
       const correctedValue = lockedPrefix + userSuffix;
       if (correctedValue.length <= word.length) {

@@ -38,7 +38,7 @@ export function FlashcardFront({ item }: FlashcardFrontProps) {
   };
 
   return (
-    <div className="[grid-area:1/1] backface-hidden bg-card rounded-2xl p-6 flex flex-col border shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
+    <div className="[grid-area:1/1] backface-hidden bg-card rounded-2xl p-6 flex flex-col border card-glow">
       <div className="flex justify-start items-start mb-2">
         <Badge variant="secondary" className={getDifficultyColor(item.difficulty)}>
           {item.difficulty}

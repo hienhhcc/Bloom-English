@@ -13,10 +13,10 @@ const features = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="max-w-4xl mx-auto px-4 py-16 sm:py-24">
         {/* Header */}
-        <header className="text-center mb-16">
+        <header className="text-center mb-12 animate-fade-up">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
             <span className="mr-2">🌸</span>
             Bloom English
@@ -26,8 +26,13 @@ export default function Home() {
           </p>
         </header>
 
+        {/* Decorative Divider */}
+        <div className="flex justify-center mb-12 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+          <div className="h-px w-48 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        </div>
+
         {/* Features Grid */}
-        <section>
+        <section className="animate-fade-up" style={{ animationDelay: '0.2s' }}>
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-6 text-center">
             Features
           </h2>
@@ -38,7 +43,7 @@ export default function Home() {
                 href={feature.href}
                 className="block"
               >
-                <Card className="hover:shadow-lg transition-shadow h-full">
+                <Card className="hover:shadow-lg hover:translate-y-[-2px] transition-all duration-200 h-full">
                   <CardContent>
                     <div className="flex items-center gap-4 mb-4">
                       <div className="p-3 bg-primary/10 rounded-lg">

@@ -48,7 +48,7 @@ function boldWord(text: string, item: VocabularyItem): ReactNode {
 
 export function FlashcardBack({ item }: FlashcardBackProps) {
   return (
-    <div className="[grid-area:1/1] backface-hidden rotate-y-180 bg-card rounded-2xl p-4 flex flex-col border shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
+    <div className="[grid-area:1/1] backface-hidden rotate-y-180 bg-card rounded-2xl p-4 flex flex-col border card-glow">
 
       <div className="space-y-3">
         <div>

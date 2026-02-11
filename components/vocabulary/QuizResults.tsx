@@ -51,7 +51,7 @@ export function QuizResults({
     <div className="w-full max-w-lg mx-auto">
       <Card className="rounded-2xl p-8 text-center">
         <CardContent className="p-0">
-          <div className={`inline-flex p-4 rounded-full ${getScoreBgColor(percentage)} mb-4`}>
+          <div className={`inline-flex p-4 rounded-full ${getScoreBgColor(percentage)} mb-4 animate-trophy`}>
             <Trophy className={`size-12 ${getScoreColor(percentage)}`} />
           </div>
 
@@ -59,11 +59,11 @@ export function QuizResults({
             {isReview ? 'Review Complete!' : 'Quiz Complete!'}
           </h2>
 
-          <div className={`text-5xl font-bold ${getScoreColor(percentage)} mb-2`}>
+          <div className={`text-5xl font-bold ${getScoreColor(percentage)} mb-2 animate-score-reveal`}>
             {score.correct}/{score.total}
           </div>
 
-          <div className="text-lg text-muted-foreground mb-2">
+          <div className="text-lg text-muted-foreground mb-2 animate-score-reveal">
             {percentage}% correct
           </div>
 
@@ -136,14 +136,18 @@ export function QuizResults({
           )}
 
           <div className="flex flex-col gap-3">
-            <Button onClick={onRetry} className="w-full">
-              <RotateCcw className="size-5" />
-              Retry Quiz
-            </Button>
-            <Button variant="outline" onClick={onExit} className="w-full">
-              <ArrowLeft className="size-5" />
-              Back to Flashcards
-            </Button>
+            <div className="animate-fade-up" style={{ animationDelay: '0.4s' }}>
+              <Button onClick={onRetry} className="w-full">
+                <RotateCcw className="size-5" />
+                Retry Quiz
+              </Button>
+            </div>
+            <div className="animate-fade-up" style={{ animationDelay: '0.5s' }}>
+              <Button variant="outline" onClick={onExit} className="w-full">
+                <ArrowLeft className="size-5" />
+                Back to Flashcards
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

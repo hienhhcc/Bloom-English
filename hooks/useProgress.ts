@@ -43,6 +43,7 @@ interface UseProgressReturn {
   saveQuizPosition: (topicId: string, position: ActiveQuizPosition) => void;
   getQuizPosition: (topicId: string) => ActiveQuizPosition | null;
   clearQuizPosition: (topicId: string) => void;
+  scheduleReview: (topicId: string) => void;
   // Dismiss alert functions
   dismissReviewAlert: (topicId: string, reviewType: "oneDay" | "oneWeek") => void;
   isReviewAlertDismissed: (topicId: string, reviewType: "oneDay" | "oneWeek") => boolean;
@@ -324,6 +325,34 @@ export function useProgress(): UseProgressReturn {
     });
   }, []);
 
+  const scheduleReview = useCallback((topicId: string) => {
+    setProgress((prev) => {
+      if (!prev) return prev;
+
+      const now = Date.now();
+      const existingTopicProgress =
+        prev.topics[topicId] || createInitialTopicProgress(topicId);
+
+      // Clear dismissed review alerts for this topic
+      const dismissedAlerts = (prev.dismissedReviewAlerts || []).filter(
+        (key) => !key.startsWith(`${topicId}-`)
+      );
+
+      return {
+        ...prev,
+        topics: {
+          ...prev.topics,
+          [topicId]: {
+            ...existingTopicProgress,
+            reviewSchedule: createReviewSchedule(now),
+          },
+        },
+        dismissedReviewAlerts: dismissedAlerts,
+        lastUpdated: now,
+      };
+    });
+  }, []);
+
   const dismissReviewAlert = useCallback(
     (topicId: string, reviewType: "oneDay" | "oneWeek") => {
       setProgress((prev) => {
@@ -368,6 +397,7 @@ export function useProgress(): UseProgressReturn {
     saveQuizPosition,
     getQuizPosition,
     clearQuizPosition,
+    scheduleReview,
     dismissReviewAlert,
     isReviewAlertDismissed,
   };

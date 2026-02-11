@@ -183,18 +183,23 @@ export function VocabularyPageContent({ topics }: VocabularyPageContentProps) {
       {/* Topics Grid */}
       {filteredTopics.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTopics.map((topic) => {
+          {filteredTopics.map((topic, index) => {
             const dueReview = dueReviews.find((r) => r.topicId === topic.id);
             const reviewDismissed = dueReview
               ? isReviewAlertDismissed(dueReview.topicId, dueReview.reviewType)
               : false;
             return (
-              <TopicCard
+              <div
                 key={topic.id}
-                topic={topic}
-                progress={isLoaded ? progress?.topics[topic.id] : null}
-                isReviewDismissed={reviewDismissed}
-              />
+                className="animate-fade-up"
+                style={{ animationDelay: `${index * 60}ms` }}
+              >
+                <TopicCard
+                  topic={topic}
+                  progress={isLoaded ? progress?.topics[topic.id] : null}
+                  isReviewDismissed={reviewDismissed}
+                />
+              </div>
             );
           })}
         </div>

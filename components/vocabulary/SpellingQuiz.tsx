@@ -4,8 +4,10 @@ import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import type { VocabularyItem } from '@/lib/vocabulary/types';
 import { normalizeVietnameseDefinitions, getPartOfSpeechColor } from '@/lib/vocabulary/utils';
 import { LetterSlots, type LetterSlotsRef } from './LetterSlots';
-import { Check, X, ArrowRight, Lightbulb } from 'lucide-react';
+import { Check, X, ArrowRight, Lightbulb, Volume2 } from 'lucide-react';
 import { playSuccessSound, playErrorSound } from '@/lib/audio';
+import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import { useAccentPreference } from '@/hooks/useAccentPreference';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -34,9 +36,13 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
   const [isCorrect, setIsCorrect] = useState(false);
   const [countdown, setCountdown] = useState(AUTO_ADVANCE_DELAY / 1000);
   const [hintsUsed, setHintsUsed] = useState(0);
+  const [pronunciationHintUsed, setPronunciationHintUsed] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
   const letterSlotsRef = useRef<LetterSlotsRef>(null);
+
+  const { accent } = useAccentPreference();
+  const { speak, isSpeaking } = useTextToSpeech(accent);
 
   const maxHints = useMemo(() => calculateMaxHints(item.word.length), [item.word.length]);
   const hintsRemaining = maxHints - hintsUsed;
@@ -52,7 +58,8 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
   }, [onComplete, isCorrect, userInput]);
 
   const checkAnswer = useCallback(() => {
-    const correct = userInput.toLowerCase().trim() === item.word.toLowerCase();
+    const normalize = (s: string) => s.toLowerCase().trim().replace(/\s+/g, ' ');
+    const correct = normalize(userInput) === normalize(item.word);
     setIsCorrect(correct);
     setQuizState('result');
 
@@ -87,7 +94,7 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
     setHintsUsed(newHintLevel);
 
     // Reveal the first newHintLevel letters, keeping user's input after that
-    const correctPrefix = item.word.slice(0, newHintLevel).toLowerCase();
+    const correctPrefix = item.word.slice(0, newHintLevel);
     const userSuffix = userInput.slice(newHintLevel);
     setUserInput(correctPrefix + userSuffix);
 
@@ -96,6 +103,12 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
       letterSlotsRef.current?.focus();
     });
   }, [hintsUsed, maxHints, item.word, userInput]);
+
+  const usePronunciationHint = useCallback(() => {
+    if (pronunciationHintUsed) return;
+    setPronunciationHintUsed(true);
+    speak(item.word, true);
+  }, [pronunciationHintUsed, speak, item.word]);
 
   useEffect(() => {
     return () => {
@@ -206,17 +219,35 @@ export function SpellingQuiz({ item, onComplete }: SpellingQuizProps) {
 
         {quizState === 'input' ? (
           <div className="flex flex-col gap-3">
-            <Button
-              variant="outline"
-              onClick={useHint}
-              disabled={hintsRemaining === 0}
-              className="w-full border-amber-400 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20"
-            >
-              <Lightbulb className="size-4" />
-              {hintsRemaining > 0
-                ? `Get Hint (${hintsRemaining} left)`
-                : 'No hints left'}
-            </Button>
+            {hintsRemaining > 0 ? (
+              <Button
+                variant="outline"
+                onClick={useHint}
+                className="w-full border-amber-400 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+              >
+                <Lightbulb className="size-4" />
+                Get Hint ({hintsRemaining} left)
+              </Button>
+            ) : !pronunciationHintUsed ? (
+              <Button
+                variant="outline"
+                onClick={usePronunciationHint}
+                disabled={isSpeaking}
+                className="w-full border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+              >
+                <Volume2 className="size-4" />
+                Hear Pronunciation
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                disabled
+                className="w-full"
+              >
+                <Lightbulb className="size-4" />
+                No hints left
+              </Button>
+            )}
             <Button
               onClick={checkAnswer}
               disabled={userInput.length === 0}

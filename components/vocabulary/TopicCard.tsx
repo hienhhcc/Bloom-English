@@ -32,7 +32,7 @@ export function TopicCard({ topic, progress, isReviewDismissed }: TopicCardProps
 
   return (
     <Link href={`/vocabulary/${topic.id}`}>
-      <Card className={`p-6 h-full hover:shadow-lg transition-shadow cursor-pointer ${
+      <Card className={`p-6 h-full hover:shadow-lg hover:translate-y-[-2px] hover:border-primary/20 transition-all duration-200 cursor-pointer ${
         status === 'review-due'
           ? 'border-amber-300 dark:border-amber-700'
           : ''
