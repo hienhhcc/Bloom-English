@@ -5,11 +5,12 @@ import type { VocabularyItem, VocabularyTopic } from '@/lib/vocabulary/types';
 import { FlashcardContainer } from './FlashcardContainer';
 import { TopicQuiz } from './TopicQuiz';
 import { useProgress } from '@/hooks/useProgress';
-import { CalendarPlus, ClipboardList } from 'lucide-react';
+import { CalendarPlus, ClipboardList, TextCursorInput } from 'lucide-react';
 import type { QuizResult } from '@/hooks/useTopicQuiz';
 import { Button } from '@/components/ui/button';
+import { ClozeQuizMode } from './ClozeQuizMode';
 
-type PageMode = 'learning' | 'quiz';
+type PageMode = 'learning' | 'quiz' | 'cloze';
 
 interface TopicPageContentProps {
   topic: VocabularyTopic;
@@ -98,6 +99,14 @@ export function TopicPageContent({ topic, items, initialMode = 'learning', revie
               )}
             </Button>
             <Button
+              variant="outline"
+              onClick={() => setPageMode('cloze')}
+            >
+              <TextCursorInput className="size-5" />
+              <span className="hidden sm:inline">Cloze Quiz</span>
+              <span className="sm:hidden">Cloze</span>
+            </Button>
+            <Button
               onClick={() => setPageMode('quiz')}
             >
               <ClipboardList className="size-5" />
@@ -110,6 +119,12 @@ export function TopicPageContent({ topic, items, initialMode = 'learning', revie
 
       {pageMode === 'learning' ? (
         <FlashcardContainer items={items} />
+      ) : pageMode === 'cloze' ? (
+        <ClozeQuizMode
+          items={items}
+          topicId={topic.id}
+          onExit={() => setPageMode('learning')}
+        />
       ) : (
         <TopicQuiz
           items={items}

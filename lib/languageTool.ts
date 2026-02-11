@@ -177,6 +177,56 @@ export function containsVocabularyWord(
   return false;
 }
 
+/**
+ * Find the vocabulary word (or a variation) in a sentence.
+ * Returns the matched text (preserving original case) and its position.
+ * Search order: exact word → word variations → word family → word family variations
+ */
+export function findVocabularyWordInSentence(
+  sentence: string,
+  word: string,
+  wordFamily: { word: string }[]
+): { matched: string; start: number; end: number } | null {
+  // Helper to find first match of any candidate in the sentence
+  function findFirst(candidates: string[]): { matched: string; start: number; end: number } | null {
+    for (const candidate of candidates) {
+      const regex = new RegExp(`\\b${escapeRegExp(candidate)}\\b`, 'i');
+      const match = regex.exec(sentence);
+      if (match) {
+        return {
+          matched: match[0], // preserves original case from sentence
+          start: match.index,
+          end: match.index + match[0].length,
+        };
+      }
+    }
+    return null;
+  }
+
+  // 1. Exact word
+  const exact = findFirst([word]);
+  if (exact) return exact;
+
+  // 2. Word variations
+  const variations = generateWordVariations(word);
+  const fromVariations = findFirst(variations);
+  if (fromVariations) return fromVariations;
+
+  // 3. Word family (exact)
+  const familyWords = wordFamily.map((wf) => wf.word);
+  const fromFamily = findFirst(familyWords);
+  if (fromFamily) return fromFamily;
+
+  // 4. Word family variations
+  for (const familyWord of familyWords) {
+    const familyVariations = generateWordVariations(familyWord);
+    const fromFamilyVariation = findFirst(familyVariations);
+    if (fromFamilyVariation) return fromFamilyVariation;
+  }
+
+  return null;
+}
+
 function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

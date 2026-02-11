@@ -5,7 +5,7 @@ import { useFlashcard } from '@/hooks/useFlashcard';
 import { Flashcard } from './Flashcard';
 import { ProgressIndicator } from './ProgressIndicator';
 import { CombinedQuiz } from './CombinedQuiz';
-import { BookCheck, GraduationCap } from 'lucide-react';
+import { BookCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface FlashcardContainerProps {
@@ -18,6 +18,7 @@ export function FlashcardContainer({ items }: FlashcardContainerProps) {
     isFlipped,
     viewMode,
     goToNext,
+    goToPrevious,
     toggleFlip,
     startQuiz,
   } = useFlashcard(items.length);
@@ -56,14 +57,24 @@ export function FlashcardContainer({ items }: FlashcardContainerProps) {
               <BookCheck className="size-5" />
               Check Knowledge
             </Button>
-            <Button
-              variant="outline"
-              onClick={goToNext}
-              className="w-full"
-            >
-              <GraduationCap className="size-5" />
-              I have learned this word
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={goToPrevious}
+                className="flex-1"
+              >
+                <ChevronLeft className="size-5" />
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                onClick={goToNext}
+                className="flex-1"
+              >
+                Next
+                <ChevronRight className="size-5" />
+              </Button>
+            </div>
           </div>
         </>
       )}

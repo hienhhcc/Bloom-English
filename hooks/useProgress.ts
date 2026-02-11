@@ -13,7 +13,7 @@ import {
   type TopicProgress,
   type TopicStatus,
 } from "@/lib/vocabulary/progress";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface DueReview {
   topicId: string;
@@ -54,35 +54,80 @@ export function useProgress(): UseProgressReturn {
   const [progress, setProgress] = useState<LearningProgress | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from localStorage on mount (legitimate initialization pattern)
+  // Load from API on mount, fall back to localStorage
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored) as LearningProgress;
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setProgress(parsed);
-      } else {
-        setProgress(createInitialProgress());
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const res = await fetch("/api/progress");
+        if (res.ok) {
+          const data = await res.json();
+          if (!cancelled && data && data.version) {
+            setProgress(data as LearningProgress);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            setIsLoaded(true);
+            return;
+          }
+        }
+      } catch {
+        // API unavailable, fall through to localStorage
       }
-    } catch {
-      // If parsing fails, start fresh
-      setProgress(createInitialProgress());
+
+      // Fallback: localStorage
+      if (!cancelled) {
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            const parsed = JSON.parse(stored) as LearningProgress;
+            setProgress(parsed);
+          } else {
+            setProgress(createInitialProgress());
+          }
+        } catch {
+          setProgress(createInitialProgress());
+        }
+        setIsLoaded(true);
+      }
     }
-    setIsLoaded(true);
+
+    load();
+    return () => { cancelled = true; };
   }, []);
 
-  // Save to localStorage whenever progress changes
+  // Debounce timer for API saves
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Save to localStorage immediately + debounced POST to API
   useEffect(() => {
     if (isLoaded && progress) {
+      // Immediate localStorage save
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
       } catch {
-        // localStorage might be full or unavailable
         console.error("Failed to save progress to localStorage");
       }
+
+      // Debounced API save (1s)
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = setTimeout(() => {
+        fetch("/api/progress", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(progress),
+        }).catch(() => {
+          // API save failed silently — localStorage still has the data
+        });
+      }, 1000);
     }
   }, [progress, isLoaded]);
+
+  // Clean up debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, []);
 
   const getTopicProgress = useCallback(
     (topicId: string): TopicProgress | null => {
