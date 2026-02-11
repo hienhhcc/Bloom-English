@@ -1,5 +1,25 @@
 {
   "version": 1,
-  "topics": {},
-  "lastUpdated": 0
+  "topics": {
+    "day_63": {
+      "topicId": "day_63",
+      "quizAttempts": [],
+      "bestScore": null,
+      "completedAt": null,
+      "reviewSchedule": {
+        "oneDay": {
+          "date": 1770829200000,
+          "completed": false
+        },
+        "oneWeek": {
+          "date": 1771347600000,
+          "completed": false
+        }
+      },
+      "activeReview": null,
+      "activeQuiz": null
+    }
+  },
+  "lastUpdated": 1770811675517,
+  "dismissedReviewAlerts": []
 }
