@@ -952,62 +952,6 @@
       ]
     },
     {
-      "id": "adj-006",
-      "word": "Intimidating",
-      "phonetic": "/ɪnˈtɪmɪdeɪtɪŋ/ (BrE) | /ɪnˈtɪmɪdeɪtɪŋ/ (AmE)",
-      "partOfSpeech": "adjective",
-      "definitionEnglish": "Making someone feel frightened, nervous, or less confident",
-      "definitionVietnamese": [
-        {
-          "type": "adjective",
-          "definition": "đáng sợ; gây áp lực, khiến người khác e dè"
-        }
-      ],
-      "difficulty": "intermediate",
-      "imageUrl": "https://placehold.co/400x300/e2e8f0/475569?text=Intimidating",
-      "examples": [
-        {
-          "english": "The interview panel looked intimidating at first.",
-          "vietnamese": "Ban phỏng vấn trông khá đáng sợ lúc ban đầu."
-        },
-        {
-          "english": "She found public speaking intimidating.",
-          "vietnamese": "Cô ấy thấy việc nói trước đám đông rất áp lực."
-        },
-        {
-          "english": "His deep voice and serious expression were intimidating.",
-          "vietnamese": "Giọng nói trầm và vẻ mặt nghiêm nghị của anh ấy khiến người khác e dè."
-        }
-      ],
-      "collocations": [
-        "intimidating presence",
-        "intimidating figure",
-        "find something intimidating",
-        "seem intimidating"
-      ],
-      "synonyms": [
-        "frightening",
-        "daunting",
-        "threatening"
-      ],
-      "antonyms": [
-        "reassuring",
-        "comforting"
-      ],
-      "wordFamily": [
-        {
-          "word": "intimidate",
-          "partOfSpeech": "verb",
-          "definition": "đe dọa; làm ai đó sợ hãi hoặc mất tự tin"
-        },
-        {
-          "word": "intimidation",
-          "partOfSpeech": "noun",
-          "definition": "sự đe dọa; sự hăm dọa"
-        }
-      ]
-    },
-    {
       "id": "adj-007",
       "word": "Timid",
       "phonetic": "/ˈtɪmɪd/ (BrE) | /ˈtɪmɪd/ (AmE)",

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BookOpen, ArrowRight } from 'lucide-react';
+import { BookOpen, Camera, ArrowRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const features = [
@@ -8,6 +8,12 @@ const features = [
     description: 'Learn new words with interactive flashcards',
     icon: BookOpen,
     href: '/vocabulary',
+  },
+  {
+    name: 'Exercise Checker',
+    description: 'Check your textbook exercises with AI — snap photos and get instant feedback',
+    icon: Camera,
+    href: '/exercise-checker',
   },
 ];
 
